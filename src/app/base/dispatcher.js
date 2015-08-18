@@ -4,12 +4,11 @@ class Dispatcher{
         this.listeners = [];
     }
 
-    register(action, parameters ,callback) {
+    register(action ,callback) {
 
         this.listeners.push({
             action:     action,
             callback:   callback,
-            parameters: parameters,
         });
     }
 

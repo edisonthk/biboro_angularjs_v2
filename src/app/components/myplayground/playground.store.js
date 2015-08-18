@@ -12,9 +12,7 @@ class PlaygroundStore {
     }
 
     registerGetCallback(callback) {
-        var parameters = {'request':'playgroundStore'};
-
-        this._dispatcher.register(this.MYSTORE_KEY,  parameters,callback);
+        this._dispatcher.register(this.MYSTORE_KEY,callback);
     }
 
 
