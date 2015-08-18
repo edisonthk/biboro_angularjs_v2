@@ -3,11 +3,11 @@ import PlaygroundStore from "./playground.store";
 
 class PlaygroundController {
     
-    constructor($scope, Dispatcher) {
+    constructor($scope, $http,Dispatcher) {
         console.log("initialize");
 
-        this.mystore = new PlaygroundStore(Dispatcher);
-        this.mystore.registerGetCallback(this.getPayload.bind(this));
+        this.mystore = new PlaygroundStore($http,Dispatcher);
+        this.mystore.registerGetCallback(this.getCallback.bind(this));
 
         this.mystore.dispatchGetAction();
 
@@ -16,7 +16,7 @@ class PlaygroundController {
         this._scope = $scope;
     }
 
-    getPayload(parameters) {
+    getCallback(parameters) {
         console.log("yes");
         this.hello = "yes";
         

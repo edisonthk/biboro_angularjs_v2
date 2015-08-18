@@ -3,8 +3,6 @@
 
 import Dispatcher from './base/dispatcher';
 
-import EventEmitterService from './base/eventEmitter.service';
-
 import MainController from './main/main.controller';
 import WebDevTecService from '../app/components/webDevTec/webDevTec.service';
 import NavbarDirective from '../app/components/navbar/navbar.directive';

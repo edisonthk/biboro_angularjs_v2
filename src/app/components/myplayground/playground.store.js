@@ -1,8 +1,9 @@
 class PlaygroundStore {
     
-    constructor(dispatcher) {
+    constructor($http,dispatcher) {
         this.MYSTORE_KEY = "MYSTORE_KEY";
         this._dispatcher = dispatcher;
+        this._http       = $http;
 
         console.log(this._dispatcher);
         this.data = [];
@@ -13,7 +14,6 @@ class PlaygroundStore {
 
     registerGetCallback(callback) {
         var parameters = {'request':'playgroundStore'};
-
         this._dispatcher.register(this.MYSTORE_KEY,  parameters,callback);
     }
 
@@ -21,15 +21,11 @@ class PlaygroundStore {
     dispatchGetAction() {
         var self = this;
 
-        setTimeout(() => {
-            self.count += 1;
-            self.data.push(self.count);
-            self._dispatcher.dispatch(this.MYSTORE_KEY, {"response":"mydata"});
-        },2500);
-    }
-
-    getData() {
-        return this.data;
+        $http.get('/api/hello.json')
+            .success(function(data) {
+                self.data = data;
+                self._dispatcher.dispatch(this.MYSTORE_KEY, {"response":data});
+            });
     }
 
 }
