@@ -1,6 +1,8 @@
 /* jshint browser: true */
 /* global malarkey:false, toastr:false, moment:false */
 
+import Dispatcher from './base/dispatcher';
+
 import EventEmitterService from './base/eventEmitter.service';
 
 import MainController from './main/main.controller';
@@ -9,10 +11,18 @@ import NavbarDirective from '../app/components/navbar/navbar.directive';
 import MalarkeyDirective from '../app/components/malarkey/malarkey.directive';
 import PlaygroundController from '../app/components/myplayground/playground.controller';
 
-angular.module('biboroAngular', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngResource', 'ui.router'])
-  .constant('malarkey', malarkey)
-  .constant('toastr', toastr)
-  .constant('moment', moment)
+console.log(Dispatcher);
+
+angular.module('biboroAngular', [
+        'ngAnimate', 
+        'ngCookies', 
+        'ngSanitize', 
+        'ngResource', 
+        'ui.router',
+    ])
+    .constant('malarkey', malarkey)
+    .constant('toastr', toastr)
+    .constant('moment', moment)
 
     .config(function ($stateProvider, $urlRouterProvider) {
         'ngInject';
@@ -32,7 +42,7 @@ angular.module('biboroAngular', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngReso
 
         $urlRouterProvider.otherwise('/');
     })
-
+    .factory('Dispatcher', () => new Dispatcher())
     .service('EventEmitter', EventEmitterService)
     .service('webDevTec', WebDevTecService)
     .controller('MainController', MainController)

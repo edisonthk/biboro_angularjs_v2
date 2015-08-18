@@ -1,6 +1,6 @@
 class Dispatcher{
 
-    constructor (EventEmitterService) {
+    constructor () {
         this.listeners = [];
     }
 
@@ -22,5 +22,4 @@ class Dispatcher{
     }
 }
 
-angular.module('dispatcher',[])
-    .factory('Dispatcher', Dispatcher);
+export default Dispatcher;

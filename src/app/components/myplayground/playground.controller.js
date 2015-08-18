@@ -1,20 +1,28 @@
-import BaseController from "../../base/base.controller";
+
 import PlaygroundStore from "./playground.store";
 
-class PlaygroundController extends BaseController {
+class PlaygroundController {
     
-    initialize() {
+    constructor($scope, Dispatcher) {
         console.log("initialize");
 
-        this.mystore = new PlaygroundStore();
-        this.mystore.registerGetCallback(this.dataDownloaded);
+        this.mystore = new PlaygroundStore(Dispatcher);
+        this.mystore.registerGetCallback(this.getPayload.bind(this));
 
         this.mystore.dispatchGetAction();
+
+        this.hello="ready";
+
+        this._scope = $scope;
     }
 
-    dataDownloaded (data) {
-        console.log(data);
+    getPayload(parameters) {
+        console.log("yes");
+        this.hello = "yes";
+        
+        this._scope.$apply();
     }
+
 }
 
 export default PlaygroundController;

@@ -1,12 +1,10 @@
-import Dispatcher from "../../base/dispatcher";
-
 class PlaygroundStore {
     
-    constructor() {
+    constructor(dispatcher) {
         this.MYSTORE_KEY = "MYSTORE_KEY";
-        this.dispatcher = new Dispatcher();
+        this._dispatcher = dispatcher;
 
-
+        console.log(this._dispatcher);
         this.data = [];
 
         // dummy data        
@@ -16,7 +14,7 @@ class PlaygroundStore {
     registerGetCallback(callback) {
         var parameters = {'request':'playgroundStore'};
 
-        this.dispatcher.register(this.MYSTORE_KEY,  parameters,callback);
+        this._dispatcher.register(this.MYSTORE_KEY,  parameters,callback);
     }
 
 
@@ -26,7 +24,7 @@ class PlaygroundStore {
         setTimeout(() => {
             self.count += 1;
             self.data.push(self.count);
-            self.dispatcher.dispatch(this.MYSTORE_KEY, {"response":"mydata"});
+            self._dispatcher.dispatch(this.MYSTORE_KEY, {"response":"mydata"});
         },2500);
     }
 
