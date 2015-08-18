@@ -5,7 +5,6 @@ class PlaygroundStore {
         this._dispatcher = dispatcher;
         this._http       = $http;
 
-        console.log(this._dispatcher);
         this.data = [];
 
         // dummy data        
@@ -13,15 +12,14 @@ class PlaygroundStore {
     }
 
     registerGetCallback(callback) {
-        var parameters = {'request':'playgroundStore'};
-        this._dispatcher.register(this.MYSTORE_KEY,  parameters,callback);
+        this._dispatcher.register(this.MYSTORE_KEY,callback);
     }
 
 
     dispatchGetAction() {
         var self = this;
 
-        $http.get('/api/hello.json')
+        self._http.get('/api/v1/snippet/index.json')
             .success(function(data) {
                 self.data = data;
                 self._dispatcher.dispatch(this.MYSTORE_KEY, {"response":data});

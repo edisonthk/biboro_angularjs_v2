@@ -8,8 +8,7 @@ import WebDevTecService from '../app/components/webDevTec/webDevTec.service';
 import NavbarDirective from '../app/components/navbar/navbar.directive';
 import MalarkeyDirective from '../app/components/malarkey/malarkey.directive';
 import PlaygroundController from '../app/components/myplayground/playground.controller';
-
-console.log(Dispatcher);
+import SnippetController from '../app/components/snippet/snippet.controller';
 
 angular.module('biboroAngular', [
         'ngAnimate', 
@@ -36,12 +35,17 @@ angular.module('biboroAngular', [
                 controller:   PlaygroundController,
                 controllerAs: 'p',
                 template:     '<div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
+            })
+            .state('snippet', {
+                url: '/snippet',
+                controller:   SnippetController,
+                controllerAs: 'p',
+                template:     '<div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
             });
 
         $urlRouterProvider.otherwise('/');
     })
     .factory('Dispatcher', () => new Dispatcher())
-    .service('EventEmitter', EventEmitterService)
     .service('webDevTec', WebDevTecService)
     .controller('MainController', MainController)
     .directive('acmeNavbar', () => new NavbarDirective())

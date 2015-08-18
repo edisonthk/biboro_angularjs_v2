@@ -3,7 +3,7 @@ import PlaygroundStore from "./playground.store";
 
 class PlaygroundController {
     
-    constructor($scope, $http,Dispatcher) {
+    constructor($scope, $http, Dispatcher) {
         console.log("initialize");
 
         this.mystore = new PlaygroundStore($http,Dispatcher);
@@ -22,7 +22,8 @@ class PlaygroundController {
         
         this._scope.$apply();
     }
-
 }
+
+PlaygroundController.$inject = ['$scope','$http','Dispatcher'];
 
 export default PlaygroundController;
