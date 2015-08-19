@@ -1,4 +1,4 @@
-class SnippetStore {
+class SnippetService {
     
     constructor($http,dispatcher) {
         this.SNIPPET_FETCHEDALL_CALLBACK = "SNIPPET_FETCHEDALL_CALLBACK";
@@ -35,4 +35,6 @@ class SnippetStore {
 
 }
 
-export default SnippetStore;
+SnippetService.$inject = ["$http", "Dispatcher"];
+
+export default SnippetService;

@@ -3,12 +3,15 @@
 
 import Dispatcher from './base/dispatcher';
 
+import AccountService from '../app/components/account/account.service';
+import SnippetService from '../app/components/snippet/snippet.service';
+
 import MainController from './main/main.controller';
 import WebDevTecService from '../app/components/webDevTec/webDevTec.service';
 import NavbarDirective from '../app/components/navbar/navbar.directive';
 import MalarkeyDirective from '../app/components/malarkey/malarkey.directive';
-import PlaygroundController from '../app/components/myplayground/playground.controller';
-import SnippetController from '../app/components/snippet/snippet.controller';
+
+import routeConfig from './routes';
 
 angular.module('biboroAngular', [
         'ngAnimate', 
@@ -21,30 +24,9 @@ angular.module('biboroAngular', [
     .constant('toastr', toastr)
     .constant('moment', moment)
 
-    .config(function ($stateProvider, $urlRouterProvider) {
-        'ngInject';
-        $stateProvider
-            .state('home', {
-                url: '/',
-                templateUrl:  'app/main/main.html',
-                controller:   'MainController',
-                controllerAs: 'main',
-            })
-            .state('test', {
-                url: '/test',
-                controller:   PlaygroundController,
-                controllerAs: 'p',
-                template:     '<div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
-            })
-            .state('snippet', {
-                url: '/snippet',
-                controller:   SnippetController,
-                controllerAs: 'p',
-                template:     '<div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
-            });
-
-        $urlRouterProvider.otherwise('/');
-    })
+    .config(routeConfig)
+    .service('SnippetService', SnippetService)
+    .service('AccountService', AccountService)
     .factory('Dispatcher', () => new Dispatcher())
     .service('webDevTec', WebDevTecService)
     .controller('MainController', MainController)

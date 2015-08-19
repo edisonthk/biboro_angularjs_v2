@@ -9,20 +9,23 @@ var browserSync = require('browser-sync');
 var $ = require('gulp-load-plugins')();
 
 function webpack(watch, callback) {
-  var webpackOptions = {
-    watch: watch,
-    module: {
-      preLoaders: [{ test: /\.js$/, exclude: /node_modules/, loader: 'jshint-loader'}],
-      loaders: [
-            { 
-                test: /\.js$/, 
-                exclude: /node_modules/, 
-                loader: 'traceur?experimental&runtime&source-maps'
-            }
-        ]
-    },
-    output: { filename: 'index.js' }
-  };
+    var webpackOptions = {
+        watch: watch,
+        module: {
+            preLoaders: [{ test: /\.js$/, exclude: /node_modules/, loader: 'jshint-loader'}],
+            loaders: [
+                { 
+                    test: /\.js$/, 
+                    exclude: /node_modules/, 
+                    loader: 'traceur?experimental&runtime&source-maps'
+                }
+            ]
+        },
+        jshint: {
+            browser: true,
+        },
+        output: { filename: 'index.js' }
+    };
 
   if(watch) {
     webpackOptions.devtool = 'inline-source-map';
