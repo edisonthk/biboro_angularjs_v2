@@ -15,19 +15,19 @@ export default function ($stateProvider, $urlRouterProvider) {
                 url: '/test',
                 controller:   PlaygroundController,
                 controllerAs: 'p',
-                template:     '<div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
+                template:     '<acme-navbar /><div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
             })
             .state('snippet', {
                 url: '/snippet',
                 controller:   SnippetController,
                 controllerAs: 'p',
-                template:     '<div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
+                template:     '<acme-navbar /><div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
             })
             .state('snippet.detail', {
                 url: '/:snippetId',
                 controller:   SnippetController,
                 controllerAs: 'p',
-                template:     '<div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
+                template:     '<acme-navbar /><div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
             });
 
         $urlRouterProvider.otherwise('/');

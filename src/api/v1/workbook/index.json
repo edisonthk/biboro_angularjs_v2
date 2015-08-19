@@ -1,0 +1,18 @@
+[
+  {
+    "id": 7,
+    "account_id": 1,
+    "title": "\u30ef\u30fc\u30af\u30d6\u30c3\u30af",
+    "deleted_at": null,
+    "created_at": "2015-08-04 16:47:24",
+    "updated_at": "2015-08-04 16:47:24"
+  },
+  {
+    "id": 8,
+    "account_id": 1,
+    "title": "This is my book",
+    "deleted_at": null,
+    "created_at": "2015-08-19 11:51:47",
+    "updated_at": "2015-08-19 11:51:47"
+  }
+]
