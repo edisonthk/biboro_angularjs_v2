@@ -1,6 +1,7 @@
-import PlaygroundController from '../app/components/myplayground/playground.controller';
-import SnippetController from '../app/components/snippet/snippet.controller';
 
+import PlaygroundController from '../app/components/myplayground/playground.controller';
+import SnippetController    from '../app/components/snippet/snippet.controller';
+import WorkbookController   from '../app/components/workbook/workbook.controller';
 
 export default function ($stateProvider, $urlRouterProvider) {
         'ngInject';
@@ -10,6 +11,12 @@ export default function ($stateProvider, $urlRouterProvider) {
                 templateUrl:  'app/main/main.html',
                 controller:   'MainController',
                 controllerAs: 'main',
+            })
+            .state('workbook', {
+                url: '/workbook',
+                templateUrl:  '../app/components/workbook/workbook.html',
+                controller:   WorkbookController,
+                controllerAs: 'workbook',
             })
             .state('test', {
                 url: '/test',

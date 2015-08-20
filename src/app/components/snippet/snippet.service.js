@@ -41,7 +41,7 @@ class SnippetService {
         self._http.get('/api/v1/snippet/index.json')
             .success(function(data){
                 self.snippets = data;
-                self._dispatcher.dispatch(self.SNIPPET_FETCHEDALL_CALLBACK, {"success":true,"result":"success","data":self.getSnippets()});
+                self._dispatcher.dispatch(self.SNIPPET_FETCHEDALL_CALLBACK, {"success":true,"result":"success","response":self.getSnippets()});
             })
             .error(function(){
                 console.log("error in snippet.strore.js");
@@ -54,45 +54,45 @@ class SnippetService {
         var self= this;
 
         self._http.post('/api/v1/snippet/index.json')
-            .success(function(){
-                self._dispatcher.dispatch(self.SNIPPET_STORE_CALLBACK, {"success":true,"result":"success"});
+            .success(function(response){
+                self._dispatcher.dispatch(self.SNIPPET_STORE_CALLBACK, {"success":true,"result":"success", "response": response});
             })
             .error(function(){
                 self._dispatcher.dispatch(self.SNIPPET_STORE_CALLBACK, {"success":false,"result":"fail to store snippets."});
             });
     }
 
-    show(){
+    show(id){
         var self= this;
 
-        self._http.get('/api/v1/snippet/{id}/index.json')
-            .success(function(data){
-                self.snippets = data;
-                self._dispatcher.dispatch(self.SNIPPET_SHOW_CALLBACK, {"success":true,"result":"success","data":self.getSnippets()});
+        self._http.get('/api/v1/snippet/'+id+'/index.json')
+            .success(function(response){
+                self.snippets = response;
+                self._dispatcher.dispatch(self.SNIPPET_SHOW_CALLBACK, {"success":true,"result":"success","response":response});
             })
             .error(function(){
                 self._dispatcher.dispatch(self.SNIPPET_SHOW_CALLBACK, {"success":false,"result":"fail to show snippets."});
             });
     }
 
-    update(){
+    update(id){
         var self= this;
 
-        self._http.put('/api/v1/snippet/{id}/index.json')
-            .success(function(){
-                self._dispatcher.dispatch(self.SNIPPET_UPDATE_CALLBACK, {"success":true,"result":"success"});
+        self._http.put('/api/v1/snippet/'+id+'/index.json')
+            .success(function(response){
+                self._dispatcher.dispatch(self.SNIPPET_UPDATE_CALLBACK, {"success":true,"result":"success","response":response});
             })
             .error(function(){
                 self._dispatcher.dispatch(self.SNIPPET_UPDATE_CALLBACK, {"success":false,"result":"fail to update snippets."});
             });
     }
 
-    destroy(){
+    destroy(id){
         var self= this;
 
-        self._http.delete('/api/v1/snippet/{id}/index.json')
-            .success(function(){
-                self._dispatcher.dispatch(self.SNIPPET_DESTROY_CALLBACK, {"success":true,"result":"success"});
+        self._http.delete('/api/v1/snippet/'+id+'/index.json')
+            .success(function(response){
+                self._dispatcher.dispatch(self.SNIPPET_DESTROY_CALLBACK, {"success":true,"result":"success","response":response});
             })
             .error(function(){
                 self._dispatcher.dispatch(self.SNIPPET_DESTROY_CALLBACK, {"success":false,"result":"fail to destroy snippets."});
