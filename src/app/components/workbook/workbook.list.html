@@ -1,10 +1,10 @@
-<div class="col-list">
-    <div class="logo">
+<div class="list-col list-workbook">
+    <a ui-sref="workbook" class="logo">
         <img src="assets/images/logo.png" alt="BIBORO logo">
-    </div>
+    </a>
 
     <div class="list-body">
-        <div ng-repeat="wb in workbookCtrl.workbook.getAll()">
+        <div class="list-item" ng-repeat="wb in workbookCtrl.workbook.getAll()">
             <a ng-bind="wb.title" ui-sref="workbook.show({workbook: wb.id})"></a>
         </div>
     </div>
