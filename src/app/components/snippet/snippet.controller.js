@@ -12,6 +12,7 @@ class SnippetController extends BaseController{
 
         // register callback for all kinds of action
         this.snippet.registerFetchedAllCallback(this.fetchedAllCallback.bind(this));
+        
         this.registerStateUpdatedCallback(this._scope, this.stateUpdatedCallback.bind(this));
         this.account.registerFetchedLoginedAccountCallback(this.fetchedLoginedAccountCallback.bind(this));
 

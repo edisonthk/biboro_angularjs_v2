@@ -1,4 +1,10 @@
-<h1>hello!!!</h1>
-<div>
-    <p ng-repeat="wb in workbook.workbooks" ng-bind="wb"></p>
+<div class="col-list">
+    <div class="logo">
+        <img src="assets/images/logo.png" alt="BIBORO logo">
+    </div>
+
+    <div class="list-body">
+        <div ng-repeat="wb in workbook.workbooks" ng-bind="wb"></div>
+    </div>
+    
 </div>

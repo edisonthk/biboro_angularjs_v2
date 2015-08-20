@@ -29,7 +29,7 @@ class AccountService {
     fetchLoginedAccount() {
         var self = this;
 
-        self._http.get('/api/v1/account/info/.json')
+        self._http.get('/api/v1/account/userinfo/user.json')
             .success(function(data){
                 self.account = data;
                 self._dispatcher.dispatch(self.ACCOUNT_FETCHED_LOGINED_ACCOUNT, {"success":true,"result":"success","data":self.account});

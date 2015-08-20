@@ -3,14 +3,14 @@ import BaseService from "../../base/base.service";
 class WorkbookService extends BaseService{
     constructor($http,dispatcher) {
         super($http,dispatcher);
-        this.WORKBOOK_FETCHEDALL_CALLBACK = "WORKBOOK_FETCHEDALL_CALLBACK";
+        this.WORKBOOK_FETCHALL_CALLBACK = "WORKBOOK_FETCHALL_CALLBACK";
         this.WORKBOOK_STORE_CALLBACK = "WORKBOOK_STORE_CALLBACK";
         this.WORKBOOK_SHOW_CALLBACK = "WORKBOOK_SHOW_CALLBACK";
         this.WORKBOOK_UPDATE_CALLBACK = "WORKBOOK_UPDATE_CALLBACK";
         this.WORKBOOK_DESTROY_CALLBACK = "WORKBOOK_DESTROY_CALLBACK";
     }
-    registerFetchedAllCallback(callback) {
-        this._dispatcher.register(this.WORKBOOK_FETCHEDALL_CALLBACK,callback);
+    registerFetchAllCallback(callback) {
+        this._dispatcher.register(this.WORKBOOK_FETCHALL_CALLBACK,callback);
     }
 
     registerStoreCallback(callback) {
@@ -34,12 +34,13 @@ class WorkbookService extends BaseService{
 
         self._http.get('/api/v1/workbook/index.json')
             .success(function(data){
+
                 self.workbooks = data;
-                self._dispatcher.dispatch(self.WORKBOOK_FETCHEDALL_CALLBACK, {"success":true,"result":"success","response":self.getWorkbooks()});
+                self._dispatcher.dispatch(self.WORKBOOK_FETCHALL_CALLBACK, {"success":true,"result":"success","response":self.getWorkbooks()});
             })
             .error(function(){
                 console.log("error in workbook.strore.js");
-                self._dispatcher.dispatch(self.WORKBOOK_FETCHEDALL_CALLBACK, {"success":false,"result":"fail to fetch workbooks."});
+                self._dispatcher.dispatch(self.WORKBOOK_FETCHALL_CALLBACK, {"success":false,"result":"fail to fetch workbooks."});
             });
 
     }
