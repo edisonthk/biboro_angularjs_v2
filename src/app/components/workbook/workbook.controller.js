@@ -8,9 +8,7 @@ class WorkbookController extends BaseController {
 
         this.workbook = WorkbookService;
         this.account  = AccountService;
-
         
-
         // register action
         this.workbook.registerFetchAllCallback(this.fetchAllCallback.bind(this));
         

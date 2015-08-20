@@ -14,7 +14,13 @@ export default function ($stateProvider, $urlRouterProvider) {
             })
             .state('workbook', {
                 url: '/workbook',
-                templateUrl:  '../app/components/workbook/workbook.html',
+                templateUrl:  '../app/components/workbook/workbook.list.html',
+                controller:   WorkbookController,
+                controllerAs: 'workbook',
+            })
+            .state('workbook.show', {
+                url: '/:id',
+                templateUrl:  '../app/components/workbook/workbook.show.html',
                 controller:   WorkbookController,
                 controllerAs: 'workbook',
             })
