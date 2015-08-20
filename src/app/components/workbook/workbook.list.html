@@ -4,11 +4,10 @@
     </div>
 
     <div class="list-body">
-        <div ng-repeat="wb in workbook.workbooks">
-            <a ng-bind="wb.title" ui-sref="workbook.show({id: wb.id})"></a>
+        <div ng-repeat="wb in workbookCtrl.workbook.getAll()">
+            <a ng-bind="wb.title" ui-sref="workbook.show({workbook: wb.id})"></a>
         </div>
     </div>
-    
-    <div ui-view></div>
-
 </div>
+
+<div ui-view></div>

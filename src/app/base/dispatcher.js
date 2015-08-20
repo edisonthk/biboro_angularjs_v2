@@ -13,6 +13,7 @@ class Dispatcher{
     }
 
     dispatch(action, parameters) {
+
         this.listeners.forEach((payload) => {
             if(payload.action === action) {
                 payload.callback(parameters);

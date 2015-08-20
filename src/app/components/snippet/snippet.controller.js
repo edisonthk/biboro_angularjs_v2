@@ -3,17 +3,16 @@ import BaseController from "../../base/base.controller";
 
 class SnippetController extends BaseController{
     
-    constructor($scope, $http, $stateParams,Dispatcher, AccountService, SnippetService) {
+    constructor($scope, $stateParams,Dispatcher, AccountService, SnippetService, RouteService) {
         this._scope       = $scope;
-        this._http        = $http;
-        this._stateParams = $stateParams;
+        this.stateParams  = $stateParams;
         this.account      = AccountService;
         this.snippet      = SnippetService;
+        this.route        = RouteService;
 
         // register callback for all kinds of action
         this.snippet.registerFetchedAllCallback(this.fetchedAllCallback.bind(this));
-        
-        this.registerStateUpdatedCallback(this._scope, this.stateUpdatedCallback.bind(this));
+        this.route.registerStateUpdatedCallback(this.stateUpdatedCallback.bind(this));
         this.account.registerFetchedLoginedAccountCallback(this.fetchedLoginedAccountCallback.bind(this));
 
         // perform first action
@@ -21,12 +20,15 @@ class SnippetController extends BaseController{
     }
 
     initialize() {
-        this.snippet.fetchAll();
+
+        console.log("initialize");
+
+        // this.snippet.fetchAll();
         this.account.fetchLoginedAccount();
     }
 
-    stateUpdatedCallback(event, toState, toParams, fromState, fromParams) {
-        console.log(toParams);
+    stateUpdatedCallback(parameters) {
+        console.log(parameters.toParams);
     }
 
     fetchedLoginedAccountCallback(parameters) {

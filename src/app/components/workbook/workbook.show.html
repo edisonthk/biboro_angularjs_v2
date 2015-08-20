@@ -1,1 +1,18 @@
-<p>fsdfdsfsdf</p>
+<div class="col-list">
+    
+    <h3>This is : <span ng-bind="workbookCtrl.currentWorkbook.title"></span></h3>
+    <h3 ng-bind></h3>
+    
+
+    <div class="list-body">
+        <div ng-repeat="snippet in workbookCtrl.currentWorkbook.snippets">
+            <a 
+                ng-bind="snippet.title" 
+                ui-sref="workbook.show.snippet({workbook: workbookCtrl.currentWorkbook.id, snippet: snippet.id})">
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<div ui-view></div>

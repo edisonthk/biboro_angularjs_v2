@@ -5,6 +5,7 @@ import WorkbookController   from '../app/components/workbook/workbook.controller
 
 export default function ($stateProvider, $urlRouterProvider) {
         'ngInject';
+
         $stateProvider
             .state('home', {
                 url: '/',
@@ -16,29 +17,37 @@ export default function ($stateProvider, $urlRouterProvider) {
                 url: '/workbook',
                 templateUrl:  '../app/components/workbook/workbook.list.html',
                 controller:   WorkbookController,
-                controllerAs: 'workbook',
+                controllerAs: 'workbookCtrl',
             })
             .state('workbook.show', {
-                url: '/:id',
+                url: '/:workbook',
                 templateUrl:  '../app/components/workbook/workbook.show.html',
                 controller:   WorkbookController,
-                controllerAs: 'workbook',
+                controllerAs: 'workbookCtrl',
             })
+            .state('workbook.show.snippet', {
+                url: '/snippet/:snippet',
+                templateUrl:  '../app/components/snippet/snippet.show.html',
+                controller:   SnippetController,
+                controllerAs: 'snippetCtrl',
+            })
+            // BEGIN: take works
+            // .state('workbook.show.editor')
+            // .state('workbook.editor')
+            // .state('workbook.show.snippet.editor')
+            // .state('preference', {
+            //     url: '/workbook'
+            // })
+            // .state('account', {
+            //     url: '/account'  // 両方のurlにも対応するように、 /account と /account/:action  <-に対応できるようにurlを書き換えて
+            // })
+            // .state('profile')
+            // .state('')
+
+            // END: take works
             .state('test', {
                 url: '/test',
                 controller:   PlaygroundController,
-                controllerAs: 'p',
-                template:     '<acme-navbar /><div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
-            })
-            .state('snippet', {
-                url: '/snippet',
-                controller:   SnippetController,
-                controllerAs: 'p',
-                template:     '<acme-navbar /><div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
-            })
-            .state('snippet.detail', {
-                url: '/:snippetId',
-                controller:   SnippetController,
                 controllerAs: 'p',
                 template:     '<acme-navbar /><div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
             });

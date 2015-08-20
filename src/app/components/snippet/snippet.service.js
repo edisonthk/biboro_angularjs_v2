@@ -1,13 +1,13 @@
 class SnippetService {
 
-    constructor($http,dispatcher) {
+    constructor($http,Dispatcher) {
         this.SNIPPET_FETCHEDALL_CALLBACK = "SNIPPET_FETCHEDALL_CALLBACK";
         this.SNIPTET_STORE_CALLBACK = "SNIPPET_STORE_CALLBACK";
         this.SNIPPET_SHOW_CALLBACK = "SNIPPET_SHOW_CALLBACK";
         this.SNIPPET_UPDATE_CALLBACK = "SNIPPET_UPDATE_CALLBACK";
         this.SNIPPET_DESTROY_CALLBACK = "SNIPPET_DESTROY_CALLBACK";
 
-        this._dispatcher = dispatcher;
+        this._dispatcher = Dispatcher;
         this._http       = $http;
 
         this.snippets = [];
@@ -105,7 +105,5 @@ class SnippetService {
     }
 
 }
-
-SnippetService.$inject = ["$http", "Dispatcher"];
 
 export default SnippetService;
