@@ -5,6 +5,7 @@ import Dispatcher from './base/dispatcher';
 
 import AccountService from '../app/components/account/account.service';
 import SnippetService from '../app/components/snippet/snippet.service';
+import WorkbookService from '../app/components/workbook/workbook.service';
 
 import MainController from './main/main.controller';
 import WebDevTecService from '../app/components/webDevTec/webDevTec.service';
@@ -14,10 +15,10 @@ import MalarkeyDirective from '../app/components/malarkey/malarkey.directive';
 import routeConfig from './routes';
 
 angular.module('biboroAngular', [
-        'ngAnimate', 
-        'ngCookies', 
-        'ngSanitize', 
-        'ngResource', 
+        'ngAnimate',
+        'ngCookies',
+        'ngSanitize',
+        'ngResource',
         'ui.router',
     ])
     .constant('malarkey', malarkey)
@@ -26,6 +27,7 @@ angular.module('biboroAngular', [
 
     .config(routeConfig)
     .service('SnippetService', SnippetService)
+    .service('WorkbookService', WorkbookService)
     .service('AccountService', AccountService)
     .factory('Dispatcher', () => new Dispatcher())
     .service('webDevTec', WebDevTecService)
