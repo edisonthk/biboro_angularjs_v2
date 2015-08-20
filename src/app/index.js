@@ -10,6 +10,7 @@ import MainController from './main/main.controller';
 import WebDevTecService from '../app/components/webDevTec/webDevTec.service';
 import NavbarDirective from '../app/components/navbar/navbar.directive';
 import MalarkeyDirective from '../app/components/malarkey/malarkey.directive';
+import WorkbooksDirective from '../app/components/workbookt/workbooks.directive';
 
 import routeConfig from './routes';
 
@@ -31,4 +32,5 @@ angular.module('biboroAngular', [
     .service('webDevTec', WebDevTecService)
     .controller('MainController', MainController)
     .directive('acmeNavbar', () => new NavbarDirective())
+    .directive('workbookList', () => new WorkbooksDirective())
     .directive('acmeMalarkey', () => new MalarkeyDirective(malarkey));
