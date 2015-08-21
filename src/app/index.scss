@@ -3,6 +3,7 @@
  *  The list of variables are listed here bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_variables.scss
  */
 $list-workbook-width: 250px;
+$list-snippet-width: 250px;
 $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 
 /**
@@ -33,35 +34,39 @@ a {
     top: 0;
     bottom: 0;
     height: 100%;
-    background-color: gray;
     overflow: auto;
     width: $list-workbook-width;
 
+    $menu-padding: 10px;
     .logo {
         display: block;
     }
 
     .logo > img{
-        padding: 10px;
+        padding: $menu-padding;
     }
 
     .list-body {
         display: block;
 
-        > .list-item {
+        .group {
+            margin-top: 40px;
+        }
+
+        .list-item {
             display: block;
             width: 100%;
             color: white;
         }
 
-        > .list-item > a.active {
+        .list-item > a.active {
             background-color: #1C295D;
         }
 
-        > .list-item > a {
+        .list-item > a {
             display: block;
             color: white;
-            padding: 20px;
+            padding: $menu-padding;
         }
     }
 }
@@ -75,6 +80,11 @@ a {
 .show-workbook.list-col {
     left: $list-workbook-width;
     background-color: #e2e3e6;
+}
+.show-snippet.list-col {
+    width: auto;
+    right: 0;
+    left: $list-workbook-width+$list-snippet-width;
 }
 
 /**

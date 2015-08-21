@@ -14,7 +14,7 @@ import NavbarDirective from '../app/components/navbar/navbar.directive';
 import MalarkeyDirective from '../app/components/malarkey/malarkey.directive';
 import RouteService from '../app/components/route/route.service';
 
-import routeConfig from './routes';
+import routeConfig from '../app/components/route/route.config';
 
 angular.module('biboroAngular', [
         'ngAnimate',

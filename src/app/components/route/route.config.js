@@ -1,7 +1,7 @@
 
-import PlaygroundController from '../app/components/myplayground/playground.controller';
-import SnippetController    from '../app/components/snippet/snippet.controller';
-import WorkbookController   from '../app/components/workbook/workbook.controller';
+import PlaygroundController from '../myplayground/playground.controller';
+import SnippetController    from '../snippet/snippet.controller';
+import WorkbookController   from '../workbook/workbook.controller';
 
 export default function ($stateProvider, $urlRouterProvider) {
         'ngInject';
@@ -55,13 +55,14 @@ export default function ($stateProvider, $urlRouterProvider) {
             })
             .state('workbook.account', {
                  // 両方のurlにも対応するように、 /account と /account/:action  <-に対応できるようにurlを書き換えて
-                views:{
+                views: {
                     '/account':{
                         template:'This is /account.'
-                    }
-                    '/account/:action':{
+                    },
+                    '/account/:action': {
                         template:'This is /account/:action.'
                     }            
+                }
             })
             // .state('profile')
             // .state('')
