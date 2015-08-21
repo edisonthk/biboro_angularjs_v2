@@ -21,18 +21,20 @@ a {
     background-color: gray;
     overflow: auto;
     width: 300px;
+
+    .logo {
+        display: block;
+    }
+
+    .logo > img{
+        padding: 10px;
+    }
+
+    .list-body {
+        display: block
+    }
 }
 
-.list-col .logo {
-    display: block;
-}
-.list-col .logo > img{
-    padding: 10px;
-}
-
-.list-col .list-body {
-    display: block;
-}
 
 .list-col .list-body > .list-item {
     display: block;
