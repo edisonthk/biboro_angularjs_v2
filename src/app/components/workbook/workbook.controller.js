@@ -3,7 +3,6 @@ import BaseController from "../../base/base.controller";
 
 class WorkbookController extends BaseController {
     constructor($scope,$stateParams, WorkbookService, AccountService, RouteService) {
-
         this._scope       = $scope;
         this.stateParams  = $stateParams;
         this.route        = RouteService;
