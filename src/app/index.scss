@@ -1,0 +1,85 @@
+/**
+ *  If you want to override some bootstrap variables, you have to change values here.
+ *  The list of variables are listed here bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_variables.scss
+ */
+$list-workbook-width: 250px;
+$icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+
+/**
+ *  Do not remove this comments bellow. It's the markers used by wiredep to inject
+ *  sass dependencies when defined in the bower.json of your dependencies
+ */
+// bower:scss
+// endbower
+
+
+body {
+  margin: 0;
+}
+
+html, body {
+    min-width: 100%;
+    height: 100%;
+    min-height: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+.list-col {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    background-color: gray;
+    overflow: auto;
+    width: $list-workbook-width;
+
+    .logo {
+        display: block;
+    }
+
+    .logo > img{
+        padding: 10px;
+    }
+
+    .list-body {
+        display: block;
+
+        > .list-item {
+            display: block;
+            width: 100%;
+            color: white;
+        }
+
+        > .list-item > a.active {
+            background-color: #1C295D;
+        }
+
+        > .list-item > a {
+            display: block;
+            color: white;
+            padding: 20px;
+        }
+    }
+}
+
+
+.list-workbook.list-col {
+    left: 0;
+    background-color: #353f67;
+}
+
+.show-workbook.list-col {
+    left: $list-workbook-width;
+    background-color: #e2e3e6;
+}
+
+/**
+ *  Do not remove this comments bellow. It's the markers used by gulp-inject to inject
+ *  all your sass files automatically
+ */
+// injector
+// endinjector
