@@ -32,15 +32,37 @@ export default function ($stateProvider, $urlRouterProvider) {
                 controllerAs: 'snippetCtrl',
             })
             // BEGIN: take works
-            // .state('workbook.show.editor')
-            // .state('workbook.editor')
-            // .state('workbook.show.snippet.editor')
-            // .state('preference', {
-            //     url: '/workbook'
-            // })
-            // .state('account', {
-            //     url: '/account'  // 両方のurlにも対応するように、 /account と /account/:action  <-に対応できるようにurlを書き換えて
-            // })
+            .state('workbook.editor',{
+                url:'/editor',
+                templateUrl:'../app/components/workbook/workbook.edit.html',
+                controller:[function(){
+                    console.log("good");
+                }]
+            })
+            .state('workbook.show.editor',{
+                url:'/editor',
+                templateUrl:'../app/components/workbook/workbook.show.edit.html',
+                controller:[function(){
+                    console.log("goooood");
+                }]
+            })
+            .state('workbook.show.snippet.editor',{
+                url:'/editor',
+                templateUrl:'../app/components/workbook/'
+            })
+            .state('workbook.preference', {
+                url: '/workbook'
+            })
+            .state('workbook.account', {
+                 // 両方のurlにも対応するように、 /account と /account/:action  <-に対応できるようにurlを書き換えて
+                views:{
+                    '/account':{
+                        template:'This is /account.'
+                    }
+                    '/account/:action':{
+                        template:'This is /account/:action.'
+                    }            
+            })
             // .state('profile')
             // .state('')
 
@@ -52,5 +74,5 @@ export default function ($stateProvider, $urlRouterProvider) {
                 template:     '<acme-navbar /><div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
             });
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/workbook');
     }
