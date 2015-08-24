@@ -1,26 +1,48 @@
-import AccountAction from "./account.action";
 
 class AccountController {
     
-    constructor($scope, $http, Account ,Dispatcher) {
+    constructor($http,$state, $stateParams, AccountService ) {
         
-        this.snippet = new SnippetStore($http,Dispatcher);
-        this.snippet.registerFetchedAllCallback(this.fetchedAllCallback.bind(this));
+        this._http = $http;
+        this.state = $state;
+        this.account = AccountService;
+
+        this.account.registerSignInCallback(this.signInCallback.bind(this));
+        this.account.registerSignOutCallback(this.signOutCallback.bind(this));
 
         this.hello   = "loading for data...";
-        
+        this.username = "";
+        this.password = "";
 
-        this.initialize();
+        if($stateParams.action === 'signout') {
+            this.signOut();
+        }
     }
 
-    initialize() {
-        this.snippet.fetchAll();
+    signIn() {
+        this.account.signIn();
     }
 
-    fetchedAllCallback(parameters) {
+    googleSignIn() {
+        this.account.googleSignIn();
+    }
+
+    signOut() {
+        this.account.signOut();
+    }
+
+    signOutCallback(parameters) {
+        console.log("signout");
+        this.state.go("account",{action: "signin"});
+        this.state.reload();
+    }
+
+
+    signInCallback(parameters) {
         if(parameters.success){
             this.hello = "success";
-            console.log(parameters.data);
+            this.account.fetchLoginedAccount(true);
+            console.log(parameters.response);
         }else{
             this.hello = "fail";
         }

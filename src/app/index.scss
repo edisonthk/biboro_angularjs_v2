@@ -1,10 +1,12 @@
-/**
- *  If you want to override some bootstrap variables, you have to change values here.
- *  The list of variables are listed here bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_variables.scss
- */
+$navbar-height: 50px;
+
 $list-workbook-width: 250px;
 $list-snippet-width: 250px;
-$icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+
+$list-workbook-menu-padding: 6px 14px;
+
+$medium-large-font-size: 16px;
+$normal-font-size: 14px;
 
 /**
  *  Do not remove this comments bellow. It's the markers used by wiredep to inject
@@ -13,6 +15,23 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
 // bower:scss
 // endbower
 
+
+.clearfix:after {
+  content: "."; 
+  display: block; 
+  height: 0; 
+  font-size:0;    
+  clear: both; 
+  visibility:hidden;
+}
+
+.clearfix { display: inline-block; } 
+
+* {
+    font-family: "Roboto", Verdana, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: $normal-font-size;
+}
 
 body {
   margin: 0;
@@ -24,8 +43,49 @@ html, body {
     min-height: 100%;
 }
 
-a {
+a, a:hover {
     text-decoration: none;
+}
+
+navbar {
+    display: block;
+    height: $navbar-height;
+    width: 100%;
+    background-color: rgb(88,122,166);
+
+    .logo {
+        display: inline-block;
+    }
+
+    .logo > img{
+        padding: $list-workbook-menu-padding;
+    }
+
+    .terminal-block {
+        display: inline-block;
+    }
+
+    .user-block {
+        display: inline-block;
+        
+        a {
+            
+        }
+    }
+
+    tags-input {
+        width: 500px;
+    }
+}
+
+input {
+    outline: 0;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: calc(100% - #{$navbar-height});
 }
 
 .list-col {
@@ -37,35 +97,38 @@ a {
     overflow: auto;
     width: $list-workbook-width;
 
-    $menu-padding: 10px;
-    .logo {
-        display: block;
-    }
-
-    .logo > img{
-        padding: $menu-padding;
-    }
+    $menu-padding: $list-workbook-menu-padding;
 
     .list-body {
         display: block;
 
         .group {
             margin-top: 40px;
+
+            .group-label {
+                display: block;
+                margin-left: $menu-padding/2;
+                font-size: small;
+
+                .left {
+                    float: left;
+                }
+                .right {
+                    margin-right: 10px;
+                    float: right;
+                }
+
+            }
         }
 
         .list-item {
             display: block;
             width: 100%;
-            color: white;
-        }
-
-        .list-item > a.active {
-            background-color: #1C295D;
         }
 
         .list-item > a {
             display: block;
-            color: white;
+            font-size: 16px;
             padding: $menu-padding;
         }
     }
@@ -75,16 +138,76 @@ a {
 .list-workbook.list-col {
     left: 0;
     background-color: #353f67;
+
+    a {
+        color: white;
+    }
+
+    label {
+        color: #888888;
+    }
+
+    a.active {
+        background-color: #1C295D;
+    }
 }
 
 .show-workbook.list-col {
     left: $list-workbook-width;
     background-color: #e2e3e6;
+
+    a{
+        color: black;
+    }
+
+    label {
+        color: #888888;
+    }
+
+    a.active {
+        background-color: #f7f7f7;
+    }
+
+    .workbook-title {
+        width: 100%;
+
+        .left {
+            float: left;
+        }
+        .right {
+            margin-right: 5px;
+            float: right;
+        }
+    }
 }
 .show-snippet.list-col {
     width: auto;
     right: 0;
     left: $list-workbook-width+$list-snippet-width;
+}
+
+.dialog .workbook {
+
+    .form-control {
+        margin-bottom: 15px;
+
+        label {
+            font-weight: bold;
+        }
+    }
+
+    .form-control input[type=text] {
+        line-height: 1.428;
+        font-size: $medium-large-font-size;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .form-control button {
+        min-width: auto;
+        margin: 0 5px;
+    }
 }
 
 /**

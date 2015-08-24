@@ -2,17 +2,18 @@
 import PlaygroundController from '../myplayground/playground.controller';
 import SnippetController    from '../snippet/snippet.controller';
 import WorkbookController   from '../workbook/workbook.controller';
+import NewsController       from '../news/news.controller';
+import MainController       from '../../main/main.controller';
+import AccountController    from '../account/account.controller';
 
-export default function ($stateProvider, $urlRouterProvider) {
+
+export default function ($httpProvider, $stateProvider, $urlRouterProvider) {
         'ngInject';
 
+        $httpProvider.defaults.withCredentials = true;
+        $httpProvider.defaults.xsrfHeaderName = "XSRF-TOKEN";
+
         $stateProvider
-            .state('home', {
-                url: '/',
-                templateUrl:  'app/main/main.html',
-                controller:   'MainController',
-                controllerAs: 'main',
-            })
             .state('workbook', {
                 url: '/workbook',
                 templateUrl:  '../app/components/workbook/workbook.list.html',
@@ -31,14 +32,13 @@ export default function ($stateProvider, $urlRouterProvider) {
                 controller:   SnippetController,
                 controllerAs: 'snippetCtrl',
             })
+            // .state('workbook.news', {
+            //     url: '/news',
+            //     templateUrl:  'app/main/main.html',
+            //     controller:   NewsController,
+            //     controllerAs: 'news'
+            // })
             // BEGIN: take works
-            .state('workbook.editor',{
-                url:'/editor',
-                templateUrl:'../app/components/workbook/workbook.edit.html',
-                controller:[function(){
-                    console.log("good");
-                }]
-            })
             .state('workbook.show.editor',{
                 url:'/editor',
                 templateUrl:'../app/components/workbook/workbook.show.edit.html',
@@ -50,19 +50,16 @@ export default function ($stateProvider, $urlRouterProvider) {
                 url:'/editor',
                 templateUrl:'../app/components/workbook/'
             })
-            .state('workbook.preference', {
-                url: '/workbook'
+            .state('preference', {
+                url: '/preference'
             })
-            .state('workbook.account', {
+            .state('account', {
                  // 両方のurlにも対応するように、 /account と /account/:action  <-に対応できるようにurlを書き換えて
-                views: {
-                    '/account':{
-                        template:'This is /account.'
-                    },
-                    '/account/:action': {
-                        template:'This is /account/:action.'
-                    }            
-                }
+                url: '/account/{action}?currentPath',
+                templateUrl: '../app/components/account/account.login.html',
+                controller: AccountController,
+                controllerAs: 'accountCtrl'
+
             })
             // .state('profile')
             // .state('')

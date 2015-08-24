@@ -1,13 +1,22 @@
 <nav class="navbar">
-  <a href="https://github.com/Swiip/generator-gulp-angular">Gulp Angular</a>
+      
+    <a ui-sref="workbook" class="logo">
+        <img src="assets/images/logo.png" alt="BIBORO logo">
+    </a>
 
-  <ul>
-    <li class="active"><a ng-href="#">Home</a></li>
-    <li><a ui-sref="snippet">About</a></li>
-    <li><a ui-sref="test">Contact</a></li>
-  </ul>
+    <div class="terminal-block">
+        <tags-input ng-model="navbar.tags">
+            <auto-complete source="navbar.loadTags($query)"></auto-complete>
+        </tags-input>
+    </div>
+    
 
-  <ul class="acme-navbar-text">
-    <li>Application was created {{ vm.relativeDate }}.</li>
-  </ul>
+    <div class="user-block">
+        <a ng-if="navbar.accountInfo == null" ui-sref="account({action: 'signin', currentPath: window.location.pathname})">ログイン</a>
+        <a 
+            ng-if="navbar.accountInfo != null" 
+            ng-bind="navbar.accountInfo.name"
+            ui-sref="account({action: 'signout', currentPath: window.location.pathname})">
+        </a>
+    </div>
 </nav>

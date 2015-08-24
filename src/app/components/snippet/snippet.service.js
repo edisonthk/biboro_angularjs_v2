@@ -1,6 +1,7 @@
+
 class SnippetService {
 
-    constructor($http,Dispatcher) {
+    constructor($http,Dispatcher, Api) {
         this.SNIPPET_FETCHEDALL_CALLBACK = "SNIPPET_FETCHEDALL_CALLBACK";
         this.SNIPTET_STORE_CALLBACK = "SNIPPET_STORE_CALLBACK";
         this.SNIPPET_SHOW_CALLBACK = "SNIPPET_SHOW_CALLBACK";
@@ -12,6 +13,7 @@ class SnippetService {
 
         this.snippets = [];
 
+        this.api = Api;
     }
 
     registerFetchedAllCallback(callback) {
@@ -38,7 +40,7 @@ class SnippetService {
     fetchAll() {
         var self = this;
 
-        self._http.get('/api/v1/snippet/index.json')
+        self._http.get(self.api.snippet.index)
             .success(function(data){
                 self.snippets = data;
                 self._dispatcher.dispatch(self.SNIPPET_FETCHEDALL_CALLBACK, {"success":true,"result":"success","response":self.getSnippets()});
@@ -53,7 +55,7 @@ class SnippetService {
     store(){
         var self= this;
 
-        self._http.post('/api/v1/snippet/index.json')
+        self._http.post(self.api.snippet.index)
             .success(function(response){
                 self._dispatcher.dispatch(self.SNIPPET_STORE_CALLBACK, {"success":true,"result":"success", "response": response});
             })
@@ -64,8 +66,13 @@ class SnippetService {
 
     show(id){
         var self= this;
+        var snippet = self.getById(id);
+        if(snippet !== null) {
+            self._dispatcher.dispatch(self.SNIPPET_SHOW_CALLBACK, {"success":true,"result":"success","response":snippet});
+            return ;
+        }
 
-        self._http.get('/api/v1/snippet/'+id+'/index.json')
+        self._http.get(self.api.snippet.show.replace(":id",id))
             .success(function(response){
                 self.snippets = response;
                 self._dispatcher.dispatch(self.SNIPPET_SHOW_CALLBACK, {"success":true,"result":"success","response":response});
@@ -78,7 +85,7 @@ class SnippetService {
     update(id){
         var self= this;
 
-        self._http.put('/api/v1/snippet/'+id+'/index.json')
+        self._http.put(self.api.snippet.update.replace(":id",id))
             .success(function(response){
                 self._dispatcher.dispatch(self.SNIPPET_UPDATE_CALLBACK, {"success":true,"result":"success","response":response});
             })
@@ -90,7 +97,7 @@ class SnippetService {
     destroy(id){
         var self= this;
 
-        self._http.delete('/api/v1/snippet/'+id+'/index.json')
+        self._http.delete(self.api.snippet.destroy.replace(":id",id))
             .success(function(response){
                 self._dispatcher.dispatch(self.SNIPPET_DESTROY_CALLBACK, {"success":true,"result":"success","response":response});
             })
@@ -99,9 +106,22 @@ class SnippetService {
             });
     }
 
+    setSnippets(snippets) {
+        this.snippets = snippets;
+    }
 
     getSnippets(){
         return this.snippets;
+    }
+
+    getById(snippetId) {
+        snippetId = parseInt(snippetId);
+        for (var i = 0; i < this.snippets.length; i++) {
+            if(this.snippets[i].id === snippetId) {
+                return this.snippets[i];
+            }
+        }
+        return null;
     }
 
 }

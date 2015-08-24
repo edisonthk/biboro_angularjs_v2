@@ -1,12 +1,5 @@
 class BaseService {
-    constructor($http, dispatcher) {
-        this._dispatcher = dispatcher;
-        this._http       = $http;
-
-        
-
-    }
-
+    
     createCallback(apiName){
         // example: apiName=fetchedAll
         //      this.FETCHEDALL_CALLBACK = "FETCHEDALL_CALLBACK";
@@ -43,8 +36,6 @@ class BaseService {
                 }
             }
         };
-
-        console.log(merge({"success":true,"result":result.success.message}, obj));
 
         this.createCallback(apiName);
 

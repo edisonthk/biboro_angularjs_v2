@@ -1,18 +1,33 @@
 <div class="list-col show-workbook">
     
-    <h3>This is : <span ng-bind="workbookCtrl.currentWorkbook.title"></span></h3>
-    <h3 ng-bind></h3>
+    <h3 class="workbook-title clearfix">
+        <span class="left" ng-bind="workbookCtrl.currentWorkbook.title"></span>
+        <small class="right" ><i class="fa fa-bars"></i></small>
+        <small class="right" ng-click="workbookCtrl.showEditDialog()"><i class="fa fa-edit"></i></small>
+    </h3>
     
 
     <div class="list-body">
-        <div ng-repeat="snippet in workbookCtrl.currentWorkbook.snippets">
-            <a 
-                ng-bind="snippet.title" 
-                ui-sref="workbook.show.snippet({workbook: workbookCtrl.currentWorkbook.id, snippet: snippet.id})">
-            </a>
+
+        <div class="group">
+            <div class="list-item" ng-repeat="snippet in workbookCtrl.currentWorkbook.snippets">
+                <a 
+                    ng-bind="snippet.title" 
+                    ui-sref-active="active"
+                    ui-sref="workbook.show.snippet({workbook: workbookCtrl.currentWorkbook.id, snippet: snippet.id})">
+                </a>
+            </div>
         </div>
+
     </div>
-    <a ui-sref=".editor">workbook.show.edit</a>
 </div>
 
 <div ui-view></div>
+
+
+<dialog 
+    open 
+    ng-if="workbookCtrl.editDialog.show" 
+    outside-clicked-callback="workbookCtrl.editDialog.outsideClickedCallback" >
+    <div ng-include="'app/components/workbook/workbook.editDialog.html'"></div>
+</dialog>
