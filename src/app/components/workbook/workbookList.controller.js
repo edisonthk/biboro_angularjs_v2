@@ -64,7 +64,6 @@ class WorkbookListController extends FluxController {
     workbookStoreCallback(parameters) {
         if(parameters.result) {
             var workbook = parameters.response;
-            console.log(this.state);
             this.state.go("workbookShow",{workbook: workbook.id});
         }
         this.createDialog.show = false;

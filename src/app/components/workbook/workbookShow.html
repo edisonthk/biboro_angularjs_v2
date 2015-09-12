@@ -3,7 +3,7 @@
     <div class="cell title-cell clearfix" float-layout>
         <h1>
             <span ng-bind="workbookCtrl.currentWorkbook.title"></span>
-            <small class="right" ><i class="fa fa-bars"></i></small>
+            <small class="right" ng-click="workbookCtrl.deleteWorkbook()"><i class="fa fa-trash-o"></i></small>
             <small class="right" ng-click="workbookCtrl.showEditDialog()"><i class="fa fa-edit"></i></small>    
         </h1>
     </div>
@@ -25,7 +25,7 @@
                     <i class="fa fa-code-fork"></i>
                 </button>
                 <button ng-click="workbookCtrl.showCommentBox(snippet)"><i class="fa fa-comment-o"></i></button>
-                <button ng-click=""><i class="fa fa-ellipsis-v"></i></button>
+                <button ng-click="workbookCtrl.deleteSnippet(snippet)"><i class="fa fa-trash-o"></i></button>
             </div>
 
             <div ng-bind-html="snippet.htmlContent"></div>
