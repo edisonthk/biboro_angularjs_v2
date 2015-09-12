@@ -1,11 +1,10 @@
 
-import BaseController from "../../base/base.controller";
+import FluxController from "../flux/flux.controller";
 
-class WorkbookListController extends BaseController {
+class WorkbookListController extends FluxController {
     constructor($state, $scope ,WorkbookService) {
         super.constructor($scope);
         this.state        = $state;
-        this._scope       = $scope;
         this.workbook     = WorkbookService;
         this.createDialog = {
             show: false

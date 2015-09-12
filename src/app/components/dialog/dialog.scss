@@ -22,27 +22,6 @@ dialog, .dialog {
         -webkit-filter: blur(5px) grayscale(50%);
     }
 
-    .dialog-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 200;
-    }
-
-    .dialog-box {
-      position: absolute;
-      padding: 10px 30px;
-      background: white;
-      border-radius: 5px;
-      min-height: 180px;
-      top: 50px;
-      z-index: 201;
-      width: 550px;
-      left: calc(50% - 325px);
-    }
-
     &.markdown_help .dialog-box {
         width: 760px;
         left: calc(50% - 430px);
@@ -90,5 +69,17 @@ dialog, .dialog {
       margin: 10px 0;
       font-weight: bold;
     }
+}
+
+.dialog-box {
+  position: absolute;
+  padding: 10px 30px;
+  background: white;
+  border-radius: 5px;
+  min-height: 180px;
+  top: 50px;
+  z-index: 201;
+  width: 550px;
+  left: calc(50% - 325px);
 }
 

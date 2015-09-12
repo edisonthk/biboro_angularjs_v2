@@ -32,6 +32,7 @@ class TabsDirective {
                 paneElement.addEventListener("click", function(e) {
                     var selectedPane = panes[e.target.getAttribute("index")];
                     scope.ngModel = selectedPane;
+                    console.log(selectedPane);
                     if(typeof scope.selectedCallback === 'function') {
                         scope.selectedCallback(selectedPane);
                     }
@@ -43,7 +44,7 @@ class TabsDirective {
         scope.$watch("ngModel", function(selectedPane) {
             var panes = el.find("pane");
             for (var i = 0; i < panes.length; i++) {
-                var index = panes[i].getAttribute("index");
+                var index = parseInt(panes[i].getAttribute("index"));
                 panes[i].className = panes[i].className.replace(/\s?active/g,"");
                 if(scope.panes[index].id === selectedPane.id) {
                     panes[i].className += " active";
