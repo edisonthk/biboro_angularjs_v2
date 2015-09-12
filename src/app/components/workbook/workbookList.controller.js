@@ -2,12 +2,11 @@
 import BaseController from "../../base/base.controller";
 
 class WorkbookListController extends BaseController {
-    constructor($scope ,WorkbookService) {
+    constructor($state, $scope ,WorkbookService) {
         super.constructor($scope);
-
+        this.state        = $state;
         this._scope       = $scope;
         this.workbook     = WorkbookService;
-
         this.createDialog = {
             show: false
         };
@@ -33,6 +32,10 @@ class WorkbookListController extends BaseController {
         this.workbooks = [];
         this.currentWorkbook = null;
 
+    }
+
+    testClick() {
+        this.showCreateDialog();
     }
 
     fetchAllCallback(parameters) {
@@ -62,7 +65,8 @@ class WorkbookListController extends BaseController {
     workbookStoreCallback(parameters) {
         if(parameters.result) {
             var workbook = parameters.response;
-            this.state.go("workbook.show",{workbook: workbook.id});
+            console.log(this.state);
+            this.state.go("workbookShow",{workbook: workbook.id});
         }
         this.createDialog.show = false;
     }

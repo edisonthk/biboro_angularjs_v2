@@ -18,10 +18,10 @@ class WorkbookService extends BaseService{
         this.WORKBOOK_SHOWMY_CALLBACK   = "WORKBOOK_SHOWMY_CALLBACK";
         this.WORKBOOK_FORK_CALLBACK     = "WORKBOOK_FORK_CALLBACK";
 
-        setTimeout(function() {
+        // setTimeout(function() {
 
-            scope.$apply();
-        });
+        //     scope.$apply();
+        // });
 
     }
     registerFetchAllCallback(cb) {

@@ -3,8 +3,8 @@ dialog, .dialog {
 
     /* remove default styles */
     background-color: transparent !important;
-    border: 0 !important;    
-    
+    border: 0 !important;
+    top: 0;
 
     .dialog-background {
         position: fixed;
