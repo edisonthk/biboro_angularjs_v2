@@ -1,0 +1,50 @@
+<div class="workbook-show clearfix">
+        
+    <div class="cell title-cell clearfix" float-layout>
+        <h1>
+            <span ng-bind="workbookCtrl.currentWorkbook.title"></span>
+            <small class="right" ><i class="fa fa-bars"></i></small>
+            <small class="right" ng-click="workbookCtrl.showEditDialog()"><i class="fa fa-edit"></i></small>    
+        </h1>
+    </div>
+
+    <div class="cell clearfix"
+        float-layout
+        ng-repeat="snippet in workbookCtrl.currentWorkbook.snippets"
+        ng-mouseenter="snippet.showTools = true"
+        ng-mouseleave="snippet.showTools = false" >
+        <div class="cell-wrapper">
+            <div class="line"></div>
+            <h3 class="title" ng-bind="snippet.title"></h3>
+
+            <div class="tools" ng-if="snippet.showTools">
+                <button ng-if="snippet.editable" ng-click="workbookCtrl.editSnippet(snippet)">
+                    <i class="fa fa-wrench"></i>
+                </button>
+                <button ng-if="!snippet.editable" ng-click="workbookCtrl.forkSnippet(snippet)">
+                    <i class="fa fa-code-fork"></i>
+                </button>
+                <button ng-click="workbookCtrl.showCommentBox(snippet)"><i class="fa fa-comment-o"></i></button>
+                <button ng-click=""><i class="fa fa-ellipsis-v"></i></button>
+            </div>
+
+            <div ng-bind-html="snippet.htmlContent"></div>
+        </div>
+    </div>
+</div>
+
+<dialog 
+    open 
+    ng-if="workbookCtrl.editDialog.show" 
+    outside-clicked-callback="workbookCtrl.editDialog.outsideClickedCallback" >
+    <div ng-include="'app/components/workbook/workbook.editDialog.html'"></div>
+</dialog>
+
+<comment
+    ng-if="workbookCtrl.commentBox.show" 
+    snippet="workbookCtrl.commentBox.snippet"
+    outside-clicked-callback="workbookCtrl.commentBox.outsideClickedCallback" >
+></comment>
+
+
+<div ui-view></div>

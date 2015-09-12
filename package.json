@@ -2,6 +2,7 @@
   "name": "biboroAngular",
   "version": "0.0.0",
   "dependencies": {
+    "prettyprint": "0.0.1"
   },
   "scripts": {
     "test": "gulp test"

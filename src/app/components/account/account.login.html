@@ -1,20 +1,5 @@
 <div class="login">
 
-    <form ng-submit="accountCtrl.signin()">
-        <h1>Biboro IDでログイン</h1>
-        <div class="form-control">
-            <label>ユーザ名</label>
-            <input type="text" ng-model="username">
-        </div>
-        <div class="form-control">
-            <label>パスワード</label>
-            <input type="password" ng-model="password">
-        </div>
-        <div class="form-control">
-            <button type="submit">ログイン</button>
-        </div>
-    </form>
-
-    <button ng-click="accountCtrl.googleSignIn()">Google IDでログイン</button>
+    <iframe src="http://localhost:8000/auth/login/frame"></iframe>
 
 </div>

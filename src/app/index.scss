@@ -1,3 +1,5 @@
+$wrapper-width: 900px;
+
 $navbar-height: 50px;
 
 $list-workbook-width: 250px;
@@ -6,7 +8,14 @@ $list-snippet-width: 250px;
 $list-workbook-menu-padding: 6px 14px;
 
 $medium-large-font-size: 16px;
-$normal-font-size: 14px;
+$medium-font-size: 14px;
+
+$large-desktop-width: 1200px;
+$desktop-width: 960px;
+$tablet-width: 768px;
+$phone-width: 480px;
+
+$black: #515151;
 
 /**
  *  Do not remove this comments bellow. It's the markers used by wiredep to inject
@@ -14,7 +23,6 @@ $normal-font-size: 14px;
  */
 // bower:scss
 // endbower
-
 
 .clearfix:after {
   content: "."; 
@@ -28,9 +36,13 @@ $normal-font-size: 14px;
 .clearfix { display: inline-block; } 
 
 * {
+
     font-family: "Roboto", Verdana, sans-serif;
     -webkit-font-smoothing: antialiased;
-    font-size: $normal-font-size;
+    font-size: inherit;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
@@ -43,44 +55,84 @@ html, body {
     min-height: 100%;
 }
 
+p,span,input,i,small,h1,h2,h3,h4,h5,a {color: #515151;}
+
 a, a:hover {
     text-decoration: none;
 }
 
+input {
+    outline: 0;
+}
+
+/* Large desktop */
+
+tags-input .tags, tags-input .tags.focused {
+    box-shadow: none;
+}
+
 navbar {
+
     display: block;
     height: $navbar-height;
     width: 100%;
-    background-color: rgb(88,122,166);
+
+    .navbar {
+        display: block;
+        width: 100%;
+        border-bottom: 1px solid #ccc;
+    }
 
     .logo {
         display: inline-block;
+        float: left;
     }
 
     .logo > img{
         padding: $list-workbook-menu-padding;
     }
 
-    .terminal-block {
-        display: inline-block;
+    .workbook-tabs {
+        float: left;
+        margin: 0;
+        list-style-type: none;
     }
 
-    .user-block {
+    .workbook-tabs li {
+        float: left;
+        height: $navbar-height;
+        line-height: $navbar-height;
+        vertical-align: middle;
+        padding: 0 20px;
+    }
+
+    .tools {
+        float: right;
         display: inline-block;
-        
-        a {
-            
+        i {
+            font-size: 26px;
+            padding: 12px;    
         }
     }
 
-    tags-input {
-        width: 500px;
+    .workbook-tabs {
+        height: 50px;
     }
+
+    .workbook-tabs > pane {
+        line-height: 50px;
+    }
+    .workbook-tabs >pane.active {
+        background-color: white;
+        border-bottom: 50px solid #ccc;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        height: 0;
+        width: 85px;
+    }
+
 }
 
-input {
-    outline: 0;
-}
 
 .container {
     position: relative;
@@ -88,127 +140,194 @@ input {
     height: calc(100% - #{$navbar-height});
 }
 
-.list-col {
-    display: block;
+.container > div {
     position: absolute;
     top: 0;
-    bottom: 0;
-    height: 100%;
-    overflow: auto;
-    width: $list-workbook-width;
-
-    $menu-padding: $list-workbook-menu-padding;
-
-    .list-body {
-        display: block;
-
-        .group {
-            margin-top: 40px;
-
-            .group-label {
-                display: block;
-                margin-left: $menu-padding/2;
-                font-size: small;
-
-                .left {
-                    float: left;
-                }
-                .right {
-                    margin-right: 10px;
-                    float: right;
-                }
-
-            }
-        }
-
-        .list-item {
-            display: block;
-            width: 100%;
-        }
-
-        .list-item > a {
-            display: block;
-            font-size: 16px;
-            padding: $menu-padding;
-        }
-    }
-}
-
-
-.list-workbook.list-col {
     left: 0;
-    background-color: #353f67;
+    width: 100%;
+    height: 100%;
+}
 
-    a {
-        color: white;
-    }
+.inline-10, .inline-2 {
+    display: inline-block;
+}
+.inline-10 {
+    width: 83%;
+}
+.inline-2 {
+    width: 16%;
+}
+
+.title {
+    display: inline-block;
+    font-size: 24px;
+    border-bottom: 5px solid $black;
+    padding-bottom: 6px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
 
     label {
-        color: #888888;
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 5px;
+        font-weight: bold;
     }
-
-    a.active {
-        background-color: #1C295D;
-    }
-}
-
-.show-workbook.list-col {
-    left: $list-workbook-width;
-    background-color: #e2e3e6;
-
-    a{
-        color: black;
-    }
-
-    label {
-        color: #888888;
-    }
-
-    a.active {
-        background-color: #f7f7f7;
-    }
-
-    .workbook-title {
-        width: 100%;
-
-        .left {
-            float: left;
-        }
-        .right {
-            margin-right: 5px;
-            float: right;
-        }
-    }
-}
-.show-snippet.list-col {
-    width: auto;
-    right: 0;
-    left: $list-workbook-width+$list-snippet-width;
-}
-
-.dialog .workbook {
 
     .form-control {
-        margin-bottom: 15px;
-
-        label {
-            font-weight: bold;
-        }
-    }
-
-    .form-control input[type=text] {
+        width: 100%;
         line-height: 1.428;
-        font-size: $medium-large-font-size;
+        font-size: $medium-font-size;
         padding: 6px 12px;
         border: 1px solid #ccc;
         border-radius: 4px;
     }
+}
 
-    .form-control button {
-        min-width: auto;
-        margin: 0 5px;
+
+.form-control button {
+    min-width: auto;
+    margin: 0 5px;
+}
+
+.workbook-show {
+    $workbook-show-width: $wrapper-width;
+    margin: 150px auto 0 auto;
+    display: block;
+    width: $workbook-show-width;
+    position: relative;
+
+    .cell {
+        display: block;
+        float: left;
+        width: $workbook-show-width/3;
+        min-height: $workbook-show-width/3;
+        border-right: 1px dashed $black;
+
+        > .cell-wrapper {
+            position: relative;
+
+            > * { margin: 5px 12px; }
+            > .line { border: 1px dashed $black; }
+
+            > .tools {
+                position: absolute;
+                right: 4px;
+                top: 10px;
+
+                button {
+                    width: 30px;
+                    text-align: center;
+                    display: inline-block;
+                    border: 1px solid #ccc;
+                    padding: 3px;
+                    background-color: white;
+                    border-radius: 3px;
+                }
+
+                button:hover {
+                    background-color: #eee;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    @media(min-width: $large-desktop-width) {
+        $workbook-show-width: 1200px;
+        width: $workbook-show-width;
+        
+        .cell {
+            width: $workbook-show-width / 4;
+        }
+    }
+
+    @media(max-width: $desktop-width) {
+        $workbook-show-width: 700px;
+        width: $workbook-show-width;
+        
+        .cell {
+            width: $workbook-show-width / 3;
+        }
+    }
+
+    @media(max-width: $tablet-width) {
+        $workbook-show-width: 460px;
+        width: $workbook-show-width;
+        
+        .cell {
+            width: $workbook-show-width/2;
+        }
+    }
+
+    @media(max-width: $phone-width) {
+        width: 100%;
+
+        .cell {
+            width: 100%;
+        }
+    }
+
+    .title-cell h1{
+        font-size: 30px;
+        text-align: center;
+        margin-top: 80px; 
+    }
+    .title-cell h1 > small {
+        font-size: 13px;
     }
 }
+
+.dialog .workbook {
+
+    .btn {
+        margin: 0;
+    }
+}
+
+.workbook-list {
+    $workbook-list-width: $wrapper-width;
+    margin: 150px auto 0 auto;
+    display: block;
+    width: $workbook-list-width;
+
+    .group {
+        width: $workbook-list-width/3;
+        display: inline-block;
+        vertical-align: top;
+        padding: 0 15px;
+        border-left: 3px dashed $black;
+
+        .inner-group {
+            margin-bottom: 50px;
+        }
+
+        .item {
+            font-size: 16px;
+            margin-bottom: 11px;
+        }
+    }
+
+    .group:first-child {
+        border-left-color: transparent;
+    }
+}
+
+.btn-dotted {
+    background-color: transparent;
+    border: 2px dotted $black;
+    border-radius: 2px;
+    margin-top: 10px;
+}
+button:focus {
+    outline: 0;
+}
+.btn-dotted:hover {
+    cursor: pointer;
+}
+
 
 /**
  *  Do not remove this comments bellow. It's the markers used by gulp-inject to inject

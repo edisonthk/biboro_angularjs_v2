@@ -28,7 +28,10 @@
 
     <navbar></navbar>
 
-    <div class="container" ui-view></div>
+    <div class="container">
+        <terminal placeholder="'hello'"></terminal>
+        <div ui-view></div>
+    </div>
 
     <!-- build:js(src) scripts/vendor.js -->
     <!-- bower:js -->
@@ -46,5 +49,6 @@
     <!-- endinject -->
     <!-- endbuild -->
 
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   </body>
 </html>

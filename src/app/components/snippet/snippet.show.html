@@ -1,10 +1,10 @@
-<div class="list-col show-snippet">
-    <div class="list-body">
-
-        <h1 ng-bind="snippetCtrl.currentSnippet.title"></h1>
-
-        <p ng-bind="snippetCtrl.currentSnippet.tags"></p>
-
-        <div ng-bind-html="snippetCtrl.currentSnippet.htmlContent"></div>
-    </div>
-</div>
+<editor
+    title="snippetCtrl.editor.title" 
+    content="snippetCtrl.editor.content"
+    tags="snippetCtrl.editor.tags"
+    selected-workbook="snippetCtrl.editor.workbook"
+    workbooks="workbookCtrl.workbooks"
+    saved-callback="snippetCtrl.editorSavedCallback()"
+    quit-callback="snippetCtrl.editorQuitCallback()"
+    cancel-callback="snippetCtrl.editorCancelCallback()" >
+</editor> 

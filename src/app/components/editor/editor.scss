@@ -1,0 +1,91 @@
+
+.editor {
+
+    /* remove default styles */
+    background-color: transparent !important;
+    border: 0 !important;    
+    
+
+    .editor-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: black;
+        z-index: 200;
+        opacity: 0.6;    
+    }
+
+    .editor-content {
+        position: absolute;
+        padding: 10px 30px;
+        background: white;
+        border-radius: 5px;
+        min-height: 180px;
+        top: 0;
+        z-index: 201;
+        width: 900px;
+        left: calc(50% - 450px);
+
+        @media(max-width: $desktop-width) {
+            width: 720px;
+            left: calc(50% - 360px);            
+        }
+
+        @media(max-width: $tablet-width) {
+            width: 460px;
+            left: calc(50% - 230px);            
+        }
+
+        @media(max-width: $phone-width) {
+            width: auto;
+            left: 10px;
+            right: 10px;               
+        }
+
+        .clearfix {
+            width: 100%;
+        }
+
+        .workbooks{
+
+            &.col-left {
+                background-color: transparent;    
+                padding-bottom: 0;
+                margin-bottom: -3px;
+            }
+
+            tabs > pane.active {
+                border-bottom-color: #dcdcdc;
+            }
+
+        }
+
+        .col-left {
+            width: 50%;
+            float: left;
+            padding: 8px;
+            background-color: #dcdcdc;
+            height: 100%;
+
+            .form-group:last-child {
+                margin-bottom: 0;
+            }
+
+            &.md-parsed {
+                background-color: #eeeeee;
+                overflow: auto;
+            }
+        }
+
+
+        
+        textarea.form-control {
+            height: 350px;
+        }
+        
+
+    }    
+}
+

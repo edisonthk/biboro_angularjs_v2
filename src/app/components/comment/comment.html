@@ -1,0 +1,20 @@
+<div class="dialog">
+    <div class="dialog-background"></div>
+
+    <div class="comment-box dialog-box">
+        <div ng-if="comment.user != null" class="comment-text">
+
+            <textarea ng-model="comment.editor.text"></textarea>
+            <button ng-click="comment.submit()">コメント送信</button>
+        </div>
+        <div ng-if="comment.comments.length == 0" class="comment-empty">
+            この投稿のコメントがありません
+        </div>
+        <ul ng-if="comment.comments.length > 0" class="comment-list">
+            <li class="comment" ng-repeat="c in comment.comments">
+                <div>{{c.comment}}</div>
+                <button ng-if="c.editable" ng-click="comment.destroy(c)"><i class="fa fa-trash-o"></i></button>
+            </li>
+        </ul>
+    </div>
+</div>

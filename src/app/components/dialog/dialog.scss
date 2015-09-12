@@ -1,5 +1,5 @@
 
-dialog {
+dialog, .dialog {
 
     /* remove default styles */
     background-color: transparent !important;
@@ -31,7 +31,7 @@ dialog {
       z-index: 200;
     }
 
-    .dialog {
+    .dialog-box {
       position: absolute;
       padding: 10px 30px;
       background: white;
@@ -43,19 +43,19 @@ dialog {
       left: calc(50% - 325px);
     }
 
-    &.markdown_help .dialog {
+    &.markdown_help .dialog-box {
         width: 760px;
         left: calc(50% - 430px);
     }
-    .dialog small {
+    .dialog-box small {
       color: inherit;  
     }
 
-    .dialog .error-message {
+    .dialog-box .error-message {
       color: red;
     }
 
-    .dialog .dialog-message {
+    .dialog-box .dialog-message {
       /*height: 90px;*/
     }
     textarea {
@@ -65,9 +65,8 @@ dialog {
       height: 100px;
       font-size: 15px;
     }
-    .dialog button.btn {
+    .dialog-box .btn {
       text-align: center;
-      min-width: 80px;
       margin-right: 10px;
       margin-bottom: 10px;
     }

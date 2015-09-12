@@ -7,6 +7,8 @@ class WorkbookService extends BaseService{
         this._dispatcher = Dispatcher;
         this.snippet = SnippetService;
         this.api = Api;
+
+        this.workbooks = [];
         
         this.WORKBOOK_FETCHALL_CALLBACK = "WORKBOOK_FETCHALL_CALLBACK";
         this.WORKBOOK_STORE_CALLBACK    = "WORKBOOK_STORE_CALLBACK";
@@ -14,40 +16,51 @@ class WorkbookService extends BaseService{
         this.WORKBOOK_UPDATE_CALLBACK   = "WORKBOOK_UPDATE_CALLBACK";
         this.WORKBOOK_DESTROY_CALLBACK  = "WORKBOOK_DESTROY_CALLBACK";
         this.WORKBOOK_SHOWMY_CALLBACK   = "WORKBOOK_SHOWMY_CALLBACK";
-        this.WORKBOOK_RENAME_CALLBACK   = "WORKBOOK_RENAME_CALLBACK";
+        this.WORKBOOK_FORK_CALLBACK     = "WORKBOOK_FORK_CALLBACK";
+
+        setTimeout(function() {
+
+            scope.$apply();
+        });
 
     }
-    registerFetchAllCallback(callback) {
-        this._dispatcher.register(this.WORKBOOK_FETCHALL_CALLBACK,callback);
+    registerFetchAllCallback(cb) {
+        
+        this._dispatcher.register(this.WORKBOOK_FETCHALL_CALLBACK,cb);
     }
 
-    registerStoreCallback(callback) {
-        this._dispatcher.register(this.WORKBOOK_STORE_CALLBACK,callback);
+    registerStoreCallback(cb) {
+        this._dispatcher.register(this.WORKBOOK_STORE_CALLBACK,cb);
     }
 
-    registerShowCallback(callback) {
-        this._dispatcher.register(this.WORKBOOK_SHOW_CALLBACK,callback);
+    registerShowCallback(cb) {
+        this._dispatcher.register(this.WORKBOOK_SHOW_CALLBACK,cb);
     }
-    registerShowMyCallback(callback) {
-        this._dispatcher.register(this.WORKBOOK_SHOWMY_CALLBACK,callback);   
-    }
-
-    registerUpdateCallback(callback) {
-        this._dispatcher.register(this.WORKBOOK_UPDATE_CALLBACK,callback);
+    registerShowMyCallback(cb) {
+        this._dispatcher.register(this.WORKBOOK_SHOWMY_CALLBACK,cb);   
     }
 
-    registerDestroyAllCallback(callback) {
-        this._dispatcher.register(this.WORKBOOK_DESTROY_CALLBACK,callback);
+    registerUpdateCallback(cb) {
+        this._dispatcher.register(this.WORKBOOK_UPDATE_CALLBACK,cb);
     }
 
-    registerRenameCallback(cb) {
-        this._dispatcher.register(this.WORKBOOK_RENAME_CALLBACK, cb);
+    registerDestroyAllCallback(cb) {
+        this._dispatcher.register(this.WORKBOOK_DESTROY_CALLBACK,cb);
+    }
+
+    registerForkedCallback(cb) {
+        this._dispatcher.register(this.WORKBOOK_FORK_CALLBACK, cb);
     }
 
     fetchAll() {
         var self = this;
 
-        self._http.get(self.api.workbook.index)
+        var req = {
+            method : self.api.workbook.index.method,
+            url    : self.api.workbook.index.url,
+        };
+
+        self._http[req.method](req.url, req.data)
             .success(function(data){
 
                 self.workbooks = data;
@@ -67,7 +80,13 @@ class WorkbookService extends BaseService{
             params = {};
         }
 
-        self._http.post(self.api.workbook.index, params)
+        var req = {
+            method : self.api.workbook.store.method,
+            url    : self.api.workbook.store.url,
+            data   : params,
+        };
+
+        self._http[req.method](req.url, req.data)
             .success(function(response){
                 self._dispatcher.dispatch(self.WORKBOOK_STORE_CALLBACK, {"success":true,"result":"success", "response": response});
             })
@@ -76,22 +95,15 @@ class WorkbookService extends BaseService{
             });
     }
 
-    rename(id, params) {
-        var self = this;
-        
-        self._http.put(self.api.workbook.rename.replace(":id",id), params)
-            .success(function(response){
-                self._dispatcher.dispatch(self.WORKBOOK_RENAME_CALLBACK, {"success":true,"result":"success","response":response});
-            })
-            .error(function(){
-                self._dispatcher.dispatch(self.WORKBOOK_RENAME_CALLBACK, {"success":false,"result":"fail to update workbooks."});
-            });
-    }
-
     show(id){
         var self= this;
 
-        self._http.get(self.api.workbook.show.replace(":id",id))
+        var req = {
+            method : self.api.workbook.show.method,
+            url    : self.api.workbook.show.url.replace(":id",id),
+        };
+
+        self._http[req.method](req.url, req.data)
             .success(function(response){
                 self.workbook = response;
                 self.snippet.setSnippets(self.workbook.snippets);
@@ -99,12 +111,12 @@ class WorkbookService extends BaseService{
 
                 self._dispatcher.dispatch(self.WORKBOOK_SHOW_CALLBACK, {"success":true,"result":"success","response":response});
                 self._dispatcher.dispatch(self.snippet.SNIPPET_FETCHEDALL_CALLBACK, {"success":true,"result":"success","response":self.workbook.snippets});
-                self._dispatcher.dispatch(self.snippet.SNIPPET_SHOW_CALLBACK, {"success":true,"result":"success"});
+                
             })
             .error(function(){
                 self._dispatcher.dispatch(self.WORKBOOK_SHOW_CALLBACK, {"success":false,"result":"fail to show workbooks."});
                 self._dispatcher.dispatch(self.snippet.SNIPPET_FETCHEDALL_CALLBACK, {"success":false,"result":"fail to show workbooks."});
-                self._dispatcher.dispatch(self.snippet.SNIPPET_SHOW_CALLBACK, {"success":false,"result":"fail to show workbooks."});
+                
             });
     }
 
@@ -114,7 +126,7 @@ class WorkbookService extends BaseService{
         self._http.get(self.api.workbook.show.replace(":id","my"))
             .success(function(response){
                 self.workbook = null;
-                // response from /api/v1/workbook/my.json is snippets, so it can be set directly
+                // response from /api/v1/workbook/my.json is snippet so it can be set directly
                 self.snippet.setSnippets(response);
 
                 self._dispatcher.dispatch(self.WORKBOOK_SHOWMY_CALLBACK, {"success":true,"result":"success","response":response});
@@ -126,11 +138,26 @@ class WorkbookService extends BaseService{
             });   
     }
 
-    update(id){
+    update(id, params){
         var self= this;
 
-        self._http.put(self.api.workbook.show.replace(":id",id))
+        var req = {
+            method : self.api.workbook.update.method,
+            url    : self.api.workbook.update.url.replace(":id",id),
+            data   : params
+        };
+
+        self._http[req.method](req.url, req.data)
             .success(function(response){
+                var wb = response;
+                for (var i = 0; i < self.workbooks.length; i++) {
+                    if(self.workbooks[i].id === wb.id) {
+                        self.workbooks[i] = wb;
+                        break;
+                    }
+                };
+
+                self._dispatcher.dispatch(self.WORKBOOK_SHOW_CALLBACK, {"success":true,"result":"success","response":response});
                 self._dispatcher.dispatch(self.WORKBOOK_UPDATE_CALLBACK, {"success":true,"result":"success","response":response});
             })
             .error(function(){
@@ -140,8 +167,12 @@ class WorkbookService extends BaseService{
 
     destroy(id){
         var self= this;
+        var req = {
+            method : self.api.workbook.destroy.method,
+            url    : self.api.workbook.destroy.url.replace(":id",id),
+        };
 
-        self._http.delete(self.api.workbook.show.replace(":id",id))
+        self._http[req.method](req.url, req.data)
             .success(function(response){
                 self._dispatcher.dispatch(self.WORKBOOK_DESTROY_CALLBACK, {"success":true,"result":"workbook","response":response});
             })
@@ -156,6 +187,8 @@ class WorkbookService extends BaseService{
     }
 
     getById(workbookId) {
+        if(this.workbooks)
+
         workbookId = parseInt(workbookId);
         for (var i = 0; i < this.workbooks.length; i++) {
             if(this.workbooks[i].id === workbookId) {

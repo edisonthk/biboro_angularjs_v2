@@ -1,6 +1,6 @@
 class DialogDirective {
 
-    constructor (malarkey) {
+    constructor () {
         'ngInject';
 
         let directive = {
@@ -13,7 +13,7 @@ class DialogDirective {
             transclude: true, 
             template: 
                 '<div class="dialog-background"></div>'+
-                '<div class="dialog">'+
+                '<div class="dialog-box">'+
                     '<div class="dialog-message">'+
                         '<h3 ng-bind-html="title"></h3>'+
                         '<p ng-bind-html="message"></p>'+

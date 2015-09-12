@@ -1,0 +1,39 @@
+.terminal {
+    text-align: center;
+
+    .terminal-wrapper {
+        top: 35px;
+        display: inline-block;
+        position: relative;
+        z-index: 3;
+
+        > .fa, .terminal-input {
+            font-size: 16px;
+        }
+
+        > .fa {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+        }
+
+        > .terminal-input {
+            display: inline-block;
+            padding: 12px 12px 12px 33px;
+            width: 600px;
+        }
+    }
+
+    @media(max-width: $phone-width) {
+
+        .terminal-wrapper {
+            width: 100%;
+            left: 0;
+
+            > .terminal-input {
+                width: 100%;
+            }
+        }
+    }
+}
+

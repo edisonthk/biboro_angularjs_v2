@@ -1,16 +1,17 @@
 <div class="workbook editDialog">
-    <div class="form-control inline">
+    <div class="form-group">
         <label>ブック名</label><br/>
-        <input type="text" ng-model="workbookCtrl.editDialog.title" placeholder="ブック名を編集"/> 
-        <button ng-click="workbookCtrl.editDialogRenameWorkbookTitleEvent()" class="btn btn-default">
-            <i class="fa fa-pencil"></i>
-        </button>
+        <div class="inline-10">
+            <input 
+                type="text" 
+                class="form-control"
+                ng-model="workbookCtrl.editDialog.title" 
+                placeholder="ブック名を編集"/> 
+        </div>
+        <div class="inline-2">
+            <button ng-click="workbookCtrl.editDialogUpdateWorkbookEvent()" class="btn btn-default">
+                <i class="fa fa-pencil"></i>
+            </button>
+        </div>
     </div>
-
-    <!-- <div class="form-control">
-        <label>コラボレーター</label><br/>
-        <input type="text">
-    </div>
- -->
-    <button type="submit">更新</button>
 </div>

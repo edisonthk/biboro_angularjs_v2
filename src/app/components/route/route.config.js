@@ -1,11 +1,9 @@
-
-import PlaygroundController from '../myplayground/playground.controller';
-import SnippetController    from '../snippet/snippet.controller';
-import WorkbookController   from '../workbook/workbook.controller';
-import NewsController       from '../news/news.controller';
-import MainController       from '../../main/main.controller';
-import AccountController    from '../account/account.controller';
-
+import WorkbookListController   from '../workbook/workbookList.controller';
+import WorkbookShowController   from '../workbook/workbookShow.controller';
+import PlaygroundController     from '../myplayground/playground.controller';
+import SnippetController        from '../snippet/snippet.controller';
+import NewsController           from '../news/news.controller';
+import AccountController        from '../account/account.controller';
 
 export default function ($httpProvider, $stateProvider, $urlRouterProvider) {
         'ngInject';
@@ -14,19 +12,33 @@ export default function ($httpProvider, $stateProvider, $urlRouterProvider) {
         $httpProvider.defaults.xsrfHeaderName = "XSRF-TOKEN";
 
         $stateProvider
+            .state('home', {
+                url: '/',
+                controller: function() {
+                    
+                },
+                template: 'fsdfsdfs'
+            })
+            .state('news', {
+                url: '/news',
+                controller: function() {
+                    
+                },
+                template: 'fsdfsdfs'
+            })
             .state('workbook', {
                 url: '/workbook',
-                templateUrl:  '../app/components/workbook/workbook.list.html',
-                controller:   WorkbookController,
+                templateUrl:  '../app/components/workbook/workbookList.html',
+                controller:   WorkbookListController,
                 controllerAs: 'workbookCtrl',
             })
-            .state('workbook.show', {
-                url: '/:workbook',
-                templateUrl:  '../app/components/workbook/workbook.show.html',
-                controller:   WorkbookController,
+            .state('workbookShow', {
+                url: '/workbook/:workbook',
+                templateUrl:  '../app/components/workbook/workbookShow.html',
+                controller:   WorkbookShowController,
                 controllerAs: 'workbookCtrl',
             })
-            .state('workbook.show.snippet', {
+            .state('workbookShow.snippet', {
                 url: '/snippet/:snippet',
                 templateUrl:  '../app/components/snippet/snippet.show.html',
                 controller:   SnippetController,
@@ -53,14 +65,6 @@ export default function ($httpProvider, $stateProvider, $urlRouterProvider) {
             .state('preference', {
                 url: '/preference'
             })
-            .state('account', {
-                 // 両方のurlにも対応するように、 /account と /account/:action  <-に対応できるようにurlを書き換えて
-                url: '/account/{action}?currentPath',
-                templateUrl: '../app/components/account/account.login.html',
-                controller: AccountController,
-                controllerAs: 'accountCtrl'
-
-            })
             // .state('profile')
             // .state('')
 
@@ -72,5 +76,5 @@ export default function ($httpProvider, $stateProvider, $urlRouterProvider) {
                 template:     '<acme-navbar /><div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
             });
 
-        $urlRouterProvider.otherwise('/workbook');
+        // $urlRouterProvider.otherwise('/');
     }

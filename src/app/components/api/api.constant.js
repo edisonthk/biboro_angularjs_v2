@@ -7,7 +7,7 @@ var api = {
     // url or path to api
     host: {
         local: '/',
-        stagging : 'http://localhost:8000/'
+        stagging : 'http://api.biboro.org/'
     },
 
     // api will be used as defined api_[env]
@@ -34,24 +34,30 @@ var api = {
     api_production: {
         // api in production list
         snippet: {
-            index   : 'api/v1/snippet',
-            show    : 'api/v1/snippet/:id',
-            update  : 'api/v1/snippet/:id',
-            destroy : 'api/v1/snippet/:id',
+            index   : {method: 'get'   , url:'api/v1/snippet'},
+            show    : {method: 'get'   , url:'api/v1/snippet/:id'},
+            store   : {method: 'post'  , url:'api/v1/snippet'},
+            update  : {method: 'put'   , url:'api/v1/snippet/:id'},
+            destroy : {method: 'delete', url:'api/v1/snippet/:id'},
         },
         workbook: {
-            index   : 'api/v1/workbook',
-            show    : 'api/v1/workbook/:id',
-            update  : 'api/v1/workbook/:id',
-            destroy : 'api/v1/workbook/:id',
-            rename  : 'api/v1/workbook/:id/rename',
+            index   : {method: 'get'    ,url:'api/v1/workbook'},
+            show    : {method: 'get'    ,url:'api/v1/workbook/:id'},
+            store   : {method: 'post'   ,url:'api/v1/workbook'},
+            update  : {method: 'put'    ,url:'api/v1/workbook/:id'},
+            destroy : {method: 'delete' ,url:'api/v1/workbook/:id'},
+            fork    : {method: 'put'    ,url:'api/v1/workbook/:id/fork'},
         },
         account: {
-            info: 'api/v1/account/userinfo/user',
-            google_signin: 'api/v1/account/dev-signin/',
-            signin:        'api/v1/account/signin?type=',
-            signout:       'api/v1/account/signout',
-
+            info:   {method: 'get', url:'api/v1/account/userinfo'},
+            login:  'auth/login',
+            logout: 'auth/logout',
+        },
+        comment: {
+            show    : {method: 'get'    ,url:'api/v1/snippet/:snippetId/comment'},
+            store   : {method: 'post'   ,url:'api/v1/snippet/:snippetId/comment'},
+            update  : {method: 'put'    ,url:'api/v1/snippet/:snippetId/comment/:commentId'},
+            destroy : {method: 'delete' ,url:'api/v1/snippet/:snippetId/comment/:commentId'},
         }
     }
 };

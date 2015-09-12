@@ -1,0 +1,31 @@
+<div class="workbook-list">
+    <div class="group">
+        <div class="title">GENERAL</div>
+        <div class="item"><a ui-sref="news"><i class="fa fa-newspaper-o"></i>&nbsp;ニュース</a></div>
+        <div class="item"><a ui-sref="workbookShow({workbook: 'me'})"><i class="fa fa-book"></i>&nbsp;マイ・ワークブック</a></div>
+    </div>
+    <div class="group">
+        <div class="inner-group">
+            <div class="title">WORKBOOKS</div>
+            <div class="item" ng-repeat="wb in workbookCtrl.workbooks">
+                <a ui-sref="workbookShow({workbook: wb.id})" ng-bind="wb.title"></a>
+            </div>
+            <div class="item">
+                <button class="btn-dotted"><i class="fa fa-plus"></i> ワークブック作成</button>
+            </div>
+        </div>
+        <div class="inner-group">
+            <div class="title">お気に入り</div>
+            <div class="item">
+                <a>fsdfsdfdsf</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<dialog 
+    open 
+    ng-if="workbookCtrl.createDialog.show" 
+    outside-clicked-callback="workbookCtrl.createDialog.outsideClickedCallback" >
+    <div ng-include="'app/components/workbook/workbook.createDialog.html'"></div>
+</dialog>

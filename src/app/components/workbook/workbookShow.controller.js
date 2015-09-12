@@ -1,8 +1,8 @@
 
 import BaseController from "../../base/base.controller";
 
-class WorkbookController extends BaseController {
-    constructor($scope ,$state ,$stateParams ,WorkbookService, AccountService, RouteService, SnippetService) {
+class WorkbookShowController extends BaseController {
+    constructor($scope ,$state ,$stateParams ,WorkbookService, AccountService, RouteService, SnippetService, Markdown) {
         this._scope       = $scope;
         this.state        = $state;
         this.stateParams  = $stateParams;
@@ -10,6 +10,7 @@ class WorkbookController extends BaseController {
         this.route        = RouteService;
         this.workbook     = WorkbookService;
         this.account      = AccountService;
+        this.markdown     = Markdown;
         this.editor         = {
             show     : false,
             title    : "",
@@ -24,9 +25,18 @@ class WorkbookController extends BaseController {
         this.editDialog   = {
             show: false
         };
+        this.commentBox = {
+            show: false,
+            snippet: null,
+        };
+
+        $scope.$on("test1", function(){
+            console.log("this is workbookshow controler");
+        });
+
+        console.log(this);
 
         // register action
-        this.workbook.registerFetchAllCallback(this.fetchAllCallback.bind(this));
         this.workbook.registerShowCallback(this.showCallback.bind(this));
         this.workbook.registerShowMyCallback(this.showMyCallback.bind(this));
         this.workbook.registerStoreCallback(this.workbookStoreCallback.bind(this));
@@ -35,20 +45,20 @@ class WorkbookController extends BaseController {
         this.route.registerStateUpdatedCallback(this.stateUpdatedCallback.bind(this));
         this.account.registerFetchedLoginedAccountCallback(this.fetchedLoginedAccountCallback.bind(this));
 
+        // dialog
         this.createDialog.outsideClickedCallback = this.createDialogOutsideClickedCallback.bind(this);
         this.editDialog.outsideClickedCallback   = this.editDialogOutsideClickedCallback.bind(this);
-
+        this.commentBox.outsideClickedCallback  = this.commentsBoxOutsideClickedCallback.bind(this);
 
         this.snippet.registerStoreCallback(this.storedCallback.bind(this));
 
         this.initialize();
+
     }
 
     initialize() {
-        this.workbook.fetchAll();
         this.account.fetchLoginedAccount();
 
-        this.workbooks = [];
         this.currentWorkbook = null;
 
         var workbook = this.stateParams.workbook;
@@ -63,13 +73,10 @@ class WorkbookController extends BaseController {
                 // workbook not found
             }
         }
-    }
 
-    fetchAllCallback(parameters) {
-        this.workbooks = parameters.response;
+        this._scope.$watch(function() {
 
-        // set default value of workbook
-        // this.editor.workbook = this.workbooks.length > 0 ? this.workbooks[0] : null;
+        });
     }
 
     showMyCallback(parameters) {
@@ -80,13 +87,22 @@ class WorkbookController extends BaseController {
             snippets: parameters.response,
         };
 
+
         this.editDialog.title = this.currentWorkbook.title;
     }
 
     showCallback(parameters) {
-        
-        this.currentWorkbook = parameters.response;
+
+        this.currentWorkbook = parameters.response.workbook;
         this.editDialog.title = this.currentWorkbook.title;
+
+        // for debug purpose
+        this.commentBox.snippet = this.currentWorkbook.snippets[0];
+
+        for (var i = 0; i < this.currentWorkbook.snippets.length; i++) {
+            var snippet = this.currentWorkbook.snippets[i];
+            snippet.htmlContent = this.markdown.parseMd(snippet.content);
+        }
 
     }
 
@@ -147,11 +163,28 @@ class WorkbookController extends BaseController {
     }
 
     /**
+     *  comments box
+     *
+     */
+    commentsBoxOutsideClickedCallback() {
+        this.commentBox.show = false;
+    }
+
+    showCommentBox(snippet) {
+        this.commentBox.show = true;
+        this.commentBox.snippet = snippet;
+    }
+
+
+    /**
      *  crud snippet
      *
      */
-    newSnippet() {
-        this.editor.show = true;
+    editSnippet(snippet) {
+        this.state.go("workbookShow.snippet",{
+            workbook: this.stateParams.workbook ,
+            snippet: snippet.id
+        });
     }
 
     editorSavedCallback() {
@@ -177,4 +210,4 @@ class WorkbookController extends BaseController {
     }
 }
 
-export default WorkbookController;
+export default WorkbookShowController;

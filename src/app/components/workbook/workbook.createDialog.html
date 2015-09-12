@@ -1,8 +1,14 @@
 <div class="workbook createDialog">
-    <div class="form-control inline">
+    <div class="form-group">
         <label>ブック名</label><br/>
-        <input type="text" ng-model="workbookCtrl.createDialog.title" placeholder="新しいブックの名前"/> 
-        <button ng-click="workbookCtrl.createDialogWorkbookEvent()" class="btn btn-default"><i class="fa fa-pencil"></i></button>
+        <div class="inline-10">
+            <input  class="form-control" type="text" ng-model="workbookCtrl.createDialog.title" placeholder="新しいブックの名前"/> 
+        </div>
+        <div class="inline-2">
+            <button ng-click="workbookCtrl.createDialogWorkbookEvent()" class="btn btn-default">
+                <i class="fa fa-pencil"></i>
+            </button>
+        </div>
     </div>
 
     <!-- <div class="form-control">

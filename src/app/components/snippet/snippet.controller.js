@@ -1,25 +1,38 @@
 
 import BaseController from "../../base/base.controller";
-import Markdown from "../../../../bower_components/markdown/src/markdown";
+import Markdown from "../../../../bower_components/marked/lib/marked";
 
 class SnippetController extends BaseController{
     
-    constructor($scope, $stateParams,Dispatcher, AccountService, SnippetService, RouteService) {
+    constructor($scope, $state,$stateParams,Dispatcher, WorkbookService, AccountService, SnippetService, RouteService, ShortcutService) {
         this._scope         = $scope;
+        this.state          = $state;
         this.stateParams    = $stateParams;
+        this.workbook       = WorkbookService;
         this.account        = AccountService;
         this.snippet        = SnippetService;
         this.route          = RouteService;
         this.currentSnippet = null;
-
+        this.editor         = {
+            title    : "",
+            content  : "",
+            tags     : [],
+            workbook : null,
+        };
+        
 
         // register callback for all kinds of action
         // this.snippet.registerFetchedAllCallback(this.fetchedAllCallback.bind(this));
+
         this.account.registerFetchedLoginedAccountCallback(this.fetchedLoginedAccountCallback.bind(this));
+
+        this.snippet.registerStoreCallback(this.storedCallback.bind(this));
+        this.snippet.registerUpdateCallback(this.updatedCallback.bind(this));
         this.snippet.registerShowCallback(this.showCallback.bind(this));
 
         // perform first action
         this.initialize();
+
     }
 
     initialize() {
@@ -38,33 +51,83 @@ class SnippetController extends BaseController{
         var snippet = this.stateParams.snippet;
 
         if(snippet.match(/^\d+$/g)) {
-            this.updateCurrentSnippet(snippet);
-            // console.log(this.currentSnippet);
+            this.snippet.show(snippet);
         }else{
             console.error("unknown snippet");
         }
     }
 
-    showCallback(parameters) {
-        var snippet = this.stateParams.snippet;
+    
+    showCallback (parameters) {
+        this.currentSnippet = parameters.response;
+        this.currentSnippet.htmlContent = Markdown(this.currentSnippet.content);
 
-        if(snippet.match(/^\d+$/g)) {
-            this.updateCurrentSnippet(snippet);
-            // console.log(this.currentSnippet);
-        }else{
-            console.error("unknown snippet");
-        }
-    }
+        this.editor.title   = this.currentSnippet.title;
+        this.editor.content = this.currentSnippet.content;
 
-    updateCurrentSnippet(snippetId) {
-        this.currentSnippet = this.snippet.getById(snippetId);
-        if(this.currentSnippet != null) {
-            this.currentSnippet.htmlContent = Markdown.toHTML(this.currentSnippet.content);
-        }
+        var workbookId = this.stateParams.workbook;
+        this.editor.workbook = this.workbook.getById(workbookId);
+
+        
     }
 
     fetchedLoginedAccountCallback(parameters) {
         // console.log(parameters);
+    }
+
+    edit() {
+        this.editor.show = true;
+    }
+
+    fork() {
+        this.editor.show = true;
+    }
+
+    comment() {
+
+    }
+
+    editorSavedCallback() {
+
+        var formData = {
+            title: this.editor.title,
+            content: this.editor.content,
+            tags: this.editor.tags,
+            workbookId: this.editor.workbook === null ? 0 : this.editor.workbook.id,
+        };
+
+        console.log(formData);
+
+        if(this.stateParams.snippet) {
+            this.snippet.update(this.stateParams.snippet, formData);
+        }else{
+            this.snippet.store(formData);
+        }
+        
+    }
+
+    storedCallback(parameters) {
+        console.log("stored");
+        console.log(parameters);
+    }
+
+    updatedCallback(parameters) {
+        console.log("udpated");
+        console.log(parameters);
+    }
+
+
+
+    editorCancelCallback() {
+        this.state.go("workbookShow",{
+            workbook: this.stateParams.workbook
+        });
+    }
+
+    editorQuitCallback() {
+        this.state.go("workbookShow",{
+            workbook: this.stateParams.workbook
+        });
     }
 
 }

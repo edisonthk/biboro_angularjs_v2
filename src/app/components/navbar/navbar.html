@@ -1,22 +1,44 @@
-<nav class="navbar">
+<nav class="navbar clearfix">
       
     <a ui-sref="workbook" class="logo">
-        <img src="assets/images/logo.png" alt="BIBORO logo">
+        <img src="assets/images/logo_blue.png" alt="BIBORO logo">
     </a>
 
-    <div class="terminal-block">
-        <tags-input ng-model="navbar.tags">
-            <auto-complete source="navbar.loadTags($query)"></auto-complete>
-        </tags-input>
-    </div>
     
+    <tabs 
+        ng-if="navbar.showWorkbookListFlag" 
+        class="workbook-tabs"
+        ng-model="navbar.selectedWorkbook" 
+        panes="navbar.workbooks" 
+        selected-callback="navbar.selectedPaneCallback"
+        >
+        <!-- <li ng-repeat="wb in navbar.workbooks">
+            <a ng-bind="wb.title" ui-sref-active="active" ui-sref="workbookShow({workbook: wb.id})"></a>
+        </li> -->
+    </tabs>
 
-    <div class="user-block">
-        <a ng-if="navbar.accountInfo == null" ui-sref="account({action: 'signin', currentPath: window.location.pathname})">ログイン</a>
-        <a 
-            ng-if="navbar.accountInfo != null" 
-            ng-bind="navbar.accountInfo.name"
-            ui-sref="account({action: 'signout', currentPath: window.location.pathname})">
-        </a>
+    <div class="tools" ng-if="navbar.accountInfo == null">
+        <a ng-click="navbar.account.signIn()"><i class="fa fa-sign-in"></i></a>
+    </div>
+    <div class="tools" ng-if="navbar.accountInfo != null">
+        <a ng-click="navbar.newSnippet()"><i class="fa fa-plus"></i></a>
+        <a ng-click="navbar.account.signOut()"><i class="fa fa-user"></i></a>
     </div>
 </nav>
+
+<nav class="navbar-sp">
+
+</nav>
+
+
+<editor
+    ng-if="navbar.editor.show"
+    title="navbar.editor.title" 
+    content="navbar.editor.content"
+    tags="navbar.editor.tags"
+    selected-workbook="navbar.editor.workbook"
+    workbooks="navbar.workbooks"
+    saved-callback="navbar.editorSavedCallback()"
+    quit-callback="navbar.editorQuitCallback()"
+    cancel-callback="navbar.editorCancelCallback()" >
+</editor> 

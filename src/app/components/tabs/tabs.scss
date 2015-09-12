@@ -1,0 +1,30 @@
+tabs:after {
+  content: "."; 
+  display: block; 
+  height: 0; 
+  font-size:0;    
+  clear: both; 
+  visibility:hidden;
+}
+
+tabs { 
+    display: inline-block; 
+} 
+
+tabs > pane {
+    float: left;
+    line-height: 30px;
+    display: inline-block;
+    margin-bottom: -1px;
+    width: 80px;
+    text-align: center;
+}    
+
+tabs > pane.active {
+    background-color: white;
+    border-bottom: 30px solid #ccc;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    height: 0;
+    width: 80px;
+}

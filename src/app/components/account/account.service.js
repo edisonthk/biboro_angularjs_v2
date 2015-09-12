@@ -1,7 +1,7 @@
 class AccountService {
 
     constructor($http,Dispatcher,Api) {
-
+        
         this.ACCOUNT_FETCHED_LOGINED_ACCOUNT = "ACCOUNT_FETCHED_LOGINED_ACCOUNT";
 
         this.ACCOUNT_SIGN_IN = "ACCOUNT_SIGN_IN";
@@ -42,7 +42,12 @@ class AccountService {
             }
         }
 
-        self._http.get(self.api.account.info)
+        var req = {
+            method : self.api.account.info.method,
+            url    : self.api.account.info.url,
+        };
+
+        self._http[req.method](req.url)
             .success(function(data){
                 self.account = data;
                 self.fetchedAccountData = true;
@@ -56,40 +61,16 @@ class AccountService {
 
     }
 
-    signIn(){
-        var self = this;
-
-        self._http.get(self.api.account.signin)
-            .success(function(){
-                self._dispatcher.dispatch(self.ACCOUNT_SIGN_IN, {"success":true,"result":"success"});
-            })
-            .error(function(){
-                self._dispatcher.dispatch(self.ACCOUNT_SIGN_IN, {"success":false,"result":"fail to login."});
-            });
+    getUser() {
+        return this.account;
     }
 
-    googleSignIn(){
-        var self = this;
-
-        self._http.get(self.api.account.google_signin)
-            .success(function(){
-                self._dispatcher.dispatch(self.ACCOUNT_SIGN_IN, {"success":true,"result":"success"});
-            })
-            .error(function(){
-                self._dispatcher.dispatch(self.ACCOUNT_SIGN_IN, {"success":false,"result":"fail to login."});
-            });
+    signOut() {
+        window.location.href = this.api.account.logout;
     }
 
-    signOut(){
-        var self = this;
-
-        self._http.get(self.api.account.signout)
-            .success(function(){
-                self._dispatcher.dispatch(self.ACCOUNT_SIGN_OUT, {"success":true,"result":"success"});
-            })
-            .error(function(){
-                self._dispatcher.dispatch(self.ACCOUNT_SIGN_OUT, {"success":false,"result":"fail to logout."});
-            });
+    signIn() {
+        window.location.href = this.api.account.login + "?origin="+encodeURIComponent(window.location.hash.replace("#",""));
     }
 
 
