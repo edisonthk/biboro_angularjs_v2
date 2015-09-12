@@ -3,7 +3,7 @@
     <div class="cell title-cell clearfix" float-layout>
         <h1>
             <span ng-bind="workbookCtrl.currentWorkbook.title"></span>
-            <small class="right" ><i class="fa fa-bars"></i></small>
+            <small class="right" ng-click="workbookCtrl.deleteWorkbook()"><i class="fa fa-trash-o"></i></small>
             <small class="right" ng-click="workbookCtrl.showEditDialog()"><i class="fa fa-edit"></i></small>    
         </h1>
     </div>

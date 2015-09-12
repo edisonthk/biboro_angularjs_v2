@@ -208,6 +208,11 @@ class WorkbookShowController extends BaseController {
     editorCancelCallback() {
         this.editor.show = false;
     }
+
+    deleteWorkbook() {
+        this.workbook.destroy(this.workbook.workbook.workbook.id);
+        this.state.go("workbook");
+    }
 }
 
 export default WorkbookShowController;
