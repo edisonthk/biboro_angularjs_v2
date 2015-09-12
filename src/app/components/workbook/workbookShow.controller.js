@@ -213,6 +213,11 @@ class WorkbookShowController extends BaseController {
         this.workbook.destroy(this.workbook.workbook.workbook.id);
         this.state.go("workbook");
     }
+
+    deleteSnippet(snippet){
+        this.snippet.destroy(snippet.id);
+        this.state.go(this.state.current, {}, {reload: true});
+    }
 }
 
 export default WorkbookShowController;

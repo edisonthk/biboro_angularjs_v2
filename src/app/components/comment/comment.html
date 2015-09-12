@@ -12,7 +12,12 @@
         </div>
         <ul ng-if="comment.comments.length > 0" class="comment-list">
             <li class="comment" ng-repeat="c in comment.comments">
+
+                <img ng-if="c.account.profile_image.length > 0" src="{{c.account.profile_image}}">
+                <img ng-if="c.account.profile_image.length == 0" src="assets/images/default-user-image.png" width="200" alt="default-image">
+                <div>{{c.account.name}}</div>
                 <div>{{c.comment}}</div>
+                <div>{{c.updated_at}}</div>
                 <button ng-if="c.editable" ng-click="comment.destroy(c)"><i class="fa fa-trash-o"></i></button>
             </li>
         </ul>
