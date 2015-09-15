@@ -150,7 +150,6 @@ class SnippetService {
         }
 
         this.snippets = snippets.length > 0 ? snippets : [];
-        console.log(this.snippets)
     }
 
     getSnippets(){

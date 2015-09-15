@@ -2,7 +2,7 @@
 import FluxController from "../flux/flux.controller";
 
 class WorkbookListController extends FluxController {
-    constructor($state, $scope ,Dispatcher,WorkbookService, AccountService) {
+    constructor($state, $scope ,Dispatcher,WorkbookService, AccountService, ShortcutService) {
         super.constructor($scope, Dispatcher);
         
         this.state        = $state;

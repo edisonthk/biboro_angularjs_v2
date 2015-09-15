@@ -1,3 +1,4 @@
+import KeyCode from "../shortcut/shortcut.config";
 // import TerminalController   from 'terminal.controller';
 
 class TerminalDirective {
@@ -28,7 +29,28 @@ class TerminalDirective {
     }
 
     linkFunc(scope, el) {
-        
+        var $input = el.find("input")[0];
+
+        window.onkeydown = function(e) {
+            var ctrlKey = (e.ctrlKey || e.metaKey);
+
+            if(ctrlKey) {
+                return;
+            }
+
+            if($input === document.activeElement) {
+                
+            }
+
+            if( (e.keyCode >= KeyCode.KEY_0 && e.keyCode <= KeyCode.KEY_9) || 
+                    (e.keyCode >= KeyCode.KEY_A && e.keyCode <= KeyCode.KEY_Z) ){
+                // focus to searchbox input
+                $input.focus();
+            }else if( e.keyCode === KeyCode.KEY_ESC){
+                // blur focus from searchbox input
+                $input.blur();
+            }
+        }
     }     
 
 }
