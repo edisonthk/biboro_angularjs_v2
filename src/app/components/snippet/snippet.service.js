@@ -1,7 +1,7 @@
 
 class SnippetService {
 
-    constructor($http,Dispatcher, Api) {
+    constructor($http, $state, $stateParams, Dispatcher, Api) {
         this.SNIPPET_FETCHALL = "SNIPPET_FETCHALL";
         this.SNIPTET_STORE = "SNIPPET_STORE";
         this.SNIPPET_SHOW = "SNIPPET_SHOW";
@@ -16,6 +16,9 @@ class SnippetService {
 
         this._dispatcher = Dispatcher;
         this._http       = $http;
+        this.state       = $state;
+        this.stateParams = $stateParams;
+
 
         this.snippets = [];
 
@@ -80,6 +83,14 @@ class SnippetService {
         self._http[req.method](req.url, req.data)
             .success(function(response){
                 self._dispatcher.dispatch(self.SNIPPET_STORE, {"success":true,"result":"success", "response": response});
+                self.state.go(self.state.current.name);
+                if(self.state.current.name === "workbookShow"){
+                    //self.state.go("workbookShow",{workbook: self.stateParams.workbook});
+                }else{
+                    console.log(self.state.current.name);
+                    self.state.go(self.state.current.name);
+                }
+
             })
             .error(function(){
                 self._dispatcher.dispatch(self.SNIPPET_STORE, {"success":false,"result":"fail to store snippets."});
