@@ -21,7 +21,7 @@ class NavbarController extends FluxController {
             tags     : [],
             workbook : null,
         };
-
+        
         this.tags = [
                 { value: 'foo', text: 'Foo' },
                 { value: 'bar', text: 'Bar' },
@@ -106,6 +106,7 @@ class NavbarController extends FluxController {
      *
      */
     newSnippet() {
+        this.editor.workbook = this.workbook.workbook;
         this.editor.show = true;
     }
 

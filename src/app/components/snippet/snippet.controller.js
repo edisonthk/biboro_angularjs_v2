@@ -108,7 +108,6 @@ class SnippetController extends FluxController {
         }else{
             this.snippet.store(formData);
         }
-        
     }
 
     storedCallback(parameters) {
