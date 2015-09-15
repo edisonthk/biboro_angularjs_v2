@@ -1,8 +1,10 @@
 
-import BaseController from "../../base/base.controller";
+import FluxController from "../flux/flux.controller";
 
-class WorkbookShowController extends BaseController {
-    constructor($scope ,$state ,$stateParams ,WorkbookService, AccountService, RouteService, SnippetService, Markdown) {
+class WorkbookShowController extends FluxController {
+    constructor($scope ,$state ,$stateParams ,Dispatcher,WorkbookService, AccountService, RouteService, SnippetService, Markdown) {
+        super.constructor($scope, Dispatcher);
+
         this._scope       = $scope;
         this.state        = $state;
         this.stateParams  = $stateParams;
@@ -30,27 +32,24 @@ class WorkbookShowController extends BaseController {
             snippet: null,
         };
 
-        $scope.$on("test1", function(){
-            console.log("this is workbookshow controler");
-        });
-
-        console.log(this);
-
         // register action
-        this.workbook.registerShowCallback(this.showCallback.bind(this));
-        this.workbook.registerShowMyCallback(this.showMyCallback.bind(this));
-        this.workbook.registerStoreCallback(this.workbookStoreCallback.bind(this));
-        this.workbook.registerUpdateCallback(this.updateCallback.bind(this));
+        this.registerCallbacks({
+            // workbook
+            WORKBOOK_SHOW    : this.showCallback,
+            WORKBOOK_STORE   : this.workbookStoreCallback,
+            WORKBOOK_UPDATE  : this.updateCallback,
 
-        this.route.registerStateUpdatedCallback(this.stateUpdatedCallback.bind(this));
-        this.account.registerFetchedLoginedAccountCallback(this.fetchedLoginedAccountCallback.bind(this));
+            // account
+            ACCOUNT_FETCH    : this.fetchedLoginedAccountCallback,
+
+            // route
+            ROUTE_UPDATED    : this.stateUpdatedCallback,
+        });
 
         // dialog
         this.createDialog.outsideClickedCallback = this.createDialogOutsideClickedCallback.bind(this);
         this.editDialog.outsideClickedCallback   = this.editDialogOutsideClickedCallback.bind(this);
         this.commentBox.outsideClickedCallback  = this.commentsBoxOutsideClickedCallback.bind(this);
-
-        this.snippet.registerStoreCallback(this.storedCallback.bind(this));
 
         this.initialize();
 
@@ -63,41 +62,17 @@ class WorkbookShowController extends BaseController {
 
         var workbook = this.stateParams.workbook;
         if(workbook) {
-            if(workbook.match(/^\d+$/g)) {
-                // workbook is number
-                this.workbook.show(workbook);    
-            }else if(workbook === 'me'){
-                // workbook is my workbook, show my workbook
-                this.workbook.showMy();
-            }else {
-                // workbook not found
-            }
+            this.workbook.show(workbook);
         }
-
-        this._scope.$watch(function() {
-
-        });
-    }
-
-    showMyCallback(parameters) {
-        // console.log(parameters);
-        this.currentWorkbook = {
-            id:       this.stateParams.workbook,
-            title:    "マイ・ブック",
-            snippets: parameters.response,
-        };
-
-
-        this.editDialog.title = this.currentWorkbook.title;
     }
 
     showCallback(parameters) {
 
-        this.currentWorkbook = parameters.response.workbook;
+        this.currentWorkbook = this.workbook.getCurrentWorkbook();
         this.editDialog.title = this.currentWorkbook.title;
 
         // for debug purpose
-        this.commentBox.snippet = this.currentWorkbook.snippets[0];
+        // this.commentBox.snippet = this.currentWorkbook.snippets[0];
 
         for (var i = 0; i < this.currentWorkbook.snippets.length; i++) {
             var snippet = this.currentWorkbook.snippets[i];
@@ -195,10 +170,6 @@ class WorkbookShowController extends BaseController {
             tags: this.editor.tags,
             workbookId: this.editor.workbook === null ? 0 : this.editor.workbook.id ,
         });
-    }
-
-    storedCallback(parameters) {
-        console.log(parameters);
     }
 
     editorQuitCallback() {

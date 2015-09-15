@@ -16,6 +16,15 @@ class MarkdownFactory {
     }
 
     parseMd(md) {
+
+        md = md.replace(/```((.|\r?\n)*?)```/g,function(match,p1) {
+            return match.replace(/[<>]/g, function(match) {
+                if(match == "<") {
+                    return "&lt;";
+                }
+                return "&gt;";
+            });
+        });
         return Markdown(md, {renderer: this.renderer});
     }
 }

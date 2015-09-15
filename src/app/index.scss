@@ -232,6 +232,11 @@ navbar {
                     cursor: pointer;
                 }
             }
+
+            .pre.prettyprint {
+                border: 0;
+                padding: 10px;
+            }
         }
     }
 
@@ -277,6 +282,9 @@ navbar {
     }
     .title-cell h1 > small {
         font-size: 13px;
+    }
+    .title-cell .author {
+        text-align: center;
     }
 }
 

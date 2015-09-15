@@ -2,7 +2,7 @@
     <div class="group">
         <div class="title">GENERAL</div>
         <div class="item"><a ui-sref="news"><i class="fa fa-newspaper-o"></i>&nbsp;ニュース</a></div>
-        <div class="item"><a ui-sref="workbookShow({workbook: 'me'})"><i class="fa fa-book"></i>&nbsp;マイ・ワークブック</a></div>
+        <div class="item"><a ui-sref="workbookShow({workbook: workbookCtrl.account.getUser().url_path})"><i class="fa fa-book"></i>&nbsp;マイ・ワークブック</a></div>
     </div>
     <div class="group">
         <div class="inner-group">

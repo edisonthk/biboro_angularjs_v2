@@ -6,6 +6,7 @@
             <small class="right" ng-click="workbookCtrl.deleteWorkbook()"><i class="fa fa-trash-o"></i></small>
             <small class="right" ng-click="workbookCtrl.showEditDialog()"><i class="fa fa-edit"></i></small>    
         </h1>
+        <p class="author" ng-bind="workbookCtrl.currentWorkbook.account.name"></p>
     </div>
 
     <div class="cell clearfix"

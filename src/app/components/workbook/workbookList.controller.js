@@ -2,10 +2,12 @@
 import FluxController from "../flux/flux.controller";
 
 class WorkbookListController extends FluxController {
-    constructor($state, $scope ,WorkbookService) {
-        super.constructor($scope);
+    constructor($state, $scope ,Dispatcher,WorkbookService, AccountService) {
+        super.constructor($scope, Dispatcher);
+        
         this.state        = $state;
         this.workbook     = WorkbookService;
+        this.account      = AccountService;
         this.createDialog = {
             show: false
         };
@@ -14,10 +16,11 @@ class WorkbookListController extends FluxController {
         };
 
         // register action
-        // this.workbook.yeah = "bbb";
-        this.workbook.registerFetchAllCallback(this.fetchAllCallback.bind(this));
-        this.workbook.registerStoreCallback(this.workbookStoreCallback.bind(this));
-        this.workbook.registerUpdateCallback(this.updateCallback.bind(this));
+        this.registerCallbacks({
+            WORKBOOK_FETCHALL  : this.fetchAllCallback,
+            WORKBOOK_STORE     : this.storeCallback,
+            WORKBOOK_UPDATE    : this.updateCallback,
+        });
 
         this.createDialog.outsideClickedCallback = this.createDialogOutsideClickedCallback.bind(this);
         this.editDialog.outsideClickedCallback   = this.editDialogOutsideClickedCallback.bind(this);
@@ -27,6 +30,8 @@ class WorkbookListController extends FluxController {
 
     initialize() {
         this.workbook.fetchAll();
+
+        this.account.fetchLoginedAccount();
 
         this.workbooks = [];
         this.currentWorkbook = null;
@@ -61,7 +66,7 @@ class WorkbookListController extends FluxController {
         });
     }
 
-    workbookStoreCallback(parameters) {
+    storeCallback(parameters) {
         if(parameters.result) {
             var workbook = parameters.response;
             this.state.go("workbookShow",{workbook: workbook.id});

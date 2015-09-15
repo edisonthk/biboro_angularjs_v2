@@ -1,10 +1,12 @@
 
-import BaseController from "../../base/base.controller";
+import FluxController from "../flux/flux.controller";
 import Markdown from "../../../../bower_components/marked/lib/marked";
 
-class SnippetController extends BaseController{
+class SnippetController extends FluxController {
     
     constructor($scope, $state,$stateParams,Dispatcher, WorkbookService, AccountService, SnippetService, RouteService, ShortcutService) {
+        super.constructor($scope, Dispatcher);
+
         this._scope         = $scope;
         this.state          = $state;
         this.stateParams    = $stateParams;
@@ -24,11 +26,14 @@ class SnippetController extends BaseController{
         // register callback for all kinds of action
         // this.snippet.registerFetchedAllCallback(this.fetchedAllCallback.bind(this));
 
-        this.account.registerFetchedLoginedAccountCallback(this.fetchedLoginedAccountCallback.bind(this));
+        this.registerCallbacks({
+            ACCOUNT_FETCH     : this.fetchedLoginedAccountCallback,
 
-        this.snippet.registerStoreCallback(this.storedCallback.bind(this));
-        this.snippet.registerUpdateCallback(this.updatedCallback.bind(this));
-        this.snippet.registerShowCallback(this.showCallback.bind(this));
+            SNIPPET_SHOW      : this.showCallback,
+            SNIPPET_STORE     : this.storedCallback,
+            SNIPPET_UPDATE    : this.updatedCallback,
+
+        });
 
         // perform first action
         this.initialize();

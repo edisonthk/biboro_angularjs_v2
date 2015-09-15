@@ -7,7 +7,7 @@ var api = {
     // url or path to api
     host: {
         local: '/',
-        stagging : 'http://api.biboro.org/'
+        stagging : 'http://localhost:8000/'
     },
 
     // api will be used as defined api_[env]

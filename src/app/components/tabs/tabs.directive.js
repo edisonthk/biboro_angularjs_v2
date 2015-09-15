@@ -32,7 +32,6 @@ class TabsDirective {
                 paneElement.addEventListener("click", function(e) {
                     var selectedPane = panes[e.target.getAttribute("index")];
                     scope.ngModel = selectedPane;
-                    console.log(selectedPane);
                     if(typeof scope.selectedCallback === 'function') {
                         scope.selectedCallback(selectedPane);
                     }

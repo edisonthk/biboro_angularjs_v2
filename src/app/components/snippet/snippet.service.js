@@ -2,12 +2,12 @@
 class SnippetService {
 
     constructor($http,Dispatcher, Api) {
-        this.SNIPPET_FETCHEDALL_CALLBACK = "SNIPPET_FETCHEDALL_CALLBACK";
-        this.SNIPTET_STORE_CALLBACK = "SNIPPET_STORE_CALLBACK";
-        this.SNIPPET_SHOW_CALLBACK = "SNIPPET_SHOW_CALLBACK";
-        this.SNIPPET_UPDATE_CALLBACK = "SNIPPET_UPDATE_CALLBACK";
-        this.SNIPPET_DESTROY_CALLBACK = "SNIPPET_DESTROY_CALLBACK";
-        this.SNIPPET_FORKED_CALLBACK = "SNIPPET_FORKED_CALLBACK";
+        this.SNIPPET_FETCHALL = "SNIPPET_FETCHALL";
+        this.SNIPTET_STORE = "SNIPPET_STORE";
+        this.SNIPPET_SHOW = "SNIPPET_SHOW";
+        this.SNIPPET_UPDATE = "SNIPPET_UPDATE";
+        this.SNIPPET_DESTROY = "SNIPPET_DESTROY";
+        this.SNIPPET_FORKED = "SNIPPET_FORKED";
 
         // check or modify this constants by WorkbookController
         this.WORKBOOK_ACTION_FORK = "push"; 
@@ -20,30 +20,6 @@ class SnippetService {
         this.snippets = [];
 
         this.api = Api;
-    }
-
-    registerFetchedAllCallback(callback) {
-        this._dispatcher.register(this.SNIPPET_FETCHEDALL_CALLBACK,callback);
-    }
-
-    registerStoreCallback(callback) {
-        this._dispatcher.register(this.SNIPPET_STORE_CALLBACK,callback);
-    }
-
-    registerShowCallback(callback) {
-        this._dispatcher.register(this.SNIPPET_SHOW_CALLBACK,callback);
-    }
-
-    registerUpdateCallback(callback) {
-        this._dispatcher.register(this.SNIPPET_UPDATE_CALLBACK,callback);
-    }
-
-    registerDestroyAllCallback(callback) {
-        this._dispatcher.register(this.SNIPPET_DESTROY_CALLBACK,callback);
-    }
-
-    registerForkCallback(cb) {
-        this._dispatcher.register(this.SNIPPET_FORKED_CALLBACK, cb);
     }
 
     fork(id, workbookId) {
@@ -63,11 +39,11 @@ class SnippetService {
         self._http[req.method](req.url, req.data)
             .success(function(data){
                 self.snippets = data;
-                self._dispatcher.dispatch(self.SNIPPET_FORKED_CALLBACK, {"success":true,"result":"success","response":self.getSnippets()});
+                self._dispatcher.dispatch(self.SNIPPET_FORKED, {"success":true,"result":"success","response":self.getSnippets()});
             })
             .error(function(){
                 console.log("error in snippet.strore.js");
-                self._dispatcher.dispatch(self.SNIPPET_FORKED_CALLBACK, {"success":false,"result":"fail to fetch snippets."});
+                self._dispatcher.dispatch(self.SNIPPET_FORKED, {"success":false,"result":"fail to fetch snippets."});
             });
     }
 
@@ -83,11 +59,11 @@ class SnippetService {
         self._http[req.method](req.url, req.data)
             .success(function(data){
                 self.snippets = data;
-                self._dispatcher.dispatch(self.SNIPPET_FETCHEDALL_CALLBACK, {"success":true,"result":"success","response":self.getSnippets()});
+                self._dispatcher.dispatch(self.SNIPPET_FETCHALL, {"success":true,"result":"success","response":self.getSnippets()});
             })
             .error(function(){
                 console.log("error in snippet.strore.js");
-                self._dispatcher.dispatch(self.SNIPPET_FETCHEDALL_CALLBACK, {"success":false,"result":"fail to fetch snippets."});
+                self._dispatcher.dispatch(self.SNIPPET_FETCHALL, {"success":false,"result":"fail to fetch snippets."});
             });
 
     }
@@ -103,10 +79,10 @@ class SnippetService {
 
         self._http[req.method](req.url, req.data)
             .success(function(response){
-                self._dispatcher.dispatch(self.SNIPPET_STORE_CALLBACK, {"success":true,"result":"success", "response": response});
+                self._dispatcher.dispatch(self.SNIPPET_STORE, {"success":true,"result":"success", "response": response});
             })
             .error(function(){
-                self._dispatcher.dispatch(self.SNIPPET_STORE_CALLBACK, {"success":false,"result":"fail to store snippets."});
+                self._dispatcher.dispatch(self.SNIPPET_STORE, {"success":false,"result":"fail to store snippets."});
             });
     }
 
@@ -114,7 +90,7 @@ class SnippetService {
         var self= this;
         var snippet = self.getById(id);
         if(snippet !== null) {
-            self._dispatcher.dispatch(self.SNIPPET_SHOW_CALLBACK, {"success":true,"result":"success","response":snippet});
+            self._dispatcher.dispatch(self.SNIPPET_SHOW, {"success":true,"result":"success","response":snippet});
             return ;
         }
 
@@ -126,10 +102,10 @@ class SnippetService {
         self._http[req.method](req.url, req.data)
             .success(function(response){
                 self.snippets = response;
-                self._dispatcher.dispatch(self.SNIPPET_SHOW_CALLBACK, {"success":true,"result":"success","response":response});
+                self._dispatcher.dispatch(self.SNIPPET_SHOW, {"success":true,"result":"success","response":response});
             })
             .error(function(){
-                self._dispatcher.dispatch(self.SNIPPET_SHOW_CALLBACK, {"success":false,"result":"fail to show snippets."});
+                self._dispatcher.dispatch(self.SNIPPET_SHOW, {"success":false,"result":"fail to show snippets."});
             });
     }
 
@@ -144,10 +120,10 @@ class SnippetService {
 
         self._http[req.method](req.url, req.data)
             .success(function(response){
-                self._dispatcher.dispatch(self.SNIPPET_UPDATE_CALLBACK, {"success":true,"result":"success","response":response});
+                self._dispatcher.dispatch(self.SNIPPET_UPDATE, {"success":true,"result":"success","response":response});
             })
             .error(function(){
-                self._dispatcher.dispatch(self.SNIPPET_UPDATE_CALLBACK, {"success":false,"result":"fail to update snippets."});
+                self._dispatcher.dispatch(self.SNIPPET_UPDATE, {"success":false,"result":"fail to update snippets."});
             });
     }
 
@@ -161,10 +137,10 @@ class SnippetService {
 
         self._http[req.method](req.url, req.data)
             .success(function(response){
-                self._dispatcher.dispatch(self.SNIPPET_DESTROY_CALLBACK, {"success":true,"result":"success","response":response});
+                self._dispatcher.dispatch(self.SNIPPET_DESTROY, {"success":true,"result":"success","response":response});
             })
             .error(function(){
-                self._dispatcher.dispatch(self.SNIPPET_DESTROY_CALLBACK, {"success":false,"result":"fail to destroy snippets."});
+                self._dispatcher.dispatch(self.SNIPPET_DESTROY, {"success":false,"result":"fail to destroy snippets."});
             });
     }
 

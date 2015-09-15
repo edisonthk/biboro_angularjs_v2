@@ -5,10 +5,10 @@ class CommentService {
         this._dispatcher = Dispatcher;
         this._http       = $http;
 
-        this.COMMENT_FETCH_CALLBACK   = "COMMENT_FETCH_CALLBACK";
-        this.COMMENT_UPDATE_CALLBACK  = "COMMENT_UPDATE_CALLBACK";
-        this.COMMENT_DESTROY_CALLBACK = "COMMENT_DESTROY_CALLBACK";
-        this.COMMENT_STORE_CALLBACK   = "COMMENT_STORE_CALLBACK";
+        this.COMMENT_FETCH   = "COMMENT_FETCH";
+        this.COMMENT_UPDATE  = "COMMENT_UPDATE";
+        this.COMMENT_DESTROY = "COMMENT_DESTROY";
+        this.COMMENT_STORE   = "COMMENT_STORE";
 
         this.commentSnippets = [];
 
@@ -16,25 +16,15 @@ class CommentService {
     }
 
     
-    registerFetchCallback(cb) {
-        this._dispatcher.register(this.COMMENT_FETCH_CALLBACK,cb);
-    }
-
-    registerUpdateCallback(cb) {
-        this._dispatcher.register(this.COMMENT_UPDATE_CALLBACK,cb);
-    }
-
-    registerStoreCallback(cb) {
-        this._dispatcher.register(this.COMMENT_STORE_CALLBACK,cb);
-    }
-
-    registerDestroyCallback(cb) {
-        this._dispatcher.register(this.COMMENT_DESTROY_CALLBACK,cb);
-    }
-
     fetchComments(snippetId) {
 
         var self = this;
+
+        if(self.haveComment(snippetId)) {
+
+            self._dispatcher.dispatch(self.COMMENT_FETCH, {"success":true,"result":"success"});
+            return;
+        }
 
         var req = {
             method : self.api.comment.show.method,
@@ -44,11 +34,11 @@ class CommentService {
         self._http[req.method](req.url, req.data)
             .success(function(response){
                 self.setComments(snippetId, response);
-                self._dispatcher.dispatch(self.COMMENT_FETCH_CALLBACK, {"success":true,"result":"success","response":response});
+                self._dispatcher.dispatch(self.COMMENT_FETCH, {"success":true,"result":"success"});
             })
             .error(function(){
                 console.log("error in snippet.strore.js");
-                self._dispatcher.dispatch(self.COMMENT_FETCH_CALLBACK, {"success":false,"result":"fail to fetch comments from following snippet :"+snippetId});
+                self._dispatcher.dispatch(self.COMMENT_FETCH, {"success":false,"result":"fail to fetch comments from following snippet :"+snippetId});
             });
     }
 
@@ -64,10 +54,10 @@ class CommentService {
         self._http[req.method](req.url, req.data)
             .success(function(response){
                 self.appendComment(snippetId, response);
-                self._dispatcher.dispatch(self.COMMENT_STORE_CALLBACK, {"success":true,"result":"success","response":response});
+                self._dispatcher.dispatch(self.COMMENT_STORE, {"success":true,"result":"success","response":response});
             })
             .error(function(){
-                self._dispatcher.dispatch(self.COMMENT_STORE_CALLBACK, {"success":false,"result":"fail to fetch comments from following snippet :"+snippetId+" with commentId :"+commentId});
+                self._dispatcher.dispatch(self.COMMENT_STORE, {"success":false,"result":"fail to fetch comments from following snippet :"+snippetId+" with commentId :"+commentId});
             });
     }
 
@@ -83,10 +73,10 @@ class CommentService {
         self._http[req.method](req.url, req.data)
             .success(function(response){
                 self.updateComment(snippetId, commentId, response);
-                self._dispatcher.dispatch(self.COMMENT_UPDATE_CALLBACK, {"success":true,"result":"success","response":response});
+                self._dispatcher.dispatch(self.COMMENT_UPDATE, {"success":true,"result":"success","response":response});
             })
             .error(function(){
-                self._dispatcher.dispatch(self.COMMENT_UPDATE_CALLBACK, {"success":false,"result":"fail to fetch comments from following snippet :"+snippetId+" with commentId :"+commentId});
+                self._dispatcher.dispatch(self.COMMENT_UPDATE, {"success":false,"result":"fail to fetch comments from following snippet :"+snippetId+" with commentId :"+commentId});
             });
     }
 
@@ -106,11 +96,20 @@ class CommentService {
                 self.destroyComment(snippetId, commentId);
 
 
-                self._dispatcher.dispatch(self.COMMENT_DESTROY_CALLBACK, {"success":true,"result":"success","response":response});
+                self._dispatcher.dispatch(self.COMMENT_DESTROY, {"success":true,"result":"success","response":response});
             })
             .error(function(){
-                self._dispatcher.dispatch(self.COMMENT_DESTROY_CALLBACK, {"success":false,"result":"fail to destroy snippets."});
+                self._dispatcher.dispatch(self.COMMENT_DESTROY, {"success":false,"result":"fail to destroy snippets."});
             });
+    }
+
+    haveComment(snippetId) {
+        for (var i = 0; i < this.commentSnippets.length; i++) {
+            if(this.commentSnippets[i].id === snippetId) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

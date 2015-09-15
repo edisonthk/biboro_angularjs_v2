@@ -2,11 +2,8 @@ class AccountService {
 
     constructor($http,Dispatcher,Api) {
         
-        this.ACCOUNT_FETCHED_LOGINED_ACCOUNT = "ACCOUNT_FETCHED_LOGINED_ACCOUNT";
-
-        this.ACCOUNT_SIGN_IN = "ACCOUNT_SIGN_IN";
-        this.ACCOUNT_SIGN_OUT = "ACCOUNT_SIGN_OUT";
-
+        this.ACCOUNT_FETCH = "ACCOUNT_FETCH";
+        
         this._dispatcher = Dispatcher;
         this._http       = $http;
         this.api         = Api;
@@ -16,27 +13,15 @@ class AccountService {
 
     }
 
-    registerFetchedLoginedAccountCallback(callback) {
-        this._dispatcher.register(this.ACCOUNT_FETCHED_LOGINED_ACCOUNT,callback);
-    }
-
-    registerSignInCallback(callback){
-        this._dispatcher.register(this.ACCOUNT_SIGN_IN, callback);
-    }
-
-    registerSignOutCallback(callback){
-        this._dispatcher.register(this.ACCOUNT_SIGN_OUT, callback);
-    }
-
     fetchLoginedAccount(forceUpdate) {
         var self = this;
 
         if(!forceUpdate) {
             if(self.fetchedAccountData) {
                 if(self.account === null) {
-                    self._dispatcher.dispatch(self.ACCOUNT_FETCHED_LOGINED_ACCOUNT, {"success":false,"result":"fail to fetch  info."});
+                    self._dispatcher.dispatch(self.ACCOUNT_FETCH, {"success":false,"result":"fail to fetch  info."});
                 }else{
-                    self._dispatcher.dispatch(self.ACCOUNT_FETCHED_LOGINED_ACCOUNT, {"success":true,"result":"success","data":self.account});
+                    self._dispatcher.dispatch(self.ACCOUNT_FETCH, {"success":true,"result":"success","data":self.account});
                 }
                 return;
             }
@@ -51,12 +36,12 @@ class AccountService {
             .success(function(data){
                 self.account = data;
                 self.fetchedAccountData = true;
-                self._dispatcher.dispatch(self.ACCOUNT_FETCHED_LOGINED_ACCOUNT, {"success":true,"result":"success","data":self.account});
+                self._dispatcher.dispatch(self.ACCOUNT_FETCH, {"success":true,"result":"success","data":self.account});
             })
             .error(function(){
                 self.account = null;
                 self.fetchedAccountData = true;
-                self._dispatcher.dispatch(self.ACCOUNT_FETCHED_LOGINED_ACCOUNT, {"success":false,"result":"fail to fetch  info."});
+                self._dispatcher.dispatch(self.ACCOUNT_FETCH, {"success":false,"result":"fail to fetch  info."});
             });
 
     }

@@ -9,13 +9,9 @@ class RouteService {
         this.params = {};
         this.state = {};
 
-        this.ROUTE_UPDATED_CALLBACK = "ROUTE_UPDATED_CALLBACK";
+        this.ROUTE_UPDATED = "ROUTE_UPDATED";
 
         this._scope.$on('$stateChangeSuccess',this.stateUpdatedCallback.bind(this));
-    }
-
-    registerStateUpdatedCallback(cb) {
-        this._dispatcher.register(this.ROUTE_UPDATED_CALLBACK,cb);
     }
 
     stateUpdatedCallback(e, toState, toParams, fromState, fromParams) {
@@ -31,7 +27,7 @@ class RouteService {
         this.state = toState;
         this.params = toParams;
 
-        this._dispatcher.dispatch(this.ROUTE_UPDATED_CALLBACK, params);
+        this._dispatcher.dispatch(this.ROUTE_UPDATED, params);
     }
 
     getCurrentParams() {

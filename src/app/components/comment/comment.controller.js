@@ -1,6 +1,9 @@
+import FluxController from "../flux/flux.controller";
 
-class CommentController {
-    constructor ($scope, CommentService, AccountService) {
+class CommentController extends FluxController{
+    constructor ($scope,Dispatcher, CommentService, AccountService) {
+        super.constructor($scope, Dispatcher);
+
         this.IN_PROGRESS = "IN_PROGRESS";
         this.ERROR       = "ERROR";
         this.DONE        = "DONE";
@@ -10,12 +13,15 @@ class CommentController {
         this.account = AccountService;
 
 
+        this.registerCallbacks({
+            COMMENT_FETCH   : this.fetchCallback,
+            COMMENT_UPDATE  : this.updateCallback,
+            COMMENT_DESTROY : this.destroyCallback,
+            COMMENT_STORE   : this.storeCallback,
+
+        }); 
 
         this.scope.$watch('snippet', this.snippetUpdatedCallback.bind(this));
-        this.comment.registerFetchCallback(this.fetchCallback.bind(this));
-        this.comment.registerStoreCallback(this.storeCallback.bind(this));
-        this.comment.registerUpdateCallback(this.updateCallback.bind(this));
-        this.comment.registerDestroyCallback(this.destroyCallback.bind(this));
 
 
         this.status   = this.IN_PROGRESS;
@@ -40,7 +46,7 @@ class CommentController {
     }
 
 
-    fetchCallback(parameters) {
+    fetchCallback() {
         this.status = this.DONE;
         this.comments = this.comment.getCommentsBySnippetId(this.snippet.id);
         console.log(this.snippet.id);
