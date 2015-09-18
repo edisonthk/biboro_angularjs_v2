@@ -1,4 +1,7 @@
 import FluxController from "../flux/flux.controller";
+import KeyCode from "../shortcut/shortcut.config";
+import ShortcutTask from "../shortcut/shortcut.task";
+
 
 class WorkbookListController extends FluxController {
     constructor($state, $scope ,Dispatcher,WorkbookService, AccountService, ShortcutService) {
@@ -52,10 +55,22 @@ class WorkbookListController extends FluxController {
      *  create workbook
      */
     showCreateDialog() {
+        this.handlerToken = ShortcutTask.setTask(this.dialogShortcutHandler.bind(this));
         this.createDialog.show = true;
     }
 
+    dialogShortcutHandler(e) {
+        // var ctrlKey = (e.ctrlKey || e.metaKey);
+        if(e.keyCode === KeyCode.KEY_ESC) {
+            this.createDialog.show = false;
+            ShortcutTask.clearTask(this.handlerToken);
+        }
+
+
+    }
+
     createDialogOutsideClickedCallback() {
+        ShortcutTask.clearTask(this.handlerToken);
         this.createDialog.show = false;
     }
 
@@ -66,20 +81,23 @@ class WorkbookListController extends FluxController {
     }
 
     storeCallback(parameters) {
-        if(parameters.result) {
-            var workbook = parameters.response;
-            this.state.go("workbookShow",{workbook: workbook.id});
-        }
+        var workbook = parameters.response;
+
+        ShortcutTask.clearTask(this.handlerToken);
         this.createDialog.show = false;
+        this.state.go("workbookShow",{workbook: workbook.id});
+        
     }
 
     // 
     showEditDialog() {
+        this.handlerToken = ShortcutTask.setTask(this.dialogShortcutHandler.bind(this));
         this.editDialog.show = true;
     }
 
     // edit dialog event
     editDialogOutsideClickedCallback () {
+        ShortcutTask.clearTask(this.handlerToken);
         this.editDialog.show = false;
     }
 

@@ -73,6 +73,8 @@ class TerminalDirective {
                 if(e.keyCode === KeyCode.KEY_A) {
                     e.preventDefault();
                     self.highlightText(self.getNextElement());
+                }else if(e.keyCode === KeyCode.KEY_S) {
+                    e.preventDefault();
                 }
                 return;
             }

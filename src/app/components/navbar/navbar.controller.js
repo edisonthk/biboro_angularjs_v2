@@ -1,6 +1,7 @@
 import KeyCode from "../shortcut/shortcut.config";
-import FluxController from "../flux/flux.controller";
 import ShortcutTask from "../shortcut/shortcut.task";
+import FluxController from "../flux/flux.controller";
+
 
 class NavbarController extends FluxController {
     constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $stateParams, $state, toastr) {
