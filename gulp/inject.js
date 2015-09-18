@@ -4,6 +4,7 @@ var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
 var env = require('gulp-env');
+var fs = require('fs');
 
 var $ = require('gulp-load-plugins')();
 
@@ -29,7 +30,12 @@ gulp.task('inject', ['scripts','styles'], function () {
     addRootSlash: false
   };
 
-  env({ file: './env.json'});
+  if(fs.existsSync('./env.json')){
+     env({ file: './env.json'});
+  }
+
+  console.log(process.env.STAGGING);
+  
 
   return gulp.src(path.join(conf.paths.src, '/*.html'))
     .pipe($.inject(injectStyles, injectOptions))
