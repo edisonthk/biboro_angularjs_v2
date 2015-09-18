@@ -4,7 +4,7 @@ import Markdown from "../../../../bower_components/marked/lib/marked";
 
 class SnippetController extends FluxController {
     
-    constructor($scope, $state,$stateParams,Dispatcher, WorkbookService, AccountService, SnippetService, RouteService, ShortcutService) {
+    constructor($scope, $state,$stateParams,Dispatcher, WorkbookService, AccountService, SnippetService, RouteService) {
         super.constructor($scope, Dispatcher);
 
         this._scope         = $scope;
@@ -76,7 +76,7 @@ class SnippetController extends FluxController {
         
     }
 
-    fetchedLoginedAccountCallback(parameters) {
+    fetchedLoginedAccountCallback() {
         // console.log(parameters);
     }
 

@@ -56,7 +56,7 @@ class SnippetService {
 
         var req = {
             method : self.api.snippet.index.method,
-            url    : self.api.snippet.index.url.replace(":id",workbookId),
+            url    : self.api.snippet.index.url,
         };
 
         self._http[req.method](req.url, req.data)

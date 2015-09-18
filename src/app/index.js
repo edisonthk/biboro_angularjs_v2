@@ -1,5 +1,4 @@
 /* jshint browser: true */
-/* global  */
 
 import Dispatcher from './base/dispatcher';
 
@@ -7,11 +6,9 @@ import Dispatcher from './base/dispatcher';
 import AccountService  from '../app/components/account/account.service';
 import SnippetService  from '../app/components/snippet/snippet.service';
 import WorkbookService from '../app/components/workbook/workbook.service';
-import ShortcutService from './components/shortcut/shortcut.service';
 import RouteService    from './components/route/route.service';
 import CommentService  from './components/comment/comment.service';
 import NewsService  from './components/news/news.service';
-
 import MarkdownHelper from './components/markdown/markdown.factory';
 
 // directives
@@ -50,7 +47,6 @@ angular.module('biboroAngular', [
     .service('SnippetService', SnippetService)
     .service('WorkbookService', WorkbookService)
     .service('AccountService', AccountService)
-    .service('ShortcutService', ShortcutService)
     .service('CommentService', CommentService)
     .service('NewsService', NewsService)
 

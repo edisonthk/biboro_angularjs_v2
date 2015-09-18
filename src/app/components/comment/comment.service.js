@@ -57,7 +57,7 @@ class CommentService {
                 self._dispatcher.dispatch(self.COMMENT_STORE, {"success":true,"result":"success","response":response});
             })
             .error(function(){
-                self._dispatcher.dispatch(self.COMMENT_STORE, {"success":false,"result":"fail to fetch comments from following snippet :"+snippetId+" with commentId :"+commentId});
+                self._dispatcher.dispatch(self.COMMENT_STORE, {"success":false,"result":"fail to fetch comments from following snippet :"+snippetId});
             });
     }
 
@@ -126,7 +126,7 @@ class CommentService {
 
     appendComment(snippetId, comment) {
         var group = this.getCommentGroup(snippetId);
-        if(group.id == 0) {
+        if(group.id === 0) {
             this.setComments(snippetId, [comment]);
         }else{
             group.comments.push(comment);

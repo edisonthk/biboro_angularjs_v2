@@ -59,7 +59,7 @@ class FloatLayoutDirective {
         var maxCols     = parseInt( parentWidth / childWidth );
         
 
-        if(maxCols == 0){ 
+        if(maxCols === 0){ 
             maxCols = 1;
         }
 

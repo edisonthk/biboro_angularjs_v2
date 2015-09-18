@@ -1,5 +1,3 @@
-import preferences from "../../preferences";
-
 var api = {
 
     debug: true,
@@ -9,7 +7,7 @@ var api = {
     // url or path to api
     host: {
         local: '/',
-        stagging : preferences.stagging,
+        stagging : domain === 'undefined' ? 'http://api.biboro.org/' : domain,
         // stagging : 'http://localhost:8000/'
     },
 

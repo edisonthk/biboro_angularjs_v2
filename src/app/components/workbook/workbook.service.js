@@ -112,7 +112,7 @@ class WorkbookService extends BaseService{
                         self.workbooks[i] = wb;
                         break;
                     }
-                };
+                }
 
                 self._dispatcher.dispatch(self.WORKBOOK_SHOW, {"success":true,"result":"success","response":response});
                 self._dispatcher.dispatch(self.WORKBOOK_UPDATE, {"success":true,"result":"success","response":response});
@@ -148,14 +148,12 @@ class WorkbookService extends BaseService{
     }
 
     getById(workbookId) {
-        if(this.workbooks)
-
         workbookId = parseInt(workbookId);
         for (var i = 0; i < this.workbooks.length; i++) {
             if(this.workbooks[i].id === workbookId) {
                 return this.workbooks[i];
             }
-        };
+        }
         return null;
     }
 

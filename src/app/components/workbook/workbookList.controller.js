@@ -4,7 +4,7 @@ import ShortcutTask from "../shortcut/shortcut.task";
 
 
 class WorkbookListController extends FluxController {
-    constructor($state, $scope ,Dispatcher,WorkbookService, AccountService, ShortcutService) {
+    constructor($state, $scope ,Dispatcher,WorkbookService, AccountService) {
         super.constructor($scope, Dispatcher);
         
         this.state        = $state;

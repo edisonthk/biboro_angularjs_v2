@@ -3,9 +3,11 @@
 var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
+var env = require('gulp-env');
 
 var $ = require('gulp-load-plugins')();
 
+var preprocess = require('gulp-preprocess');
 var wiredep = require('wiredep').stream;
 var _ = require('lodash');
 
@@ -27,9 +29,12 @@ gulp.task('inject', ['scripts','styles'], function () {
     addRootSlash: false
   };
 
+  env({ file: './env.json'});
+
   return gulp.src(path.join(conf.paths.src, '/*.html'))
     .pipe($.inject(injectStyles, injectOptions))
     .pipe($.inject(injectScripts, injectOptions))
+    .pipe(preprocess({context: {STAGGING: process.env.STAGGING}}))
     .pipe(wiredep(_.extend({}, conf.wiredep)))
     .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve')));
 });

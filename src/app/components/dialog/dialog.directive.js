@@ -26,13 +26,13 @@ class DialogDirective {
         return directive;
     }
 
-    linkFunc(scope, el, attr, vm) {
+    linkFunc(scope, el) {
         setTimeout(function() {
             el.find("input")[0].focus();
         },100);
         
 
-        document.querySelector(".dialog-background").addEventListener('click',function(e) {
+        document.querySelector(".dialog-background").addEventListener('click',function() {
             if(typeof scope.outsideClickedCallback === 'function') {
                 scope.outsideClickedCallback();
                 scope.$apply();

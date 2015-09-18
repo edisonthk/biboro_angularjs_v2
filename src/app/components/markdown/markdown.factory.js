@@ -11,15 +11,15 @@ class MarkdownFactory {
                 langCode = " lang-"+language;
             }
             return '<pre class="prettyprint '+langCode+'">'+prettyPrintOne(code)+'</pre>';
-        }
+        };
 
     }
 
     parseMd(md) {
 
-        md = md.replace(/```((.|\r?\n)*?)```/g,function(match,p1) {
+        md = md.replace(/```((.|\r?\n)*?)```/g,function(match) {
             return match.replace(/[<>]/g, function(match) {
-                if(match == "<") {
+                if(match === "<") {
                     return "&lt;";
                 }
                 return "&gt;";

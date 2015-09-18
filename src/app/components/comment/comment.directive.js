@@ -20,8 +20,8 @@ class CommentDirective {
         return directive;
     }
 
-    linkFunc(scope, el, attr, vm) {
-        document.querySelector(".dialog-background").addEventListener('click',function(e) {
+    linkFunc(scope) {
+        document.querySelector(".dialog-background").addEventListener('click',function() {
             if(typeof scope.outsideClickedCallback === 'function') {
                 scope.outsideClickedCallback();
                 scope.$apply();

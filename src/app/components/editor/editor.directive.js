@@ -44,7 +44,7 @@ class EditorDirective {
 }
 
 class EditorController extends FluxController {
-    constructor ($scope, ShortcutService, Markdown, Dispatcher) {
+    constructor ($scope, Markdown, Dispatcher) {
         super.constructor($scope,Dispatcher);
         this.scope = $scope;
         this.markdown = Markdown;

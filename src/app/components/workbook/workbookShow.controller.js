@@ -67,7 +67,7 @@ class WorkbookShowController extends FluxController {
         }
     }
 
-    showCallback(parameters) {
+    showCallback() {
 
         this.currentWorkbook = this.workbook.getCurrentWorkbook();
         this.editDialog.title = this.currentWorkbook.title;
@@ -82,11 +82,11 @@ class WorkbookShowController extends FluxController {
 
     }
 
-    fetchedLoginedAccountCallback(parameters) {
+    fetchedLoginedAccountCallback() {
         // console.log(parameters);
     }
 
-    stateUpdatedCallback(parameters) {
+    stateUpdatedCallback() {
         // console.log(parameters);
         // this.currentWorkbook = null;
         // console.log(parameters);
@@ -132,10 +132,10 @@ class WorkbookShowController extends FluxController {
         this.workbook.update(this.stateParams.workbook ,formData);
     }
 
-    updateCallback(parameters) {
-        if(parameters.success) {
-            var workbook = parameters.response;
-        }
+    updateCallback() {
+        
+        // var workbook = parameters.response;
+        
     }
 
     /**
