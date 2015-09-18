@@ -192,7 +192,7 @@ navbar {
     margin: 0 5px;
 }
 
-.workbook-show {
+.cells-wrapper {
     $workbook-show-width: $wrapper-width;
     margin: 150px auto 0 auto;
     display: block;
@@ -217,7 +217,7 @@ navbar {
                 right: 4px;
                 top: 10px;
 
-                button {
+                button, .btn {
                     width: 30px;
                     text-align: center;
                     display: inline-block;
@@ -227,9 +227,31 @@ navbar {
                     border-radius: 3px;
                 }
 
-                button:hover {
+                button:hover, .btn:hover {
                     background-color: #eee;
                     cursor: pointer;
+                }
+            }
+
+            > .follow {
+                font-style: italic;
+                font-size: 12px;
+            } 
+
+            small {
+                font-size: 50%;
+            }
+
+            .html-content {
+                font-size: 12px;
+                h1 {
+                    font-size: 250%;
+                }
+                h2 {
+                    font-size: 200%;
+                }
+                h3 {
+                    font-size: 150%;
                 }
             }
 
@@ -254,7 +276,7 @@ navbar {
         width: $workbook-show-width;
         
         .cell {
-            width: $workbook-show-width / 3;
+            width: $workbook-show-width / 2;
         }
     }
 

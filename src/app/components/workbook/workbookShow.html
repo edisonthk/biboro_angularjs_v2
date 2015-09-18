@@ -1,4 +1,4 @@
-<div class="workbook-show clearfix">
+<div class="workbook-show cells-wrapper clearfix">
         
     <div class="cell title-cell clearfix" float-layout>
         <h1>
@@ -29,7 +29,7 @@
                 <button ng-click="workbookCtrl.deleteSnippet(snippet)"><i class="fa fa-trash-o"></i></button>
             </div>
 
-            <div ng-bind-html="snippet.htmlContent"></div>
+            <div ng-bind-html="snippet.htmlContent" class="html-content"></div>
         </div>
     </div>
 </div>

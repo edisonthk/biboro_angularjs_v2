@@ -2,10 +2,10 @@
 import FluxController from "../flux/flux.controller";
 
 class WorkbookShowController extends FluxController {
-    constructor($scope ,$state ,$stateParams ,Dispatcher,WorkbookService, AccountService, RouteService, SnippetService, Markdown) {
+    constructor($scope ,$state ,$stateParams ,Dispatcher,WorkbookService, AccountService, RouteService, SnippetService, Markdown, toastr) {
         super.constructor($scope, Dispatcher);
 
-        this._scope       = $scope;
+        this.toast        = toastr;
         this.state        = $state;
         this.stateParams  = $stateParams;
         this.snippet      = SnippetService;

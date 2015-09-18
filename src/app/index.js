@@ -10,6 +10,7 @@ import WorkbookService from '../app/components/workbook/workbook.service';
 import ShortcutService from './components/shortcut/shortcut.service';
 import RouteService    from './components/route/route.service';
 import CommentService  from './components/comment/comment.service';
+import NewsService  from './components/news/news.service';
 
 import MarkdownHelper from './components/markdown/markdown.factory';
 
@@ -27,18 +28,23 @@ import apiConstant from './components/api/api.filter';
 
 // config
 import routeConfig from './components/route/route.config';
+import toastrConfig from './components/toastr/toastr.config';
 
 angular.module('biboroAngular', [
         'ngAnimate',
+        'toastr',
         'ngCookies',
         'ngSanitize',
         'ngResource',
+
         'ui.router',
         'ngTagsInput',
+
     ])
     .constant('Api', apiConstant)
 
     .config(routeConfig)
+    .config(toastrConfig)
 
     .service('RouteService', RouteService)
     .service('SnippetService', SnippetService)
@@ -46,6 +52,7 @@ angular.module('biboroAngular', [
     .service('AccountService', AccountService)
     .service('ShortcutService', ShortcutService)
     .service('CommentService', CommentService)
+    .service('NewsService', NewsService)
 
     .factory('Dispatcher', () => new Dispatcher())
     .factory('Markdown', () => new MarkdownHelper())

@@ -23,6 +23,7 @@ class CommentController extends FluxController{
 
         this.scope.$watch('snippet', this.snippetUpdatedCallback.bind(this));
 
+        console.log($scope.snippet);
 
         this.status   = this.IN_PROGRESS;
         this.snippet = null;
@@ -43,6 +44,8 @@ class CommentController extends FluxController{
         this.snippet = snippet;
         this.comment.fetchComments(snippet.id);
         this.user   = this.account.getUser();
+
+        console.log(this.user);
     }
 
 

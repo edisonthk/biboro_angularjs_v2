@@ -8,6 +8,7 @@ var api = {
     host: {
         local: '/',
         stagging : 'http://api.biboro.org/'
+        // stagging : 'http://localhost:8000/'
     },
 
     // api will be used as defined api_[env]
@@ -40,6 +41,10 @@ var api = {
             update  : {method: 'put'   , url:'api/v1/snippet/:id'},
             destroy : {method: 'delete', url:'api/v1/snippet/:id'},
         },
+        news: {
+            index   : {method: 'get'    ,url:'api/v1/news'} ,
+            show    : {method: 'get'    ,url:'api/v1/news/:id'} ,
+        },  
         workbook: {
             index   : {method: 'get'    ,url:'api/v1/workbook'},
             show    : {method: 'get'    ,url:'api/v1/workbook/:id'},

@@ -1,3 +1,4 @@
+import ShortcutTask from "../shortcut/shortcut.task";
 
 class FluxController {
     constructor($scope, Dispatcher) {
@@ -22,6 +23,10 @@ class FluxController {
     }
 
     onDestruct() {
+
+        ShortcutTask.clearTask(this._shortcutTaskToken);
+        ShortcutTask.clearParallelTask(this._shortcutParallelTaskToken);
+
         this._dispatcher.detach(this.dispatchToken);
     }
 }

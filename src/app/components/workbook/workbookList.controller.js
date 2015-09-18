@@ -1,4 +1,3 @@
-
 import FluxController from "../flux/flux.controller";
 
 class WorkbookListController extends FluxController {

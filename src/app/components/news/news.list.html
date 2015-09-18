@@ -1,0 +1,52 @@
+<div class="news cells-wrapper clearfix">
+        
+    <div class="cell title-cell clearfix" float-layout>
+        <h1>
+            <span>NEWS</span>
+        </h1>
+    </div>
+
+    <div class="cell clearfix"
+        float-layout
+        ng-repeat="news in newsCtrl.news.getAll()"
+        ng-mouseenter="news.showTools = true"
+        ng-mouseleave="news.showTools = false" >
+        <div class="cell-wrapper">
+            <div class="line"></div>
+            <h3 class="title">
+                <span ng-bind="news.title"></span>
+                <small>by </small><small ng-bind="news.creator.name"></small>
+            </h3>   
+
+            <div class="follow" ng-if="news.reference != null">
+                <a ng-if="news.reference.method === 2" ng-href="{{news.reference.target}}">Ref 
+                    <span ng-bind="news.reference.domain"></span>
+                </a>
+            </div>
+            
+
+            <div class="tools" ng-if="news.showTools">
+                <button ng-click="newsCtrl.showCommentBox(news)"><i class="fa fa-comment-o"></i></button>
+                <a class="btn" ui-sref="workbookShow({workbook: news.workbookId})"><i class="fa fa-sign-out"></i></a>
+                
+
+                <!-- <button ng-if="news.editable" ng-click="newsCtrl.editSnippet(news)">
+                    <i class="fa fa-wrench"></i>
+                </button>
+                <button ng-if="!news.editable" ng-click="newsCtrl.forkSnippet(news)">
+                    <i class="fa fa-code-fork"></i>
+                </button>
+                
+                <button ng-click="newsCtrl.deleteSnippet(news)"><i class="fa fa-trash-o"></i></button> -->
+            </div>
+
+            <div ng-bind-html="news.htmlContent" class="html-content"></div>
+        </div>
+    </div>
+</div>
+
+<comment
+    ng-if="newsCtrl.commentBox.show" 
+    snippet="newsCtrl.commentBox.snippet"
+    outside-clicked-callback="newsCtrl.commentBox.outsideClickedCallback" >
+></comment>

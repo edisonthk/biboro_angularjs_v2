@@ -1,9 +1,12 @@
+import KeyCode from "../shortcut/shortcut.config";
 import FluxController from "../flux/flux.controller";
+import ShortcutTask from "../shortcut/shortcut.task";
 
 class NavbarController extends FluxController {
-    constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $stateParams, $state) {
+    constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $stateParams, $state, toastr) {
         super.constructor($scope, Dispatcher);
 
+        this.toast       = toastr;
         this.route       = RouteService;  
         this.account     = AccountService;
         this.workbook    = WorkbookService;
@@ -37,7 +40,7 @@ class NavbarController extends FluxController {
             ACCOUNT_FETCH     : this.fetchLoginAccount,
             ROUTE_UPDATED     : this.stateUpdatedCallback,
 
-            SNIPTET_STORE     : this.storedCallback,
+            SNIPPET_STORE     : this.storedCallback,
         });
 
         this.account.fetchLoginedAccount();
@@ -46,11 +49,24 @@ class NavbarController extends FluxController {
             $state.go("workbookShow",{workbook:  pane.id});
         }
 
+        this._shortcutParallelTaskToken = ShortcutTask.setParallelTask(this.keyupTask.bind(this));
     }
 
     loadTags(query) {
         console.log(query);
         return [];
+    }
+
+    keyupTask(e) {
+        
+        var ctrlKey = (e.ctrlKey || e.metaKey);
+        console.log(e.keyCode + " " + KeyCode.KEY_B);   
+        if(ctrlKey && e.keyCode === KeyCode.KEY_B) {
+            this.newSnippet();
+
+        }
+
+        this._scope.$apply();
     }
 
     stateUpdatedCallback(parameters) {
@@ -93,7 +109,6 @@ class NavbarController extends FluxController {
     }
 
     fetchLoginAccount(parameters) {
-        console.log(parameters);
         if(parameters.result) {
             this.accountInfo = parameters.data;
         }else{
@@ -121,7 +136,8 @@ class NavbarController extends FluxController {
     }
 
     storedCallback(parameters) {
-        
+        this.editor.show = false;
+        this.toast.success("作成完了！");
     }
 
     editorQuitCallback() {

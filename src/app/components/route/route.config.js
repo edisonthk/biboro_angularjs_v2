@@ -21,10 +21,9 @@ export default function ($httpProvider, $stateProvider, $urlRouterProvider) {
             })
             .state('news', {
                 url: '/news',
-                controller: function() {
-                    
-                },
-                template: 'fsdfsdfs'
+                controller:   NewsController,
+                controllerAs: 'newsCtrl',
+                templateUrl:  '../app/components/news/news.list.html',
             })
             .state('workbook', {
                 url: '/workbook',
