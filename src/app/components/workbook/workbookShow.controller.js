@@ -133,7 +133,7 @@ class WorkbookShowController extends FluxController {
     }
 
     updateCallback() {
-        
+        console.log("あっぷ");
         // var workbook = parameters.response;
         
     }
@@ -190,6 +190,7 @@ class WorkbookShowController extends FluxController {
         this.snippet.destroy(snippet.id);
         this.state.go(this.state.current, {}, {reload: true});
     }
+
 }
 
 export default WorkbookShowController;

@@ -11,7 +11,7 @@
 
     <div class="cell clearfix"
         float-layout
-        ng-repeat="snippet in workbookCtrl.currentWorkbook.snippets"
+        ng-repeat="snippet in workbookCtrl.workbook.getCurrentWorkbookSnippets()"
         ng-mouseenter="snippet.showTools = true"
         ng-mouseleave="snippet.showTools = false" >
         <div class="cell-wrapper">
@@ -46,6 +46,5 @@
     snippet="workbookCtrl.commentBox.snippet"
     outside-clicked-callback="workbookCtrl.commentBox.outsideClickedCallback" >
 ></comment>
-
 
 <div ui-view></div>
