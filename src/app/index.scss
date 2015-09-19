@@ -148,7 +148,7 @@ navbar {
     height: 100%;
 }
 
-.inline-10, .inline-2 {
+.inline-10, .inline-2 .inline-6{
     display: inline-block;
 }
 .inline-10 {
@@ -156,6 +156,9 @@ navbar {
 }
 .inline-2 {
     width: 16%;
+}
+.inline-6 {
+    width: 50%;
 }
 
 .title {

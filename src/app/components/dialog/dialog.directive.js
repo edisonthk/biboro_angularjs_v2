@@ -28,7 +28,9 @@ class DialogDirective {
 
     linkFunc(scope, el) {
         setTimeout(function() {
-            el.find("input")[0].focus();
+            if(el.find("input")[0]){
+                el.find("input")[0].focus();
+            }
         },100);
         
 

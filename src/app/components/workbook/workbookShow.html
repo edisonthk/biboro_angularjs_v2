@@ -47,4 +47,11 @@
     outside-clicked-callback="workbookCtrl.commentBox.outsideClickedCallback" >
 ></comment>
 
+<dialog 
+    open 
+    ng-if="workbookCtrl.deleteDialog.show" 
+    outside-clicked-callback="workbookCtrl.deleteDialog.outsideClickedCallback" >
+    <div ng-include="'app/components/snippet/snippet.deleteDialog.html'"></div>
+</dialog>
+
 <div ui-view></div>
