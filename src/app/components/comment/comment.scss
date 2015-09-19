@@ -7,5 +7,60 @@
         line-height: 60px;
         font-size: 20px;
         text-align: center;
-    }    
+    }
+}
+
+
+.gazou {
+  width: 40px;
+  height: 45px;
+}
+
+.sen {
+  width: 400px;
+  margin-right: auto;
+  margin-left : auto;
+}
+
+.comment-box.dialog-box {
+    padding: 20px;
+    background: #fff;
+    border: 1px #ccc solid;
+    box-shadow: 0 2px 3px 0 #ddd;
+    -moz-box-shadow: 0 2px 3px 0 #ddd;
+    -webkit-box-shadow: 0 2px 3px 0 #ddd;
+    background-color: white;
+}
+li.comment {
+  width: 100%;
+}
+.myleft.profile{
+  width: 30%;
+}
+
+.myleft.mycomment{
+  width: 70%;
+}
+.myleft.mycomment > .comment_me {
+  width: 100%;
+  word-break: break-all;
+}
+
+.myleft{
+    float: left;
+}
+
+
+.comment-box.dialog-box .comment-list {
+  max-height: 300px;
+  overflow: scroll;
+}
+
+
+.comment-box.dialog-box textarea .comment-text{
+  background-color: blue;
+}
+
+li {
+  list-style: none;
 }
