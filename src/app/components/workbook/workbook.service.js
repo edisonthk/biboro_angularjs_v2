@@ -1,9 +1,10 @@
 import BaseService from "../../base/base.service";
 
 class WorkbookService extends BaseService{
-    constructor($http,Dispatcher, SnippetService, Api) {
+    constructor($http, $stateParams, Dispatcher, SnippetService, Api) {
         
         this._http = $http;
+        this.stateParams  = $stateParams;
         this._dispatcher = Dispatcher;
         this.snippet = SnippetService;
         this.api = Api;
@@ -107,6 +108,7 @@ class WorkbookService extends BaseService{
         self._http[req.method](req.url, req.data)
             .success(function(response){
                 var wb = response;
+                console.log(response);
                 for (var i = 0; i < self.workbooks.length; i++) {
                     if(self.workbooks[i].id === wb.id) {
                         self.workbooks[i] = wb;
@@ -155,6 +157,12 @@ class WorkbookService extends BaseService{
             }
         }
         return null;
+    }
+
+    getCurrentWorkbookSnippets(){
+        if(this.workbook){
+            return this.workbook.snippets;
+        }
     }
 
 }

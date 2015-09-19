@@ -93,12 +93,11 @@ class SnippetController extends FluxController {
     }
 
     editorSavedCallback() {
-
         var formData = {
             title: this.editor.title,
             content: this.editor.content,
             tags: this.editor.tags,
-            workbookId: this.editor.workbook === null ? 0 : this.editor.workbook.id,
+            workbookId: this.stateParams.workbook === null ? 0 : this.stateParams.workbook,
         };
 
         console.log(formData);
@@ -117,7 +116,15 @@ class SnippetController extends FluxController {
 
     updatedCallback(parameters) {
         console.log("udpated");
-        console.log(parameters);
+        
+        var response = parameters.response;
+        var snippets = this.workbook.workbook.snippets;
+        for(var i = 0; i < snippets.length; i++){
+            if(response.id === snippets[i].id){
+                this.workbook.workbook.snippets[i] = response;
+            }
+        }
+        this.state.go("workbookShow",{workbook: this.stateParams.workbook});
     }
 
 

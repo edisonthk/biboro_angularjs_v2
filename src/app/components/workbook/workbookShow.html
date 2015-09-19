@@ -11,7 +11,7 @@
 
     <div class="cell clearfix"
         float-layout
-        ng-repeat="snippet in workbookCtrl.currentWorkbook.snippets"
+        ng-repeat="snippet in workbookCtrl.workbook.getCurrentWorkbookSnippets()"
         ng-mouseenter="snippet.showTools = true"
         ng-mouseleave="snippet.showTools = false" >
         <div class="cell-wrapper">
@@ -47,5 +47,11 @@
     outside-clicked-callback="workbookCtrl.commentBox.outsideClickedCallback" >
 ></comment>
 
+<dialog 
+    open 
+    ng-if="workbookCtrl.deleteDialog.show" 
+    outside-clicked-callback="workbookCtrl.deleteDialog.outsideClickedCallback" >
+    <div ng-include="'app/components/snippet/snippet.deleteDialog.html'"></div>
+</dialog>
 
 <div ui-view></div>

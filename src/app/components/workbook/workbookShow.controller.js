@@ -32,6 +32,10 @@ class WorkbookShowController extends FluxController {
             show: false,
             snippet: null,
         };
+        this.deleteDialog = {
+            show: false,
+            snippet: null
+        };
 
         // register action
         this.registerCallbacks({
@@ -51,6 +55,7 @@ class WorkbookShowController extends FluxController {
         this.createDialog.outsideClickedCallback = this.createDialogOutsideClickedCallback.bind(this);
         this.editDialog.outsideClickedCallback   = this.editDialogOutsideClickedCallback.bind(this);
         this.commentBox.outsideClickedCallback  = this.commentsBoxOutsideClickedCallback.bind(this);
+        this.deleteDialog.outsideClickedCallback   = this.deleteDialogOutsideClickedCallback.bind(this);
 
         this.initialize();
 
@@ -133,9 +138,23 @@ class WorkbookShowController extends FluxController {
     }
 
     updateCallback() {
-        
         // var workbook = parameters.response;
-        
+    }
+
+
+    // delete dialog event
+    deleteDialogOutsideClickedCallback () {
+        this.deleteDialog.show = false;
+    }
+
+    deleteDialogClose(){
+        this.deleteDialog.show = false;
+    }
+
+    deleteDialogDeleteEvent(snippet){
+        console.log("delete");
+        this.snippet.destroy(snippet.id);
+        this.state.go(this.state.current, {}, {reload: true});
     }
 
     /**
@@ -187,9 +206,10 @@ class WorkbookShowController extends FluxController {
     }
 
     deleteSnippet(snippet){
-        this.snippet.destroy(snippet.id);
-        this.state.go(this.state.current, {}, {reload: true});
+        this.deleteDialog.show = true;
+        this.deleteDialog.snippet = snippet;
     }
+
 }
 
 export default WorkbookShowController;
