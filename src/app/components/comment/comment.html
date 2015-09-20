@@ -12,15 +12,15 @@
         </div>
         <ul ng-if="comment.comments.length > 0" class="comment-list">
             <li class="comment clearfix" ng-repeat="c in comment.comments">
-                <HR class="sen" size="1" color="#999999" style="border-style:dashed">
                 <div class="myleft profile">
                     <img ng-if="c.account.profile_image.length > 0" ng-src="c.account.profile_image">
-                    <img class="gazou" ng-if2="c.account.profile_image.length == 0" src="assets/images/default-user-image.png" width="200" alt="default-image">
+                    <div class="gazou2">
+                      <img class="gazou" ng-if2="c.account.profile_image.length == 0" src="assets/images/default-user-image.png" width="200" alt="default-image">
+                    </div>
                     <div class="name">{{c.account.name}}</div>
                 </div>
                 <div class="myleft mycomment">
                     <div class="comment_me">{{c.comment}}</div>
-                    <br />
                     <div class="time">{{c.updated_at.substring(0,c.updated_at.indexOf(" "))}}</div>
                 </div>
                 <!-- <button ng-if="c.editable" ng-click="comment.destroy(c)"><i class="fa fa-trash-o"></i></button> -->
