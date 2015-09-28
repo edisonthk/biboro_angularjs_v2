@@ -40,6 +40,7 @@ var api = {
             store   : {method: 'post'  , url:'api/v1/snippet'},
             update  : {method: 'put'   , url:'api/v1/snippet/:id'},
             destroy : {method: 'delete', url:'api/v1/snippet/:id'},
+            fork    : {method: 'put'    ,url:'api/v1/snippet/fork'},
         },
         news: {
             index   : {method: 'get'    ,url:'api/v1/news'} ,
@@ -48,10 +49,10 @@ var api = {
         workbook: {
             index   : {method: 'get'    ,url:'api/v1/workbook'},
             show    : {method: 'get'    ,url:'api/v1/workbook/:id'},
+            search  : {method: 'get'    ,url:'api/v1/workbook/:id/search?q=:query'},
             store   : {method: 'post'   ,url:'api/v1/workbook'},
             update  : {method: 'put'    ,url:'api/v1/workbook/:id'},
             destroy : {method: 'delete' ,url:'api/v1/workbook/:id'},
-            fork    : {method: 'put'    ,url:'api/v1/workbook/:id/fork'},
         },
         account: {
             info:   {method: 'get', url:'api/v1/account/userinfo'},
@@ -63,7 +64,10 @@ var api = {
             store   : {method: 'post'   ,url:'api/v1/snippet/:snippetId/comment'},
             update  : {method: 'put'    ,url:'api/v1/snippet/:snippetId/comment/:commentId'},
             destroy : {method: 'delete' ,url:'api/v1/snippet/:snippetId/comment/:commentId'},
-        }
+        },
+        search: {
+            query    : {method: 'get', url:'api/v1/search?kw=:query'},
+        },
     }
 };
 

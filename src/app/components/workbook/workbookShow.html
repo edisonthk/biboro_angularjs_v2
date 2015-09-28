@@ -54,4 +54,14 @@
     <div ng-include="'app/components/snippet/snippet.deleteDialog.html'"></div>
 </dialog>
 
-<div ui-view></div>
+<editor
+    ng-if="workbookCtrl.editor.show"
+    title="workbookCtrl.editor.title" 
+    content="workbookCtrl.editor.content"
+    tags="workbookCtrl.editor.tags"
+    selected-workbook="workbookCtrl.editor.workbook"
+    workbooks="workbookCtrl.workbook.getAll()"
+    saved-callback="workbookCtrl.editorSavedCallback()"
+    quit-callback="workbookCtrl.editorQuitCallback()"
+    cancel-callback="workbookCtrl.editorCancelCallback()" >
+</editor> 

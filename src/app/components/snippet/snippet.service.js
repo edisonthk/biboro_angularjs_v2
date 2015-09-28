@@ -7,11 +7,7 @@ class SnippetService {
         this.SNIPPET_SHOW = "SNIPPET_SHOW";
         this.SNIPPET_UPDATE = "SNIPPET_UPDATE";
         this.SNIPPET_DESTROY = "SNIPPET_DESTROY";
-        this.SNIPPET_FORKED = "SNIPPET_FORKED";
-
-        // check or modify this constants by WorkbookController
-        this.WORKBOOK_ACTION_FORK = "push"; 
-        this.WORKBOOK_ACTION_DEFORK = "slice";
+        this.SNIPPET_FORK = "SNIPPET_FORK";
 
 
         this._dispatcher = Dispatcher;
@@ -21,32 +17,27 @@ class SnippetService {
 
 
         this.snippets = [];
+        this.snippet = null;
 
         this.api = Api;
     }
 
-    fork(id, workbookId) {
+    fork(params) {
         var self = this;
 
-        var params = {
-            action:    this.WORKBOOK_ACTION_FORK,
-            snippetId: id
-        };
-
         var req = {
-            method : self.api.workbook.fork.method,
-            url    : self.api.workbook.fork.url.replace(":id",workbookId),
-            data   : params   
+            method : self.api.snippet.fork.method,
+            url    : self.api.snippet.fork.url,
+            data   : self.filterParams(params),   
         };
 
         self._http[req.method](req.url, req.data)
             .success(function(data){
-                self.snippets = data;
-                self._dispatcher.dispatch(self.SNIPPET_FORKED, {"success":true,"result":"success","response":self.getSnippets()});
+                self.snippets.unshift(data);
+                self._dispatcher.dispatch(self.SNIPPET_FORK, {"success":true,"result":"success"});
             })
-            .error(function(){
-                console.log("error in snippet.strore.js");
-                self._dispatcher.dispatch(self.SNIPPET_FORKED, {"success":false,"result":"fail to fetch snippets."});
+            .error(function(err){
+                self._dispatcher.dispatch(self.SNIPPET_FORK, {"success":false,"result":"fail to fetch snippets.","error":err});
             });
     }
 
@@ -77,16 +68,17 @@ class SnippetService {
         var req = {
             method : self.api.snippet.store.method,
             url    : self.api.snippet.store.url,
-            data   : params
+            data   : self.filterParams(params)
         };
 
         self._http[req.method](req.url, req.data)
             .success(function(response){
+                self.snippet = response;
                 self.snippets.unshift(response);
                 self._dispatcher.dispatch(self.SNIPPET_STORE, {"success":true,"result":"success"});
             })
-            .error(function(){
-                self._dispatcher.dispatch(self.SNIPPET_STORE, {"success":false,"result":"fail to store snippets."});
+            .error(function(err){
+                self._dispatcher.dispatch(self.SNIPPET_STORE, {"success":false,"result":"fail to store snippets.","error":err});
             });
     }
 
@@ -105,7 +97,8 @@ class SnippetService {
 
         self._http[req.method](req.url, req.data)
             .success(function(response){
-                self.snippets = response;
+                self.setSingleSnippet(id, response);
+                self.snippet = response;
                 self._dispatcher.dispatch(self.SNIPPET_SHOW, {"success":true,"result":"success","response":response});
             })
             .error(function(){
@@ -124,10 +117,11 @@ class SnippetService {
 
         self._http[req.method](req.url, req.data)
             .success(function(response){
+                self.setSingleSnippet(id, response);
                 self._dispatcher.dispatch(self.SNIPPET_UPDATE, {"success":true,"result":"success","response":response});
             })
-            .error(function(){
-                self._dispatcher.dispatch(self.SNIPPET_UPDATE, {"success":false,"result":"fail to update snippets."});
+            .error(function(err){
+                self._dispatcher.dispatch(self.SNIPPET_UPDATE, {"success":false,"result":"fail to update snippets.","error":err});
             });
     }
 
@@ -148,12 +142,25 @@ class SnippetService {
             });
     }
 
+    setSingleSnippet(snippetId, snippet) {
+        snippetId = parseInt(snippetId);
+        for (var i = 0; i < this.snippets.length; i++) {
+            if(this.snippets[i].id === snippetId) {
+                this.snippets[i] = snippet;
+            }
+        }
+    }
+
     setSnippets(snippets) {
         if(!snippets) {
             return;
         }
 
         this.snippets = snippets.length > 0 ? snippets : [];
+    }
+
+    getFocusSnippet() {
+        return this.snippet;
     }
 
     getSnippets(){
@@ -168,6 +175,20 @@ class SnippetService {
             }
         }
         return null;
+    }
+
+    filterParams(params) {
+
+        // tags
+        var tags = [];
+        for (var i = 0; i < params.tags.length; i++) {
+            if(typeof params.tags[i] === 'object') {
+                tags.push(params.tags[i].name);
+            }
+        }
+        params.tags = tags;
+
+        return params;
     }
 
 }

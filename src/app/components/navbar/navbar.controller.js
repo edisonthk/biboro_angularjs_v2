@@ -1,6 +1,7 @@
 import KeyCode from "../shortcut/shortcut.config";
 import ShortcutTask from "../shortcut/shortcut.task";
 import FluxController from "../flux/flux.controller";
+import Helper from "../helper/helper";
 
 
 class NavbarController extends FluxController {
@@ -61,7 +62,6 @@ class NavbarController extends FluxController {
     keyupTask(e) {
         
         var ctrlKey = (e.ctrlKey || e.metaKey);
-        console.log(e.keyCode + " " + KeyCode.KEY_B);   
         if(ctrlKey && e.keyCode === KeyCode.KEY_B) {
             this.newSnippet();
 
@@ -136,9 +136,17 @@ class NavbarController extends FluxController {
         });
     }
 
-    storedCallback(parameters) {
-        this.editor.show = false;
-        this.toast.success("作成完了！");
+    storedCallback(res) {
+        if(res.success) {
+            this.editor.show = false;
+            this.editor.title = "";
+            this.editor.content = "";
+            this.editor.tags = [];
+            this.toast.success("作成完了！");    
+        } else {
+            var error = res.error.error;
+            this.toast.error(Helper.parseErrorMessagesAsHtml(error));
+        }
     }
 
     editorQuitCallback() {

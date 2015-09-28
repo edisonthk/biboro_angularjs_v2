@@ -8,22 +8,23 @@ class Dispatcher{
 
         var self = this;
         
-        self.lastListenerCount = self.listeners.length;
-        setInterval(function() {
-            if(self.lastListenerCount !== self.listeners.length) {
-                self.lastListenerCount = self.listeners.length;
+        // Debug purpose: To check if listeners didn't overload
+        // self.lastListenerCount = self.listeners.length;
+        // setInterval(function() {
+        //     if(self.lastListenerCount !== self.listeners.length) {
+        //         self.lastListenerCount = self.listeners.length;
 
-                var cnt = 0;
-                for (var i = 0; i < self.listeners.length; i++) {
-                    if(self.listeners[i].action === "WORKBOOK_FETCHALL") {
-                        cnt += 1;
-                    }
-                }
+        //         var cnt = 0;
+        //         for (var i = 0; i < self.listeners.length; i++) {
+        //             if(self.listeners[i].action === "WORKBOOK_FETCHALL") {
+        //                 cnt += 1;
+        //             }
+        //         }
 
-                // 
-                console.log("listeners count: "+self.listeners.length+" ,cnt: "+cnt);
-            }
-        },2000);
+        //         // 
+        //         console.log("listeners count: "+self.listeners.length+" ,cnt: "+cnt);
+        //     }
+        // },2000);
     }
 
     register(action ,callback) {

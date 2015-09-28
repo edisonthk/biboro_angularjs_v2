@@ -28,6 +28,7 @@ class WorkbookListController extends FluxController {
         this.editDialog.outsideClickedCallback   = this.editDialogOutsideClickedCallback.bind(this);
 
         this.initialize();
+
     }
 
     initialize() {

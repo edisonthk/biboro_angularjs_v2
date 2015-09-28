@@ -1,6 +1,5 @@
 import WorkbookListController   from '../workbook/workbookList.controller';
 import WorkbookShowController   from '../workbook/workbookShow.controller';
-import PlaygroundController     from '../myplayground/playground.controller';
 import SnippetController        from '../snippet/snippet.controller';
 import NewsController           from '../news/news.controller';
 import AccountController        from '../account/account.controller';
@@ -37,12 +36,12 @@ export default function ($httpProvider, $stateProvider, $urlRouterProvider) {
                 controller:   WorkbookShowController,
                 controllerAs: 'workbookCtrl',
             })
-            .state('workbookShow.snippet', {
-                url: '/snippet/:snippet',
-                templateUrl:  '../app/components/snippet/snippet.show.html',
-                controller:   SnippetController,
-                controllerAs: 'snippetCtrl',
-            })
+            // .state('workbookShow.snippet', {
+            //     url: '/snippet/:snippet',
+            //     templateUrl:  '../app/components/snippet/snippet.show.html',
+            //     controller:   SnippetController,
+            //     controllerAs: 'snippetCtrl',
+            // })
             // .state('workbook.news', {
             //     url: '/news',
             //     templateUrl:  'app/main/main.html',
@@ -50,17 +49,17 @@ export default function ($httpProvider, $stateProvider, $urlRouterProvider) {
             //     controllerAs: 'news'
             // })
             // BEGIN: take works
-            .state('workbook.show.editor',{
-                url:'/editor',
-                templateUrl:'../app/components/workbook/workbook.show.edit.html',
-                controller:[function(){
-                    console.log("goooood");
-                }]
-            })
-            .state('workbook.show.snippet.editor',{
-                url:'/editor',
-                templateUrl:'../app/components/workbook/'
-            })
+            // .state('workbook.show.editor',{
+            //     url:'/editor',
+            //     templateUrl:'../app/components/workbook/workbook.show.edit.html',
+            //     controller:[function(){
+            //         console.log("goooood");
+            //     }]
+            // })
+            // .state('workbook.show.snippet.editor',{
+            //     url:'/editor',
+            //     templateUrl:'../app/components/workbook/'
+            // })
             .state('preference', {
                 url: '/preference'
             })
@@ -68,12 +67,12 @@ export default function ($httpProvider, $stateProvider, $urlRouterProvider) {
             // .state('')
 
             // END: take works
-            .state('test', {
-                url: '/test',
-                controller:   PlaygroundController,
-                controllerAs: 'p',
-                template:     '<acme-navbar /><div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
-            });
+            // .state('test', {
+            //     url: '/test',
+            //     controller:   PlaygroundController,
+            //     controllerAs: 'p',
+            //     template:     '<acme-navbar /><div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
+            // });
 
         // $urlRouterProvider.otherwise('/');
     }

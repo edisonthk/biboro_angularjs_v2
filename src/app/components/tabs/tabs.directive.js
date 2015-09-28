@@ -41,6 +41,10 @@ class TabsDirective {
         });
 
         scope.$watch("ngModel", function(selectedPane) {
+            if(!selectedPane.id) {
+                return;
+            }
+            
             var panes = el.find("pane");
             for (var i = 0; i < panes.length; i++) {
                 var index = parseInt(panes[i].getAttribute("index"));

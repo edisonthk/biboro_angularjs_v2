@@ -18,7 +18,6 @@ class WorkbookService extends BaseService{
         this.WORKBOOK_UPDATE   = "WORKBOOK_UPDATE";
         this.WORKBOOK_DESTROY  = "WORKBOOK_DESTROY";
         this.WORKBOOK_SHOWMY   = "WORKBOOK_SHOWMY";
-        this.WORKBOOK_FORK     = "WORKBOOK_FORK";
 
         // setTimeout(function() {
 
@@ -76,6 +75,31 @@ class WorkbookService extends BaseService{
         var req = {
             method : self.api.workbook.show.method,
             url    : self.api.workbook.show.url.replace(":id",id),
+        };
+
+        self._http[req.method](req.url, req.data)
+            .success(function(response){
+                self.workbook = response.workbook;
+                self.workbook.snippets = response.snippets;
+                self.snippet.setSnippets(response.snippets);
+                
+                self._dispatcher.dispatch(self.WORKBOOK_SHOW, {"success":true,"result":"success"});
+                self._dispatcher.dispatch(self.snippet.SNIPPET_FETCHEDALL, {"success":true,"result":"success"});
+                
+            })
+            .error(function(){
+                self._dispatcher.dispatch(self.WORKBOOK_SHOW, {"success":false,"result":"fail to show workbooks."});
+                self._dispatcher.dispatch(self.snippet.SNIPPET_FETCHEDALL, {"success":false,"result":"fail to show workbooks."});
+                
+            });
+    }
+
+    search(id, query) {
+        var self= this;
+
+        var req = {
+            method : self.api.workbook.search.method,
+            url    : self.api.workbook.search.url.replace(":id",id).replace(":query",query),
         };
 
         self._http[req.method](req.url, req.data)

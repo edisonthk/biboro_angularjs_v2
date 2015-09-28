@@ -17,14 +17,33 @@
         </li> -->
     </tabs>
 
-    <div class="tools" ng-if="navbar.accountInfo == null">
+    <div class="menu-tools" ng-if="navbar.accountInfo == null">
         <a ng-click="navbar.account.signIn()"><i class="fa fa-sign-in"></i></a>
     </div>
-    <div class="tools" ng-if="navbar.accountInfo != null">
-        <a ng-click="navbar.newSnippet()"><i class="fa fa-plus"></i></a>
-        <a ng-click="navbar.account.signOut()"><i class="fa fa-user"></i></a>
+    <div class="menu-tools" ng-if="navbar.accountInfo != null">
+        <div class="menu-item"><a ng-click="navbar.newSnippet()"><i class="fa fa-plus"></i></a></div>
+        <div class="menu-item">
+            <a ng-click="navbar.profileMenuShow = !navbar.profileMenuShow">
+                <i ng-if="navbar.account.getProfileImage() === null" class="fa fa-user"></i>
+                <div ng-if="navbar.account.getProfileImage() !== null" class="profile-image">
+                    <img ng-src="{{navbar.account.getProfileImage()}}">
+                </div>
+            </a>
+            <ul ng-if="navbar.profileMenuShow" class="menu-collapse">
+                <li>
+                    <a href="/a">
+                        <span class="underline">プロフィール</span>
+                    </a>
+                </li>
+                <li ng-click="navbar.account.signOut()">
+                    <span class="underline">ログアウト</span>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
+
+<div ng-if="navbar.profileMenuShow" ng-click="navbar.profileMenuShow = false" class="menu-collapse-background"></div>
 
 <nav class="navbar-sp">
 

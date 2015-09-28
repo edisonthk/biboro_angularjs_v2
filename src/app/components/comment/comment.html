@@ -14,8 +14,8 @@
             <li class="comment clearfix" ng-repeat="c in comment.comments">
                 <div class="myleft profile">
                     <img ng-if="c.account.profile_image.length > 0" ng-src="c.account.profile_image">
-                    <div class="gazou2">
-                      <img class="gazou" ng-if2="c.account.profile_image.length == 0" src="assets/images/default-user-image.png" width="200" alt="default-image">
+                    <div class="profile-image">
+                      <img ng-if="c.account.profile_image.length == 0" src="assets/images/default-user-image.png" alt="default-image">
                     </div>
                     <div class="name">{{c.account.name}}</div>
                 </div>

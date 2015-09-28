@@ -29,7 +29,7 @@ class NewsService extends BaseService{
 
         self._http[req.method](req.url, req.data)
             .success(function(res){
-                self.news = res.data;
+                self.news = res.news;
                 self._dispatcher.dispatch(self.NEWS_FETCHALL, {"success":true,"result":"success"});
             })
             .error(function(){

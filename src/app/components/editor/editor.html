@@ -17,9 +17,22 @@
                         <auto-complete source="editor.loadTags($query)"></auto-complete>
                     </tags-input>
                 </div>
--->                
+-->             
+                <div class="form-group tools clearfix">
+                    <div class="tools-group">
+                        <button ng-mouseup="editor.boldEvent()"><i class="fa fa-bold"></i></button>
+                        <button ng-mouseup="editor.italicEvent()"><i class="fa fa-italic"></i></button>
+                        <button ng-mouseup="editor.headingEvent()">H</button>
+                        <button ng-mouseup="editor.strikethroughEvent()"><i class="fa fa-strikethrough"></i></button>
+                    </div>
+                    <div class="tools-group">
+                        <button><i class="fa fa-link"></i></button>
+                        <button><i class="fa fa-picture-o"></i></button>
+                        <button ng-mouseup="editor.codeEvent()"><i class="fa fa-code"></i></button>
+                    </div>
+                </div>   
                 <div class="form-group">
-                    <textarea class="form-control" ng-model="content"></textarea>
+                    <textarea class="form-control editor-textarea" ng-model="content"></textarea>
                 </div>
             </div>
             <div class="col-left md-parsed">
@@ -28,8 +41,8 @@
             </div>
         </div>
         <div class="inline-group">
-            <button ng-click="savedCallback()">保存 <small>⌘+S</small></button>
-            <button ng-click="cancelCallback()">キャンセル　<small>Esc</small></button>
+            <button class="btn btn-submit" ng-click="savedCallback()">保存 <small>⌘+S</small></button>
+            <button class="btn btn-submit" ng-click="cancelCallback()">キャンセル　<small>Esc</small></button>
         </div>
         
     </div>

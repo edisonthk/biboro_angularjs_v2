@@ -14,6 +14,7 @@ class FloatLayoutDirective {
 
     linkFunc(scope, el) {
 
+
         var self = this;
 
         // if _index key is not set, setup element by set _index key into element
@@ -23,6 +24,8 @@ class FloatLayoutDirective {
             self.index += 1;
         }
         
+        console.log(el._index);
+
         var timeoutId = null;
         window.onresize = function() {
             clearTimeout(timeoutId);

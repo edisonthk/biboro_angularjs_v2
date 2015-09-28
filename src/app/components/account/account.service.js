@@ -46,6 +46,10 @@ class AccountService {
 
     }
 
+    getProfileImage() {
+        return this.account === null ? null : (this.account.profile_image.length <= 0 ? null: this.account.profile_image);
+    }
+
     getUser() {
         return this.account;
     }

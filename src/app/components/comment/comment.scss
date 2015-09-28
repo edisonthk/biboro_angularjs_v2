@@ -11,15 +11,15 @@
 }
 
 
-.gazou {
-  width: 67px;
-  height: 67px;
-  }
-
-.gazou2{
-  display: inline-block;
-  border-radius: 50%;
-  overflow: hidden;
+.profile-image {
+    width: 67px;
+    height: 67px;
+    
+    > {
+        display: inline-block;
+        border-radius: 50%;
+        overflow: hidden;      
+    }
 }
 
   .name{
@@ -73,14 +73,6 @@ li.comment {
 
 .myleft{
     float: left;
-}
-
-
-*{
-  font-family: ヒラギノ角ゴ Pro Regular ,"Roboto", Verdana, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  font-size: 16px;
-  line-height: 22px;
 }
 
 .comment-box.dialog-box .comment-list {

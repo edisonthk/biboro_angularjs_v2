@@ -29,11 +29,10 @@ import toastrConfig from './components/toastr/toastr.config';
 
 angular.module('biboroAngular', [
         'ngAnimate',
-        'toastr',
         'ngCookies',
         'ngSanitize',
         'ngResource',
-
+        'toastr',
         'ui.router',
         'ngTagsInput',
 

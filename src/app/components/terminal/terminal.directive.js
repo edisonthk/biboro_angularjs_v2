@@ -1,7 +1,7 @@
 
 import KeyCode from "../shortcut/shortcut.config";
 import ShortcutTask from "../shortcut/shortcut.task";
-// import TerminalController   from 'terminal.controller';
+import TerminalController from './terminal.controller';
 
 class TerminalDirective {
 
@@ -28,6 +28,7 @@ class TerminalDirective {
             ].join(""),
 
             link: this.linkFunc.bind(this),
+            controller: TerminalController,
         };
 
         return directive;
