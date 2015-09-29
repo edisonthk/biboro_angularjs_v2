@@ -1,16 +1,7 @@
+<h1 class="page-title"><i class="fa fa-book"></i> <span ng-bind="workbookCtrl.workbook.getCurrentWorkbook().title"></span></h1>
 <div class="workbook-show cells-wrapper clearfix">
-        
-    <div class="cell title-cell clearfix" float-layout>
-        <h1>
-            <span ng-bind="workbookCtrl.currentWorkbook.title"></span>
-            <small class="right" ng-click="workbookCtrl.deleteWorkbook()"><i class="fa fa-trash-o"></i></small>
-            <small class="right" ng-click="workbookCtrl.showEditDialog()"><i class="fa fa-edit"></i></small>    
-        </h1>
-        <p class="author" ng-bind="workbookCtrl.currentWorkbook.account.name"></p>
-    </div>
-
+    
     <div class="cell clearfix"
-        float-layout
         ng-repeat="snippet in workbookCtrl.workbook.getCurrentWorkbookSnippets()"
         ng-mouseenter="snippet.showTools = true"
         ng-mouseleave="snippet.showTools = false" >
@@ -29,7 +20,7 @@
                 <button ng-click="workbookCtrl.deleteSnippet(snippet)"><i class="fa fa-trash-o"></i></button>
             </div>
 
-            <div ng-bind-html="snippet.htmlContent" class="html-content"></div>
+            <div ng-bind-html="workbookCtrl.markdown.parseMd(snippet.content)" class="html-content"></div>
         </div>
     </div>
 </div>

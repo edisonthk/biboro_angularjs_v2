@@ -68,6 +68,9 @@ var api = {
         search: {
             query    : {method: 'get', url:'api/v1/search?kw=:query'},
         },
+        feedback: {
+            send     : {method: 'post', url:'api/v1/feedback'}
+        },
     }
 };
 

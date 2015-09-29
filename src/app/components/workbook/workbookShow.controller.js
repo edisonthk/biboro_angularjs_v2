@@ -89,11 +89,6 @@ class WorkbookShowController extends FluxController {
         // for debug purpose
         // this.commentBox.snippet = this.currentWorkbook.snippets[0];
 
-        for (var i = 0; i < this.currentWorkbook.snippets.length; i++) {
-            var snippet = this.currentWorkbook.snippets[i];
-            snippet.htmlContent = this.markdown.parseMd(snippet.content);
-        }
-
     }
 
     fetchedLoginedAccountCallback() {

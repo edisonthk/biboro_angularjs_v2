@@ -21,19 +21,25 @@
         <a ng-click="navbar.account.signIn()"><i class="fa fa-sign-in"></i></a>
     </div>
     <div class="menu-tools" ng-if="navbar.accountInfo != null">
+        <div class="menu-item">
+            <a ng-click="navbar.notificationBoardShow = true"><i class="fa fa-info"></i></a>
+        </div>
         <div class="menu-item"><a ng-click="navbar.newSnippet()"><i class="fa fa-plus"></i></a></div>
         <div class="menu-item">
-            <a ng-click="navbar.profileMenuShow = !navbar.profileMenuShow">
+            <a ng-click="navbar.collapseMenuShow = !navbar.collapseMenuShow">
                 <i ng-if="navbar.account.getProfileImage() === null" class="fa fa-user"></i>
                 <div ng-if="navbar.account.getProfileImage() !== null" class="profile-image">
                     <img ng-src="{{navbar.account.getProfileImage()}}">
                 </div>
             </a>
-            <ul ng-if="navbar.profileMenuShow" class="menu-collapse">
-                <li>
+            <ul ng-if="navbar.collapseMenuShow" class="menu-collapse">
+                <!-- <li>
                     <a href="/a">
                         <span class="underline">プロフィール</span>
                     </a>
+                </li> -->
+                <li ng-click="navbar.feedbackShow = true">
+                    <span>フィードバック</span>
                 </li>
                 <li ng-click="navbar.account.signOut()">
                     <span class="underline">ログアウト</span>
@@ -43,12 +49,25 @@
     </div>
 </nav>
 
-<div ng-if="navbar.profileMenuShow" ng-click="navbar.profileMenuShow = false" class="menu-collapse-background"></div>
+<dialog 
+    open
+    ng-if="navbar.notificationBoardShow"
+    outside-clicked-callback="navbar.closeDialog">
+    Chromeアプリのダウンロード
+</dialog>
 
-<nav class="navbar-sp">
+<dialog
+    open
+    ng-if="navbar.feedbackShow"
+    outside-clicked-callback="navbar.closeDialog">
+    <div>フィードバックシート</div>
+    <textarea ng-model="navbar.feedbackContent"></textarea>
+    <button ng-click="navbar.sendFeedback()">送信</button>
+</dialog>
 
-</nav>
 
+
+<div ng-if="navbar.collapseMenuShow" ng-click="navbar.collapseMenuShow = false" class="menu-collapse-background"></div>
 
 <editor
     ng-if="navbar.editor.show"

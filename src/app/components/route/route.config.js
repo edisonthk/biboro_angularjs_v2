@@ -4,22 +4,15 @@ import SnippetController        from '../snippet/snippet.controller';
 import NewsController           from '../news/news.controller';
 import AccountController        from '../account/account.controller';
 
-export default function ($httpProvider, $stateProvider, $urlRouterProvider) {
+export default function ($httpProvider, $stateProvider,$locationProvider, $urlRouterProvider) {
         'ngInject';
 
         $httpProvider.defaults.withCredentials = true;
         $httpProvider.defaults.xsrfHeaderName = "XSRF-TOKEN";
 
         $stateProvider
-            .state('home', {
-                url: '/',
-                controller: function() {
-                    
-                },
-                template: 'fsdfsdfs'
-            })
             .state('news', {
-                url: '/news',
+                url: '/',
                 controller:   NewsController,
                 controllerAs: 'newsCtrl',
                 templateUrl:  '../app/components/news/news.list.html',
@@ -73,6 +66,8 @@ export default function ($httpProvider, $stateProvider, $urlRouterProvider) {
             //     controllerAs: 'p',
             //     template:     '<acme-navbar /><div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
             // });
+        
+        $locationProvider.html5Mode(true);
 
-        // $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/');
     }

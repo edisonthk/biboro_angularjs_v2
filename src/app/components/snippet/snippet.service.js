@@ -146,7 +146,10 @@ class SnippetService {
         snippetId = parseInt(snippetId);
         for (var i = 0; i < this.snippets.length; i++) {
             if(this.snippets[i].id === snippetId) {
-                this.snippets[i] = snippet;
+                for(var key in snippet) {
+                    this.snippets[i][key] = snippet[key];    
+                }
+                
             }
         }
     }

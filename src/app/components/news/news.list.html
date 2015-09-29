@@ -1,13 +1,7 @@
+<h1 class="page-title"><i class="fa fa-newspaper-o"></i> NEWS</h1>
 <div class="news cells-wrapper clearfix">
         
-    <div class="cell title-cell clearfix" float-layout>
-        <h1>
-            <span>NEWS</span>
-        </h1>
-    </div>
-
     <div class="cell clearfix"
-        float-layout
         ng-repeat="news in newsCtrl.news.getAll()"
         ng-mouseenter="news.showTools = true"
         ng-mouseleave="news.showTools = false" >

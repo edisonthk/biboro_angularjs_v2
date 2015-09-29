@@ -13,9 +13,9 @@
         <ul ng-if="comment.comments.length > 0" class="comment-list">
             <li class="comment clearfix" ng-repeat="c in comment.comments">
                 <div class="myleft profile">
-                    <img ng-if="c.account.profile_image.length > 0" ng-src="c.account.profile_image">
-                    <div class="profile-image">
-                      <img ng-if="c.account.profile_image.length == 0" src="assets/images/default-user-image.png" alt="default-image">
+                    <img ng-if="c.account.profile_image.length > 0" ng-src="{{c.account.profile_image}}">
+                    <div ng-if="c.account.profile_image.length === 0" class="profile-image">
+                      <img src="assets/images/default-user-image.png" alt="default-image">
                     </div>
                     <div class="name">{{c.account.name}}</div>
                 </div>

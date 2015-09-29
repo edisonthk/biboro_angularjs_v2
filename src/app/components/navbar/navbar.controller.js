@@ -5,11 +5,12 @@ import Helper from "../helper/helper";
 
 
 class NavbarController extends FluxController {
-    constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $stateParams, $state, toastr) {
+    constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $stateParams, $state, toastr, FeedbackService) {
         super.constructor($scope, Dispatcher);
 
         this.toast       = toastr;
         this.route       = RouteService;  
+        this.feedback    = FeedbackService;
         this.account     = AccountService;
         this.workbook    = WorkbookService;
         this.snippet     = SnippetService;
@@ -26,6 +27,9 @@ class NavbarController extends FluxController {
             tags     : [],
             workbook : null,
         };
+
+        this.feedbackContent = "";
+        this.feedbackShow = false;
         
         this.tags = [
                 { value: 'foo', text: 'Foo' },
@@ -43,6 +47,8 @@ class NavbarController extends FluxController {
             ROUTE_UPDATED     : this.stateUpdatedCallback,
 
             SNIPPET_STORE     : this.storedCallback,
+
+            FEEDBACK_SENT     : this.feedbackSentCallback,
         });
 
         this.account.fetchLoginedAccount();
@@ -51,6 +57,7 @@ class NavbarController extends FluxController {
             $state.go("workbookShow",{workbook:  pane.id});
         }
 
+        this.closeDialog = this.closeDialog.bind(this);
         this._shortcutParallelTaskToken = ShortcutTask.setParallelTask(this.keyupTask.bind(this));
     }
 
@@ -156,6 +163,27 @@ class NavbarController extends FluxController {
     editorCancelCallback() {
         this.editor.show = false;
     }
+
+    closeDialog() {
+        this.feedbackShow = false;
+        this.notificationBoardShow = false;
+    }
+
+    /* Feedback */
+    // ===============
+    sendFeedback() {
+        if(this.feedbackContent.length > 0) {
+            this.feedback.send(this.feedbackContent);
+        }else {
+            this.toast.error("フィードバックの項目に空白しないでください");
+        }
+    }
+
+    feedbackSentCallback(res) {
+        this.toast.success("フィードバックいただき、ありがとうございます");
+        this.feedbackShow = false;
+    }
+
 }
 
 export default NavbarController;
