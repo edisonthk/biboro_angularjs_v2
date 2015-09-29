@@ -6,9 +6,9 @@ import Dispatcher from './base/dispatcher';
 import AccountService  from '../app/components/account/account.service';
 import SnippetService  from '../app/components/snippet/snippet.service';
 import WorkbookService from '../app/components/workbook/workbook.service';
-import RouteService    from './components/route/route.service';
-import CommentService  from './components/comment/comment.service';
-import NewsService  from './components/news/news.service';
+import RouteService    from '../app/components/route/route.service';
+import CommentService  from '../app/components/comment/comment.service';
+import NewsService  from '../app/components/news/news.service';
 import FeedbackService from './components/feedback/feedback.service';
 import MarkdownHelper from './components/markdown/markdown.factory';
 

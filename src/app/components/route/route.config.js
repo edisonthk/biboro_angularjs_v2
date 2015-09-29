@@ -15,17 +15,17 @@ export default function ($httpProvider, $stateProvider,$locationProvider, $urlRo
                 url: '/',
                 controller:   NewsController,
                 controllerAs: 'newsCtrl',
-                templateUrl:  '../app/components/news/news.list.html',
+                templateUrl:  'app/components/news/news.list.html',
             })
             .state('workbook', {
                 url: '/workbook',
-                templateUrl:  '../app/components/workbook/workbookList.html',
+                templateUrl:  'app/components/workbook/workbookList.html',
                 controller:   WorkbookListController,
                 controllerAs: 'workbookCtrl',
             })
             .state('workbookShow', {
                 url: '/workbook/:workbook',
-                templateUrl:  '../app/components/workbook/workbookShow.html',
+                templateUrl:  'app/components/workbook/workbookShow.html',
                 controller:   WorkbookShowController,
                 controllerAs: 'workbookCtrl',
             })
