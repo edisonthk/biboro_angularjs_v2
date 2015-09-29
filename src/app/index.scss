@@ -67,6 +67,10 @@ input {
     outline: 0;
 }
 
+.btn:hover {
+    cursor: pointer;
+}
+
 /* Large desktop */
 
 tags-input .tags, tags-input .tags.focused {
@@ -80,6 +84,14 @@ tags-input .tags, tags-input .tags.focused {
     line-height: 100px;
     font-size: 30px;
     text-align: center;
+
+    small {
+        font-size: 60%;
+    }
+
+    .btn:hover {
+        opacity: 0.7;
+    }
 }
 
 navbar {

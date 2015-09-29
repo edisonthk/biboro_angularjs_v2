@@ -35,7 +35,7 @@ class AccountService {
 
         self._http[req.method](req.url)
             .success(function(data){
-                self.account = data;
+                self.setUser(data);
                 self.fetchedAccountData = true;
                 self._dispatcher.dispatch(self.ACCOUNT_FETCH, {"success":true,"result":"success","data":self.account});
             })
@@ -48,7 +48,11 @@ class AccountService {
     }
 
     getProfileImage() {
-        return this.account === null ? null : (this.account.profile_image.length <= 0 ? null: this.account.profile_image);
+        return this.account.profile_image;
+    }
+
+    getUserId() {
+        return this.account === null ? 0 : this.account.id;
     }
 
     getUser() {
@@ -63,7 +67,15 @@ class AccountService {
         window.location.href = this.api.account.login + "?origin="+encodeURIComponent(window.location.hash.replace("#",""));
     }
 
+    setUser(data) {
+        this.account = this.transformUser(data);
+    }
 
+    transformUser(account) {
+        account.id = parseInt(account.id);
+        account.profile_image = account === null ? null : (account.profile_image.length <= 0 ? null: account.profile_image);
+        return account;
+    }
 }
 
 export  default AccountService;

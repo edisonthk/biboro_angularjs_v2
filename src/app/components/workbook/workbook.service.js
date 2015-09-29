@@ -142,8 +142,8 @@ class WorkbookService extends BaseService{
             .success(function(res){
                 self.setWorkbookInsideGroup(res);
 
-                self._dispatcher.dispatch(self.WORKBOOK_SHOW, {"success":true,"result":"success","response":res});
-                self._dispatcher.dispatch(self.WORKBOOK_UPDATE, {"success":true,"result":"success","response":res});
+                self._dispatcher.dispatch(self.WORKBOOK_SHOW, {"success":true,"result":"success"});
+                self._dispatcher.dispatch(self.WORKBOOK_UPDATE, {"success":true,"result":"success"});
             })
             .error(function(){
                 self._dispatcher.dispatch(self.WORKBOOK_UPDATE, {"success":false,"result":"fail to update workbooks."});
@@ -159,6 +159,7 @@ class WorkbookService extends BaseService{
 
         self._http[req.method](req.url, req.data)
             .success(function(response){
+                self.disposeWorkbook(id);
                 self._dispatcher.dispatch(self.WORKBOOK_DESTROY, {"success":true,"result":"workbook","response":response});
             })
             .error(function(){
@@ -191,6 +192,21 @@ class WorkbookService extends BaseService{
         }
     }
 
+    disposeWorkbook(wbId) {
+        wbId = parseInt(wbId);
+        if(wbId === this.workbook.id) {
+            this.workbook = null;
+        }
+
+        for (var i = 0; i < this.workbooks.length; i++) {
+            if(this.workbooks[i].id === wbId) {
+                console.log("dispose");
+                this.workbooks.slice(i,i+1);
+                break;
+            }
+        }
+    }
+
     setWorkbooks(workbooks) {
         for (var i = 0; i < workbooks.length; i++) {
             workbooks[i] = this.transformWorkbook(workbooks[i]);
@@ -206,10 +222,18 @@ class WorkbookService extends BaseService{
         var self = this;
 
         wb = self.transformWorkbook(wb);
-
+        if(wb.id === self.workbook.id) {
+            for(var key in wb) {
+                self.workbook[key] = wb[key];
+            }
+            
+        }
+        
         for (var i = 0; i < self.workbooks.length; i++) {
             if(self.workbooks[i].id === wb.id) {
-                self.workbooks[i] = wb;
+                for(var key in wb) {
+                    self.workbooks[i][key] = wb[key];
+                }
                 break;
             }
         }

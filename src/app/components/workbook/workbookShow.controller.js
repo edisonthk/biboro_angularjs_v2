@@ -48,7 +48,7 @@ class WorkbookShowController extends FluxController {
             // workbook
             WORKBOOK_SHOW    : this.showCallback,
             WORKBOOK_STORE   : this.workbookStoreCallback,
-            WORKBOOK_UPDATE  : this.updateCallback,
+            WORKBOOK_UPDATE  : this.workbookUpdatedCallback,
 
             // account
             ACCOUNT_FETCH    : this.fetchedLoginedAccountCallback,
@@ -143,8 +143,10 @@ class WorkbookShowController extends FluxController {
         this.workbook.update(this.stateParams.workbook ,formData);
     }
 
-    updateCallback() {
+    workbookUpdatedCallback() {
         // var workbook = parameters.response;
+        this.editDialog.show = false;
+        console.log("f");
     }
 
 
@@ -239,7 +241,7 @@ class WorkbookShowController extends FluxController {
     }
 
     deleteWorkbook() {
-        this.workbook.destroy(this.workbook.workbook.workbook.id);
+        this.workbook.destroy(this.stateParams.workbook);
         this.state.go("workbook");
     }
 

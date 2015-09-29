@@ -1,4 +1,11 @@
-<h1 class="page-title"><i class="fa fa-book"></i> <span ng-bind="workbookCtrl.workbook.getCurrentWorkbook().title"></span></h1>
+<h1 class="page-title">
+    <i class="fa fa-book"></i> 
+    <span ng-bind="workbookCtrl.workbook.getCurrentWorkbook().title"></span>&nbsp;
+    <small ng-if="workbookCtrl.workbook.getCurrentWorkbook().account_id == workbookCtrl.account.getUserId()">
+        <i class="btn fa fa-pencil" ng-click="workbookCtrl.showEditDialog()"></i>
+        <i class="btn fa fa-trash" ng-click="workbookCtrl.deleteWorkbook()"></i>
+    </small>
+</h1>
 <div class="workbook-show cells-wrapper clearfix">
     
     <div class="cell clearfix"
