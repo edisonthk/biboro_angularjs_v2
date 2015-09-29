@@ -408,6 +408,30 @@ navbar {
     .group:first-child {
         border-left-color: transparent;
     }
+
+    @media(max-width: $desktop-width) {
+        $workbook-list-width: 700px;
+        width: $workbook-list-width;
+    }
+
+    @media(max-width: $tablet-width) {
+        $workbook-show-width: 100%;
+        width: $workbook-show-width;
+        
+        .group {
+            width: calc(50% - 30px);
+        }
+    }
+
+    @media(max-width: $phone-width) {
+        width: 100%;
+
+        .group {
+            width: 100%;
+            border-left: 0;
+            margin-bottom: 30px;
+        }
+    }
 }
 
 .btn-dotted {

@@ -9,7 +9,7 @@
         ng-if="navbar.showWorkbookListFlag" 
         class="workbook-tabs"
         ng-model="navbar.selectedWorkbook" 
-        panes="navbar.workbooks" 
+        panes="navbar.workbook.getAll()" 
         selected-callback="navbar.selectedPaneCallback"
         >
         <!-- <li ng-repeat="wb in navbar.workbooks">

@@ -85,7 +85,7 @@ class NavbarController extends FluxController {
             this.workbooks = [];
             this.showWorkbookListFlag = false;
         }else {
-            this.updateSelectedPane();
+            // this.updateSelectedPane();
             this.workbook.fetchAll();
             this.showWorkbookListFlag = true;
 
@@ -93,6 +93,7 @@ class NavbarController extends FluxController {
     }
 
     fetchAllCallback(parameters) {
+        console.log("a");
         this.workbooks = parameters.response;
         if(!this.workbooks) {
             return;

@@ -24,24 +24,30 @@ class WorkbookService extends BaseService{
 
         //     scope.$apply();
         // });
-
+    
+        self.proc = false;
     }
     
     fetchAll() {
         var self = this;
-
+        if(self.proc) {
+            return;
+        }
+        
         var req = {
             method : self.api.workbook.index.method,
             url    : self.api.workbook.index.url,
         };
 
-        self._http[req.method](req.url, req.data)
+        self.proc = true;
+        self._http[req.method](req.url, {cache: true})
             .success(function(data){
-
+                self.proc = false;
                 self.workbooks = data;
                 self._dispatcher.dispatch(self.WORKBOOK_FETCHALL, {"success":true,"result":"success","response":self.getAll()});
             })
             .error(function(){
+                self.proc = false;
                 console.log("error in workbook.strore.js");
                 self._dispatcher.dispatch(self.WORKBOOK_FETCHALL, {"success":false,"result":"fail to fetch workbooks."});
             });
@@ -62,11 +68,12 @@ class WorkbookService extends BaseService{
         };
 
         self._http[req.method](req.url, req.data)
-            .success(function(response){
-                self._dispatcher.dispatch(self.WORKBOOK_STORE, {"success":true,"result":"success", "response": response});
+            .success(function(res){
+                self.workbook.push(res);
+                self._dispatcher.dispatch(self.WORKBOOK_STORE, {"success":true,"result":"success", "target": res});
             })
-            .error(function(){
-                self._dispatcher.dispatch(self.WORKBOOK_STORE, {"success":false,"result":"fail to store workbooks."});
+            .error(function(err){
+                self._dispatcher.dispatch(self.WORKBOOK_STORE, {"success":false,"result":"fail to store workbooks.","error":err});
             });
     }
 

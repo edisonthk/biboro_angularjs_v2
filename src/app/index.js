@@ -9,8 +9,8 @@ import WorkbookService from '../app/components/workbook/workbook.service';
 import RouteService    from '../app/components/route/route.service';
 import CommentService  from '../app/components/comment/comment.service';
 import NewsService  from '../app/components/news/news.service';
-import FeedbackService from './components/feedback/feedback.service';
-import MarkdownHelper from './components/markdown/markdown.factory';
+import FeedbackService from '../app/components/feedback/feedback.service';
+import MarkdownHelper from '../app/components/markdown/markdown.factory';
 
 
 // directives
@@ -24,11 +24,11 @@ import FloatLayoutDirective    from '../app/components/float_layout/float_layout
 import CellDirective           from '../app/components/float_layout/cell.directive';
 
 // constant
-import apiConstant from './components/api/api.filter';
+import apiConstant from '../app/components/api/api.filter';
 
 // config
-import routeConfig from './components/route/route.config';
-import toastrConfig from './components/toastr/toastr.config';
+import routeConfig from '../app/components/route/route.config';
+import toastrConfig from '../app/components/toastr/toastr.config';
 
 angular.module('biboroAngular', [
         'ngAnimate',

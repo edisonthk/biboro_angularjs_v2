@@ -21,7 +21,6 @@ class WorkbookListController extends FluxController {
 
         // register action
         this.registerCallbacks({
-            WORKBOOK_FETCHALL  : this.fetchAllCallback,
             WORKBOOK_STORE     : this.storeCallback,
             WORKBOOK_UPDATE    : this.updateCallback,
         });
@@ -45,13 +44,6 @@ class WorkbookListController extends FluxController {
 
     testClick() {
         this.showCreateDialog();
-    }
-
-    fetchAllCallback(parameters) {
-        this.workbooks = parameters.response;
-
-        // set default value of workbook
-        // this.editor.workbook = this.workbooks.length > 0 ? this.workbooks[0] : null;
     }
 
     /**
@@ -83,8 +75,8 @@ class WorkbookListController extends FluxController {
         });
     }
 
-    storeCallback(parameters) {
-        var workbook = parameters.response;
+    storeCallback(res) {
+        var workbook = res.target;
 
         ShortcutTask.clearTask(this.handlerToken);
         this.createDialog.show = false;

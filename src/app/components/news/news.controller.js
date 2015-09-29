@@ -31,9 +31,9 @@ class NewsController extends FluxController {
 
         // register action
         this.registerCallbacks({
-            NEWS_FETCHALL:   this.fetchAllCallback.bind(this),
+            NEWS_FETCHALL:   this.fetchAllCallback,
 
-            SNIPPET_FORK:    this.newsForkCallback.bind(this),
+            SNIPPET_FORK:    this.newsForkCallback,
 
         });
 
@@ -51,6 +51,7 @@ class NewsController extends FluxController {
 
     fetchAllCallback(parameters) {
         var self = this;
+        console.log("d");
         self.news.getAll().map(function(item) {
             if(item.workbooks.length > 0) {
                 item.workbookId = item.workbooks[0].id;
