@@ -113,7 +113,8 @@ class NavbarController extends FluxController {
     }
 
     updateSelectedPane() {
-        var workbook = this.stateParams.workbook;
+        var workbook = this.route.getCurrentParams().workbook;
+        console.log("b " + workbook);
         if(workbook) {
             this.selectedWorkbook = this.workbook.getById(workbook) || {};
         }
