@@ -4,6 +4,8 @@ import ShortcutTask from "../shortcut/shortcut.task";
 
 class EditorController extends FluxController {
     constructor ($window, $scope, Markdown, Dispatcher) {
+        'ngInject';
+        
         super.constructor($scope,Dispatcher);
         console.log("editor");
         this.scope = $scope;

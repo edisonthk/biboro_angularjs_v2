@@ -2,6 +2,7 @@ import EditorController from "./editor.controller";
 
 class EditorDirective {
     constructor () {
+        'ngInject';
 
         let directive = {
             restrict: 'E',
