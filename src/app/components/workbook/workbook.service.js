@@ -43,7 +43,7 @@ class WorkbookService extends BaseService{
         self._http[req.method](req.url, {cache: true})
             .success(function(data){
                 self.proc = false;
-                self.workbooks = data;
+                self.setWorkbooks(data);
                 self._dispatcher.dispatch(self.WORKBOOK_FETCHALL, {"success":true,"result":"success","response":self.getAll()});
             })
             .error(function(){
@@ -69,8 +69,9 @@ class WorkbookService extends BaseService{
 
         self._http[req.method](req.url, req.data)
             .success(function(res){
-                self.workbook.push(res);
-                self._dispatcher.dispatch(self.WORKBOOK_STORE, {"success":true,"result":"success", "target": res});
+                var wb = self.transformWorkbook(res);
+                self.workbooks.push(wb);
+                self._dispatcher.dispatch(self.WORKBOOK_STORE, {"success":true,"result":"success", "target": wb});
             })
             .error(function(err){
                 self._dispatcher.dispatch(self.WORKBOOK_STORE, {"success":false,"result":"fail to store workbooks.","error":err});
@@ -87,7 +88,7 @@ class WorkbookService extends BaseService{
 
         self._http[req.method](req.url, req.data)
             .success(function(response){
-                self.workbook = response.workbook;
+                self.setWorkbook(response.workbook);
                 self.workbook.snippets = response.snippets;
                 self.snippet.setSnippets(response.snippets);
                 
@@ -112,7 +113,7 @@ class WorkbookService extends BaseService{
 
         self._http[req.method](req.url, req.data)
             .success(function(response){
-                self.workbook = response.workbook;
+                self.setWorkbook(response.workbook);
                 self.workbook.snippets = response.snippets;
                 self.snippet.setSnippets(response.snippets);
 
@@ -138,18 +139,11 @@ class WorkbookService extends BaseService{
         };
 
         self._http[req.method](req.url, req.data)
-            .success(function(response){
-                var wb = response;
-                console.log(response);
-                for (var i = 0; i < self.workbooks.length; i++) {
-                    if(self.workbooks[i].id === wb.id) {
-                        self.workbooks[i] = wb;
-                        break;
-                    }
-                }
+            .success(function(res){
+                self.setWorkbookInsideGroup(res);
 
-                self._dispatcher.dispatch(self.WORKBOOK_SHOW, {"success":true,"result":"success","response":response});
-                self._dispatcher.dispatch(self.WORKBOOK_UPDATE, {"success":true,"result":"success","response":response});
+                self._dispatcher.dispatch(self.WORKBOOK_SHOW, {"success":true,"result":"success","response":res});
+                self._dispatcher.dispatch(self.WORKBOOK_UPDATE, {"success":true,"result":"success","response":res});
             })
             .error(function(){
                 self._dispatcher.dispatch(self.WORKBOOK_UPDATE, {"success":false,"result":"fail to update workbooks."});
@@ -195,6 +189,35 @@ class WorkbookService extends BaseService{
         if(this.workbook){
             return this.workbook.snippets;
         }
+    }
+
+    setWorkbooks(workbooks) {
+        for (var i = 0; i < workbooks.length; i++) {
+            workbooks[i] = this.transformWorkbook(workbooks[i]);
+        }
+        this.workbooks = workbooks;
+    }
+
+    setWorkbook(wb) {
+        this.workbook = this.transformWorkbook(wb);
+    }
+
+    setWorkbookInsideGroup(wb) {
+        var self = this;
+
+        wb = self.transformWorkbook(wb);
+
+        for (var i = 0; i < self.workbooks.length; i++) {
+            if(self.workbooks[i].id === wb.id) {
+                self.workbooks[i] = wb;
+                break;
+            }
+        }
+    }
+
+    transformWorkbook(wb) {
+        wb.id = parseInt(wb.id);
+        return wb;
     }
 
 }

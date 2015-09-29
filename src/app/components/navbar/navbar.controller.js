@@ -61,6 +61,7 @@ class NavbarController extends FluxController {
 
         this.closeDialog = this.closeDialog.bind(this);
         this._shortcutParallelTaskToken = ShortcutTask.setParallelTask(this.keyupTask.bind(this));
+        this.initializeFlag = true;
     }
 
     loadTags(query) {
@@ -85,8 +86,14 @@ class NavbarController extends FluxController {
             this.workbooks = [];
             this.showWorkbookListFlag = false;
         }else {
-            // this.updateSelectedPane();
-            this.workbook.fetchAll();
+            if(this.initializeFlag){
+                this.initializeFlag = false;
+                this.workbook.fetchAll();
+            }else{
+                this.updateSelectedPane();
+            }
+            
+            
             this.showWorkbookListFlag = true;
 
         }
@@ -102,7 +109,7 @@ class NavbarController extends FluxController {
         var workbookId = this.route.getCurrentParams().workbook;
         if(workbookId) {
             for (var i = 0; i < this.workbooks.length; i++) {
-                if(this.workbooks[i].id === parseInt(workbookId)) {
+                if(this.workbooks[i].id === workbookId) {
                     this.editor.workbook = this.workbooks[i];
                     break;
                 }
@@ -114,7 +121,7 @@ class NavbarController extends FluxController {
 
     updateSelectedPane() {
         var workbook = this.route.getCurrentParams().workbook;
-        console.log("b " + workbook);
+        console.log("b " + workbook + " "+typeof workbook);
         if(workbook) {
             this.selectedWorkbook = this.workbook.getById(workbook) || {};
         }
