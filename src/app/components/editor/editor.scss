@@ -69,6 +69,10 @@
             background-color: #dcdcdc;
             height: 100%;
 
+            .form-group {
+                position: relative;
+            }
+
             .form-group:last-child {
                 margin-bottom: 0;
             }
@@ -78,7 +82,9 @@
                 overflow: auto;
             }
 
-            .form-group.tools {
+            .tools {
+                position: absolute;
+                top: 0;
                 font-size: 14px;
                 padding: 6px 0;
                 border: 1px solid #ccc;
@@ -107,9 +113,8 @@
             }
         }
 
-
-        
-        textarea.form-control {
+        .editor-textarea {
+            margin-top: 44px;
             height: 350px;
         }
         

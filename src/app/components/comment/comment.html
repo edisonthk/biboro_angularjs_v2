@@ -8,7 +8,7 @@
             <button ng-click="comment.submit()">send</button>
         </div>
         <div ng-if="comment.comments.length == 0" class="comment-empty">
-            No message
+            このスニペットにコメントがありません
         </div>
         <ul ng-if="comment.comments.length > 0" class="comment-list">
             <li class="comment clearfix" ng-repeat="c in comment.comments">

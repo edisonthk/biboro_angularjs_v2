@@ -12,28 +12,25 @@
                 <div class="form-group">
                     <input class="form-control editor-ready-focus" ng-model="title" placeholder="タイトル">
                 </div>
-<!--                <div class="form-group">
-                    <tags-input ng-model="tags" placeholder="タグ">
-                        <auto-complete source="editor.loadTags($query)"></auto-complete>
-                    </tags-input>
-                </div>
--->             
-                <div class="form-group tools clearfix">
-                    <div class="tools-group">
-                        <button ng-mouseup="editor.boldEvent()"><i class="fa fa-bold"></i></button>
-                        <button ng-mouseup="editor.italicEvent()"><i class="fa fa-italic"></i></button>
-                        <button ng-mouseup="editor.headingEvent()">H</button>
-                        <button ng-mouseup="editor.strikethroughEvent()"><i class="fa fa-strikethrough"></i></button>
-                    </div>
-                    <div class="tools-group">
-                        <button><i class="fa fa-link"></i></button>
-                        <button><i class="fa fa-picture-o"></i></button>
-                        <button ng-mouseup="editor.codeEvent()"><i class="fa fa-code"></i></button>
-                    </div>
-                </div>   
+
                 <div class="form-group">
                     <textarea class="form-control editor-textarea" ng-model="content"></textarea>
+
+                    <div class="tools clearfix">
+                        <div class="tools-group">
+                            <button ng-mouseup="editor.boldEvent()"><i class="fa fa-bold"></i></button>
+                            <button ng-mouseup="editor.italicEvent()"><i class="fa fa-italic"></i></button>
+                            <button ng-mouseup="editor.headingEvent()">H</button>
+                            <button ng-mouseup="editor.strikethroughEvent()"><i class="fa fa-strikethrough"></i></button>
+                        </div>
+                        <div class="tools-group">
+                            <button><i class="fa fa-link"></i></button>
+                            <button><i class="fa fa-picture-o"></i></button>
+                            <button ng-mouseup="editor.codeEvent()"><i class="fa fa-code"></i></button>
+                        </div>
+                    </div>   
                 </div>
+                
             </div>
             <div class="col-left md-parsed">
                 <div class="title" ng-bind="title"></div>
