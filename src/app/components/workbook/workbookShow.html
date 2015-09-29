@@ -17,7 +17,7 @@
                     <i class="fa fa-code-fork"></i>
                 </button>
                 <button ng-click="workbookCtrl.showCommentBox(snippet)"><i class="fa fa-comment-o"></i></button>
-                <button ng-click="workbookCtrl.deleteSnippet(snippet)"><i class="fa fa-trash-o"></i></button>
+                <button ng-if="snippet.editable" ng-click="workbookCtrl.deleteSnippet(snippet)"><i class="fa fa-trash-o"></i></button>
             </div>
 
             <div ng-bind-html="workbookCtrl.markdown.parseMd(snippet.content)" class="html-content"></div>
