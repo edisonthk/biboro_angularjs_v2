@@ -2,6 +2,8 @@ import ShortcutTask from "../shortcut/shortcut.task";
 
 class FluxController {
     constructor($scope, Dispatcher) {
+        'ngInject';
+        
         this._scope = $scope;
         this._dispatcher = Dispatcher;
 

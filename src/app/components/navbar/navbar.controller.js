@@ -6,6 +6,8 @@ import Helper from "../helper/helper";
 
 class NavbarController extends FluxController {
     constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $stateParams, $state, toastr, FeedbackService) {
+        'ngInject';
+        
         super.constructor($scope, Dispatcher);
 
         this.toast       = toastr;

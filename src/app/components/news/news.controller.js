@@ -3,6 +3,8 @@ import FluxController from "../flux/flux.controller";
 
 class NewsController extends FluxController {
     constructor($scope ,$state ,$stateParams ,Dispatcher,WorkbookService, SnippetService, NewsService,Markdown, toastr) {
+        'ngInject';
+        
         super.constructor($scope, Dispatcher);
 
         this.toast        = toastr;

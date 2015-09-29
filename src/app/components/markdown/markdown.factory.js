@@ -4,6 +4,8 @@ import "prettyprint";
 class MarkdownFactory {
 
     constructor () {
+        'ngInject';
+        
         this.renderer = new Markdown.Renderer();
         this.renderer.code = function(code, language) {
             var langCode = "";

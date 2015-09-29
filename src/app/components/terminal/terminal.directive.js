@@ -6,6 +6,7 @@ import TerminalController from './terminal.controller';
 class TerminalDirective {
 
     constructor () {
+        'ngInject';
 
         this.PLACEHOLDER = "";
         this.lastTop = 0;

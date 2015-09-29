@@ -1,5 +1,6 @@
 class CellDirective {
     constructor () {
+        'ngInject';
 
         let directive = {
             restrict: 'C',

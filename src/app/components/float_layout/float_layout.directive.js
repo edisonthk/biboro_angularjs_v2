@@ -1,5 +1,6 @@
 class FloatLayoutDirective {
     constructor () {
+        'ngInject';
 
         let directive = {
             restrict: 'C',

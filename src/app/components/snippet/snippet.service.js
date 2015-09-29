@@ -2,6 +2,8 @@
 class SnippetService {
 
     constructor($http, $state, $stateParams, Dispatcher, Api) {
+        'ngInject';
+        
         this.SNIPPET_FETCHALL = "SNIPPET_FETCHALL";
         this.SNIPPET_STORE = "SNIPPET_STORE";
         this.SNIPPET_SHOW = "SNIPPET_SHOW";

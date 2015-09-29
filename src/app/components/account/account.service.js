@@ -1,6 +1,7 @@
 class AccountService {
 
     constructor($http,Dispatcher,Api) {
+        'ngInject';
         
         this.ACCOUNT_FETCH = "ACCOUNT_FETCH";
         

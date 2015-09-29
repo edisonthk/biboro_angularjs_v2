@@ -2,6 +2,7 @@ import BaseService from "../../base/base.service";
 
 class NewsService extends BaseService{
     constructor($http,Dispatcher, Api) {
+        'ngInject';
         
         this._http = $http;
         this._dispatcher = Dispatcher;

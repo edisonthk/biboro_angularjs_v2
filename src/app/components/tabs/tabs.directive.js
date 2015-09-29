@@ -1,5 +1,6 @@
 class TabsDirective {
     constructor () {
+        'ngInject';
 
         let directive = {
             restrict: 'E',

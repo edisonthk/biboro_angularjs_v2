@@ -2,6 +2,8 @@ import FluxController from "../flux/flux.controller";
 
 class TerminalController extends FluxController {
     constructor ($scope,Dispatcher, $stateParams, WorkbookService) {
+        'ngInject';
+        
         super.constructor($scope, Dispatcher);
 
         this.stateParams = $stateParams;

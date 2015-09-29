@@ -2,6 +2,7 @@ import BaseService from "../../base/base.service";
 
 class WorkbookService extends BaseService{
     constructor($http, $stateParams, Dispatcher, SnippetService, Api) {
+        'ngInject';
         
         this._http = $http;
         this.stateParams  = $stateParams;

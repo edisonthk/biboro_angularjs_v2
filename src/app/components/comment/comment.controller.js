@@ -3,6 +3,8 @@ import FluxController from "../flux/flux.controller";
 
 class CommentController extends FluxController{
     constructor ($scope,Dispatcher, CommentService, AccountService) {
+        'ngInject';
+        
         super.constructor($scope, Dispatcher);
 
         this.IN_PROGRESS = "IN_PROGRESS";

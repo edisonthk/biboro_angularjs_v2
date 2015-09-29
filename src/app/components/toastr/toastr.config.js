@@ -1,4 +1,5 @@
 export default function(toastrConfig) {
+    'ngInject';
 
     angular.extend(toastrConfig, {
         allowHtml: true,

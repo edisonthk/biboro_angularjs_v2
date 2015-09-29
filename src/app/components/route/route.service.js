@@ -2,6 +2,7 @@
 class RouteService {
 
     constructor($rootScope,Dispatcher) {
+        'ngInject';
 
         this._dispatcher = Dispatcher;
         this._scope = $rootScope;

@@ -5,6 +5,8 @@ import Markdown from "../../../../bower_components/marked/lib/marked";
 class SnippetController extends FluxController {
     
     constructor($scope, $state,$stateParams,Dispatcher, WorkbookService, AccountService, SnippetService, RouteService) {
+        'ngInject';
+        
         super.constructor($scope, Dispatcher);
 
         this._scope         = $scope;

@@ -3,6 +3,8 @@ import FluxController from "../flux/flux.controller";
 
 class WorkbookShowController extends FluxController {
     constructor($scope ,$state ,$stateParams ,Dispatcher,WorkbookService, AccountService, RouteService, SnippetService, Markdown, toastr) {
+        'ngInject';
+        
         super.constructor($scope, Dispatcher);
 
         this.TYPE_FORK    = "TYPE_FORK";
