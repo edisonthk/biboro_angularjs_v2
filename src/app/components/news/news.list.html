@@ -9,12 +9,12 @@
             <div class="line"></div>
             <h3 class="title">
                 <span ng-bind="news.title"></span>
-                <small>by </small><small ng-bind="news.creator.name"></small>
+                <small>by</small>&nbsp;<small ng-bind="news.creator.name"></small>
             </h3>   
 
             <div class="follow" ng-if="news.reference != null">
-                <a ng-if="news.reference.method === 2" ng-href="{{news.reference.target}}">Ref 
-                    <span ng-bind="news.reference.domain"></span>
+                <a ng-if="news.reference.method === 2" ng-href="{{news.reference.target}}">Ref
+                    &nbsp;<span ng-bind="news.reference.domain"></span>
                 </a>
                 <a ng-if="news.reference.method === 1" ng-href="/snippets/{{news.reference.target}}">Ref 
                     from snippets

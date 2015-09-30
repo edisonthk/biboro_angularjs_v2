@@ -99,13 +99,10 @@ class NavbarController extends FluxController {
         }
     }
 
-    fetchAllCallback(parameters) {
-        console.log("a");
-        this.workbooks = parameters.response;
-        if(!this.workbooks) {
-            return;
-        }
+    fetchAllCallback() {
 
+        console.log(this.workbook.getAll().length);
+        
         var workbookId = this.route.getCurrentParams().workbook;
         if(workbookId) {
             for (var i = 0; i < this.workbooks.length; i++) {

@@ -40,7 +40,7 @@ class WorkbookService extends BaseService{
         };
 
         self.proc = true;
-        self._http[req.method](req.url, {cache: true})
+        self._http[req.method](req.url, {cache: false})
             .success(function(data){
                 self.proc = false;
                 self.setWorkbooks(data);
@@ -69,9 +69,12 @@ class WorkbookService extends BaseService{
 
         self._http[req.method](req.url, req.data)
             .success(function(res){
+                console.log(self.workbooks.length);
                 var wb = self.transformWorkbook(res);
                 self.workbooks.push(wb);
+                console.log(self.workbooks.length);
                 self._dispatcher.dispatch(self.WORKBOOK_STORE, {"success":true,"result":"success", "target": wb});
+                console.log(self.workbooks.length);
             })
             .error(function(err){
                 self._dispatcher.dispatch(self.WORKBOOK_STORE, {"success":false,"result":"fail to store workbooks.","error":err});
@@ -159,8 +162,11 @@ class WorkbookService extends BaseService{
 
         self._http[req.method](req.url, req.data)
             .success(function(response){
+                console.log(self.workbooks.length);
                 self.disposeWorkbook(id);
+                console.log(self.workbooks.length);
                 self._dispatcher.dispatch(self.WORKBOOK_DESTROY, {"success":true,"result":"workbook","response":response});
+                console.log(self.workbooks.length);
             })
             .error(function(){
                 self._dispatcher.dispatch(self.WORKBOOK_DESTROY, {"success":false,"result":"fail to destroy workbooks."});
@@ -169,6 +175,7 @@ class WorkbookService extends BaseService{
 
 
     getAll(){
+
         return this.workbooks;
     }
 
@@ -201,13 +208,14 @@ class WorkbookService extends BaseService{
         for (var i = 0; i < this.workbooks.length; i++) {
             if(this.workbooks[i].id === wbId) {
                 console.log("dispose");
-                this.workbooks.slice(i,i+1);
+                this.workbooks.splice(i,1);
                 break;
             }
         }
     }
 
     setWorkbooks(workbooks) {
+        console.log(this.workbooks.length);
         for (var i = 0; i < workbooks.length; i++) {
             workbooks[i] = this.transformWorkbook(workbooks[i]);
         }
