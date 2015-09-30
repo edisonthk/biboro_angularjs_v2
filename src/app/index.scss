@@ -57,7 +57,7 @@ html, body {
     min-height: calc(100% + #{$navbar-height});
 }
 
-p,span,input,i,small,h1,h2,h3,h4,h5,a {color: #515151;}
+p,input,h1,h2,h3,h4,h5,a {color: #515151;}
 
 a, a:hover {
     text-decoration: none;
@@ -69,6 +69,9 @@ input {
 
 .btn:hover {
     cursor: pointer;
+}
+.btn:hover {
+    opacity: 0.5;
 }
 
 /* Large desktop */
@@ -87,10 +90,6 @@ tags-input .tags, tags-input .tags.focused {
 
     small {
         font-size: 60%;
-    }
-
-    .btn:hover {
-        opacity: 0.7;
     }
 }
 

@@ -28,6 +28,7 @@ class EditorController extends FluxController {
     }
 
     keyupTask(e) {
+        
         var ctrlKey = (e.ctrlKey || e.metaKey);
         if(ctrlKey && e.keyCode === KeyCode.KEY_S) {
             e.preventDefault();
@@ -35,27 +36,30 @@ class EditorController extends FluxController {
         }else if(e.keyCode === KeyCode.KEY_ESC) {
             e.preventDefault();
             this.scope.cancelCallback();
-        }else if(ctrlKey && e.keyCode === KeyCode.KEY_B ) {
-            e.preventDefault();
-            this.boldEvent();
-        }else if(ctrlKey && e.keyCode === KeyCode.KEY_I) {
-            e.preventDefault();
-            this.italicEvent();
-        }else if(ctrlKey && e.keyCode === KeyCode.KEY_L) {
-            e.preventDefault();
-            this.anchorEvent();
-        }else if(ctrlKey && e.keyCode === KeyCode.KEY_K) {
-            e.preventDefault();
-            this.codeEvent()
+        }else{
+
+            if(ctrlKey && e.target.className.indexOf("editor-textarea") >= 0) {
+                // editor textarea shortcut
+                if(e.keyCode === KeyCode.KEY_B) {
+                    e.preventDefault();
+                    this.boldEvent();
+                }else if(e.keyCode === KeyCode.KEY_I) {
+                    e.preventDefault();
+                    this.italicEvent();
+                }else if(e.keyCode === KeyCode.KEY_L) {
+                    e.preventDefault();
+                    this.anchorEvent();
+                }else if(e.keyCode === KeyCode.KEY_K) {
+                    e.preventDefault();
+                    this.codeEvent()
+                }
+                return;
+            }
         }
     }
 
     contentChangeCallback() {
         this.htmlContent = this.markdown.parseMd(this.scope.content);
-    }
-
-    loadTags(query) {
-        return [{text:"aaa"},{text:"bbb"}];
     }
 
     boldEvent() {

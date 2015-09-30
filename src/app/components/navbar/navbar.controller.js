@@ -120,7 +120,7 @@ class NavbarController extends FluxController {
         var workbook = this.route.getCurrentParams().workbook;
         console.log("b " + workbook + " "+typeof workbook);
         if(workbook) {
-            this.selectedWorkbook = this.workbook.getById(workbook) || {};
+            this.selectedWorkbook = this.workbook.getDataById(workbook) || {};
         }
     }
 
@@ -137,7 +137,7 @@ class NavbarController extends FluxController {
      *
      */
     newSnippet() {
-        this.editor.workbook = this.workbook.workbook;
+        this.editor.workbook = this.workbook.getCurrentWorkbook();
         this.editor.show = true;
     }
 

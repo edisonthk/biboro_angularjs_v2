@@ -10,6 +10,13 @@ class FluxController {
         this._scope.$on("$destroy", this.onDestruct.bind(this));
 
         this.dispatchToken = [];
+
+        if (navigator.userAgent.match('Mac OS X')) {
+            this._scope.CMD_KEY = "⌘";
+        } else {
+            this._scope.CMD_KEY = "Ctrl";
+        }
+        
     }
 
     registerCallbacks(callbacks) {

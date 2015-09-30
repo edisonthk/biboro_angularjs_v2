@@ -117,9 +117,9 @@ class WorkbookShowController extends FluxController {
         });
     }
 
-    workbookStoreCallback(parameters) {
-        if(parameters.result) {
-            var workbook = parameters.response;
+    workbookStoreCallback(res) {
+        if(res.result) {
+            var workbook = res.response;
             this.state.go("workbook.show",{workbook: workbook.id});
         }
         this.createDialog.show = false;
@@ -195,6 +195,7 @@ class WorkbookShowController extends FluxController {
     }
 
     updatedCallback(res) {
+        console.log(res);
         if(res.success) {
             this.toast.success("編集しました");
             this.editor.show = false;

@@ -76,7 +76,7 @@ class WorkbookListController extends FluxController {
     }
 
     storeCallback(res) {
-        var workbook = res.target;
+        var workbook = res.response;
 
         ShortcutTask.clearTask(this.handlerToken);
         this.createDialog.show = false;
