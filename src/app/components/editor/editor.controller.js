@@ -225,7 +225,7 @@ class EditorController extends FluxController {
         e.preventDefault();
     }
     dropping(e){
-        // e.preventDefault();
+        e.preventDefault();
 
         var files = e.dataTransfer.files;
         if(!files){
