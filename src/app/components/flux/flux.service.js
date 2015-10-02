@@ -28,6 +28,7 @@ class FluxService {
     }
 
     request(config) {
+        //console.log(config);
         var self= this;
 
         if(typeof config.success === 'function') {

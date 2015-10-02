@@ -25,7 +25,7 @@
                     <div class="comment_me">{{c.comment}}</div>
                     <div class="time">{{c.updated_at.substring(0,c.updated_at.indexOf(" "))}}</div>
                 </div>
-                <!-- <button ng-if="c.editable" ng-click="comment.destroy(c)"><i class="fa fa-trash-o"></i></button> -->
+                <button ng-if="c.editable" ng-click="comment.destroy(c)"><i class="fa fa-trash-o"></i></button>
             </li>
         </ul>
     </div>

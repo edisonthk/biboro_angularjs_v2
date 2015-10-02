@@ -42,8 +42,8 @@ class TabsDirective {
         });
 
         scope.$watch("ngModel", function(selectedPane) {
-            console.log(selectedPane);
-            if(!selectedPane.id) {
+            //console.log(selectedPane);
+            if(!selectedPane || !selectedPane.id) {
                 return;
             }
             

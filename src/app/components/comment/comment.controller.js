@@ -48,14 +48,14 @@ class CommentController extends FluxController{
         this.comment.fetchComments(snippet.id);
         this.user   = this.account.getUser();
 
-        console.log(this.user);
+        //console.log(this.user);
     }
 
 
     fetchCallback() {
         this.status = this.DONE;
         this.comments = this.comment.getCommentsBySnippetId(this.snippet.id);
-        console.log(this.snippet.id);
+        //console.log(this.snippet.id);
     }
 
     submit() {

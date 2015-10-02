@@ -1,69 +1,60 @@
+import FluxService from "../flux/flux.service";
 
-class CommentService {
+class CommentService extends FluxService {
 
     constructor($http,Dispatcher, Api) {
         'ngInject';
         
-        this._dispatcher = Dispatcher;
-        this._http       = $http;
-
-        this.COMMENT_FETCH   = "COMMENT_FETCH";
-        this.COMMENT_UPDATE  = "COMMENT_UPDATE";
-        this.COMMENT_DESTROY = "COMMENT_DESTROY";
-        this.COMMENT_STORE   = "COMMENT_STORE";
+        super.constructor($http, Dispatcher);
 
         this.commentSnippets = [];
 
         this.api = Api;
+
+        this.setDispatcherKey([
+                "COMMENT_FETCH",
+                "COMMENT_STORE",
+                "COMMENT_UPDATE",
+                "COMMENT_DESTROY",
+            ]);
     }
 
     
     fetchComments(snippetId) {
-
-        var self = this;
-
-        if(self.haveComment(snippetId)) {
-
-            self._dispatcher.dispatch(self.COMMENT_FETCH, {"success":true,"result":"success"});
-            return;
-        }
-
-        var req = {
-            method : self.api.comment.show.method,
-            url    : self.api.comment.show.url.replace(":snippetId",snippetId),
-        };
-
-        self._http[req.method](req.url, req.data)
-            .success(function(response){
-                self.setComments(snippetId, response);
-                self._dispatcher.dispatch(self.COMMENT_FETCH, {"success":true,"result":"success"});
-            })
-            .error(function(){
-                console.log("error in snippet.strore.js");
-                self._dispatcher.dispatch(self.COMMENT_FETCH, {"success":false,"result":"fail to fetch comments from following snippet :"+snippetId});
-            });
+        this.request({
+            method : this.api.comment.show.method,
+            url    : this.api.comment.show.url.replace(":snippetId",snippetId),
+            dispatcher : "COMMENT_FETCH",
+            success: function(res) {
+                console.log("fetch comment");
+                this.setComments(snippetId, res);
+            }
+        });
     }
 
     store(snippetId, params) {
-        var self= this;
-
-        var req = {
-            method : self.api.comment.store.method,
-            url    : self.api.comment.store.url.replace(":snippetId",snippetId),
-            data   : params,
-        };
-
-        self._http[req.method](req.url, req.data)
-            .success(function(response){
-                self.appendComment(snippetId, response);
-                self._dispatcher.dispatch(self.COMMENT_STORE, {"success":true,"result":"success","response":response});
-            })
-            .error(function(){
-                self._dispatcher.dispatch(self.COMMENT_STORE, {"success":false,"result":"fail to fetch comments from following snippet :"+snippetId});
-            });
+        this.request({
+            method : this.api.comment.store.method,
+            url    : this.api.comment.store.url.replace(":snippetId",snippetId),
+            dispatcher : "COMMENT_STORE",
+            success: function(res) {
+                //console.log(res);
+                this.appendComment(snippetId, res);
+            }
+        });
     }
 
     update(snippetId, commentId, params){
+        this.request({
+            method : this.api.comment.update.method,
+            url    : this.api.comment.update.url.replace(":snippetId",snippetId).replace(":commentId",commentId),
+            dispatcher : "COMMENT_UPDATE",
+            success: function(res) {
+                this.updateComment(snippetId, commentId, res);
+            }
+        });
+
+/*
         var self= this;
 
         var req = {
@@ -79,10 +70,19 @@ class CommentService {
             })
             .error(function(){
                 self._dispatcher.dispatch(self.COMMENT_UPDATE, {"success":false,"result":"fail to fetch comments from following snippet :"+snippetId+" with commentId :"+commentId});
-            });
+            });*/
     }
 
     destroy(snippetId, commentId){
+        this.request({
+            method : this.api.comment.destroy.method,
+            url    : this.api.comment.destroy.url.replace(":snippetId",snippetId).replace(":commentId",commentId),
+            dispatcher : "COMMENT_UPDATE",
+            success: function(res) {
+                this.destroyComment(snippetId, commentId);
+            }
+        });
+/*
         var self= this;
 
         var req = {
@@ -102,41 +102,23 @@ class CommentService {
             })
             .error(function(){
                 self._dispatcher.dispatch(self.COMMENT_DESTROY, {"success":false,"result":"fail to destroy snippets."});
-            });
+            });*/
     }
-
-    haveComment(snippetId) {
-        for (var i = 0; i < this.commentSnippets.length; i++) {
-            if(this.commentSnippets[i].id === snippetId) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     setComments(snippetId, comments) {
-        for (var i = 0; i < this.commentSnippets.length; i++) {
-            if(this.commentSnippets[i].id === snippetId) {
-                this.commentSnippets[i] = comments;
-                return;
-            }
-        }
-
-        this.commentSnippets.push({id: snippetId, comments: comments });
+        console.log(comments);
+        this.setGroup(comments);
     }
 
     appendComment(snippetId, comment) {
-        var group = this.getCommentGroup(snippetId);
-        if(group.id === 0) {
-            this.setComments(snippetId, [comment]);
-        }else{
-            group.comments.push(comment);
-        }
+        console.log(comment);
+        this.appendData(comment);
     }
 
     getComment(snippetId, commentId) {
-        for (var i = 0; i < this.commentSnippets.length; i++) {
+        this.getDataById(commentId);
+
+        /*for (var i = 0; i < this.commentSnippets.length; i++) {
             if(this.commentSnippets[i].id === snippetId) {
 
                 for (var j = 0; j < this.commentSnippets[i].comments.length; j++) {
@@ -148,11 +130,13 @@ class CommentService {
             }
         }
 
-        return null;
+        return null;*/
     }
 
     destroyComment(snippetId, commentId) {
-        for (var i = 0; i < this.commentSnippets.length; i++) {
+        this.disposeDataById(commentId);
+
+        /*for (var i = 0; i < this.commentSnippets.length; i++) {
             if(this.commentSnippets[i].id === snippetId) {
                 for (var j = 0; j < this.commentSnippets[i].comments.length; j++) {
                     if(this.commentSnippets[i].comments[j].id === commentId) {
@@ -162,16 +146,11 @@ class CommentService {
                 }
                 
             }
-        }
+        }*/
     }
 
     updateComment(snippetId, commentId, comment) {
-        var c = this.getComment(snippetId, commentId);
-        if(c) {
-            for(var key in comment) {
-                c[key] = comment[key];
-            }
-        }
+        this.getAllData();
     }
 
     getCommentGroup(snippetId) {
