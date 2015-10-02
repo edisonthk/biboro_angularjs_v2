@@ -7,41 +7,6 @@
     </small>
 </h1>
 <div class="workbook-show cells-wrapper clearfix">
-<<<<<<< HEAD
-        
-    <div masonry load-images='false'>
-         <div class="masonry-brick">
-            <h1>
-                <span ng-bind="workbookCtrl.currentWorkbook.title"></span>
-                <small class="right" ng-click="workbookCtrl.deleteWorkbook()"><i class="fa fa-trash-o"></i></small>
-                <small class="right" ng-click="workbookCtrl.showEditDialog()"><i class="fa fa-edit"></i></small>    
-            </h1>
-            <p class="author" ng-bind="workbookCtrl.currentWorkbook.account.name"></p>
-        </div>
-
-        <div class="masonry-brick"
-            ng-repeat="snippet in workbookCtrl.workbook.getCurrentWorkbookSnippets()"
-            ng-mouseenter="snippet.showTools = true"
-            ng-mouseleave="snippet.showTools = false" >
-            <div class="cell-wrapper">
-                <div class="line"></div>
-                <h3 class="title" ng-bind="snippet.title"></h3>
-
-                <div class="tools" ng-if="snippet.showTools">
-                    <button ng-if="snippet.editable" ng-click="workbookCtrl.editSnippet(snippet)">
-                        <i class="fa fa-wrench"></i>
-                    </button>
-                    <button ng-if="!snippet.editable" ng-click="workbookCtrl.forkSnippet(snippet)">
-                        <i class="fa fa-code-fork"></i>
-                    </button>
-                    <button ng-click="workbookCtrl.showCommentBox(snippet)"><i class="fa fa-comment-o"></i></button>
-                    <button ng-click="workbookCtrl.deleteSnippet(snippet)"><i class="fa fa-trash-o"></i></button>
-                </div>
-
-                <div ng-bind-html="snippet.htmlContent" class="html-content"></div>
-            </div>
-=======
-    
     <div class="cell clearfix"
         ng-repeat="snippet in workbookCtrl.snippet.getSnippets()"
         ng-mouseenter="snippet.showTools = true"
@@ -62,7 +27,6 @@
             </div>
 
             <div ng-bind-html="workbookCtrl.markdown.parseMd(snippet.content)" class="html-content"></div>
->>>>>>> e4d17a6206f9d58c0dafb44127f2b4727991b549
         </div>
     </div>
 </div>
