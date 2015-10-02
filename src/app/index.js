@@ -36,6 +36,7 @@ angular.module('biboroAngular', [
 
         'ui.router',
         'ngTagsInput',
+        'wu.masonry',
 
     ])
     .constant('Api', apiConstant)
