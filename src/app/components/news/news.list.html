@@ -1,13 +1,7 @@
+<h1 class="page-title"><i class="fa fa-newspaper-o"></i> NEWS</h1>
 <div class="news cells-wrapper clearfix">
         
-    <div class="cell title-cell clearfix" float-layout>
-        <h1>
-            <span>NEWS</span>
-        </h1>
-    </div>
-
     <div class="cell clearfix"
-        float-layout
         ng-repeat="news in newsCtrl.news.getAll()"
         ng-mouseenter="news.showTools = true"
         ng-mouseleave="news.showTools = false" >
@@ -15,17 +9,23 @@
             <div class="line"></div>
             <h3 class="title">
                 <span ng-bind="news.title"></span>
-                <small>by </small><small ng-bind="news.creator.name"></small>
+                <small>by</small>&nbsp;<small ng-bind="news.creator.name"></small>
             </h3>   
 
             <div class="follow" ng-if="news.reference != null">
-                <a ng-if="news.reference.method === 2" ng-href="{{news.reference.target}}">Ref 
-                    <span ng-bind="news.reference.domain"></span>
+                <a ng-if="news.reference.method === 2" ng-href="{{news.reference.target}}">Ref
+                    &nbsp;<span ng-bind="news.reference.domain"></span>
+                </a>
+                <a ng-if="news.reference.method === 1" ng-href="/snippets/{{news.reference.target}}">Ref 
+                    from snippets
                 </a>
             </div>
             
 
             <div class="tools" ng-if="news.showTools">
+                <button ng-if="!news.editable" ng-click="newsCtrl.forkSnippet(news)">
+                    <i class="fa fa-code-fork"></i>
+                </button>
                 <button ng-click="newsCtrl.showCommentBox(news)"><i class="fa fa-comment-o"></i></button>
                 <a class="btn" ui-sref="workbookShow({workbook: news.workbookId})"><i class="fa fa-sign-out"></i></a>
                 
@@ -50,3 +50,15 @@
     snippet="newsCtrl.commentBox.snippet"
     outside-clicked-callback="newsCtrl.commentBox.outsideClickedCallback" >
 ></comment>
+
+<editor
+    ng-if="newsCtrl.editor.show"
+    title="newsCtrl.editor.title" 
+    content="newsCtrl.editor.content"
+    tags="newsCtrl.editor.tags"
+    selected-workbook="newsCtrl.editor.workbook"
+    workbooks="newsCtrl.workbook.getAll()"
+    saved-callback="newsCtrl.editorSavedCallback()"
+    quit-callback="newsCtrl.editorQuitCallback()"
+    cancel-callback="newsCtrl.editorCancelCallback()" >
+</editor> 

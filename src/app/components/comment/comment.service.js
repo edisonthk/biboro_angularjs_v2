@@ -2,6 +2,8 @@
 class CommentService {
 
     constructor($http,Dispatcher, Api) {
+        'ngInject';
+        
         this._dispatcher = Dispatcher;
         this._http       = $http;
 

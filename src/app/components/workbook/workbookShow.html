@@ -1,4 +1,13 @@
+<h1 class="page-title">
+    <i class="fa fa-book"></i> 
+    <span ng-bind="workbookCtrl.workbook.getCurrentWorkbook().title"></span>&nbsp;
+    <small ng-if="workbookCtrl.workbook.getCurrentWorkbook().account_id == workbookCtrl.account.getUserId()">
+        <i class="btn fa fa-pencil" ng-click="workbookCtrl.showEditDialog()"></i>
+        <i class="btn fa fa-trash" ng-click="workbookCtrl.deleteWorkbook()"></i>
+    </small>
+</h1>
 <div class="workbook-show cells-wrapper clearfix">
+<<<<<<< HEAD
         
     <div masonry load-images='false'>
          <div class="masonry-brick">
@@ -31,6 +40,29 @@
 
                 <div ng-bind-html="snippet.htmlContent" class="html-content"></div>
             </div>
+=======
+    
+    <div class="cell clearfix"
+        ng-repeat="snippet in workbookCtrl.snippet.getSnippets()"
+        ng-mouseenter="snippet.showTools = true"
+        ng-mouseleave="snippet.showTools = false" >
+        <div class="cell-wrapper">
+            <div class="line"></div>
+            <h3 class="title" ng-bind="snippet.title"></h3>
+
+            <div class="tools" ng-if="snippet.showTools">
+                <button ng-if="snippet.editable" ng-click="workbookCtrl.editSnippet(snippet)">
+                    <i class="fa fa-wrench"></i>
+                </button>
+                <button ng-if="!snippet.editable" ng-click="workbookCtrl.forkSnippet(snippet)">
+                    <i class="fa fa-code-fork"></i>
+                </button>
+                <button ng-click="workbookCtrl.showCommentBox(snippet)"><i class="fa fa-comment-o"></i></button>
+                <button ng-if="snippet.editable" ng-click="workbookCtrl.deleteSnippet(snippet)"><i class="fa fa-trash-o"></i></button>
+            </div>
+
+            <div ng-bind-html="workbookCtrl.markdown.parseMd(snippet.content)" class="html-content"></div>
+>>>>>>> e4d17a6206f9d58c0dafb44127f2b4727991b549
         </div>
     </div>
 </div>
@@ -55,4 +87,14 @@
     <div ng-include="'app/components/snippet/snippet.deleteDialog.html'"></div>
 </dialog>
 
-<div ui-view></div>
+<editor
+    ng-if="workbookCtrl.editor.show"
+    title="workbookCtrl.editor.title" 
+    content="workbookCtrl.editor.content"
+    tags="workbookCtrl.editor.tags"
+    selected-workbook="workbookCtrl.editor.workbook"
+    workbooks="workbookCtrl.workbook.getAll()"
+    saved-callback="workbookCtrl.editorSavedCallback()"
+    quit-callback="workbookCtrl.editorQuitCallback()"
+    cancel-callback="workbookCtrl.editorCancelCallback()" >
+</editor> 

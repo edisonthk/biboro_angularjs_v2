@@ -1,3 +1,6 @@
+import FluxController from "../flux/flux.controller";
+import ShortcutTask from "../shortcut/shortcut.task";
+
 class DialogDirective {
 
     constructor () {
@@ -21,6 +24,7 @@ class DialogDirective {
                     '<ng-transclude></ng-transclude>' +
                 '</div>',
             link: this.linkFunc,
+            controller: DialogController
         };
 
         return directive;
@@ -32,16 +36,31 @@ class DialogDirective {
                 el.find("input")[0].focus();
             }
         },100);
-        
 
         document.querySelector(".dialog-background").addEventListener('click',function() {
             if(typeof scope.outsideClickedCallback === 'function') {
                 scope.outsideClickedCallback();
                 scope.$apply();
             }
+
         });
     }
 
+}
+
+class DialogController extends FluxController {
+
+    constructor ($scope,Dispatcher) {
+        'ngInject';
+        
+        super.constructor($scope, Dispatcher);
+        console.log("ff");
+        this._shortcutTaskToken = ShortcutTask.setTask(this.keyupTask.bind(this));
+    }
+
+    keyupTask(e) {
+
+    }
 }
 
 export default DialogDirective;

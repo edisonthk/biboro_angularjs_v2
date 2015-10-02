@@ -1,14 +1,18 @@
 import KeyCode from "../shortcut/shortcut.config";
 import ShortcutTask from "../shortcut/shortcut.task";
 import FluxController from "../flux/flux.controller";
+import Helper from "../helper/helper";
 
 
 class NavbarController extends FluxController {
-    constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $stateParams, $state, toastr) {
+    constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $stateParams, $state, toastr, FeedbackService) {
+        'ngInject';
+        
         super.constructor($scope, Dispatcher);
 
         this.toast       = toastr;
         this.route       = RouteService;  
+        this.feedback    = FeedbackService;
         this.account     = AccountService;
         this.workbook    = WorkbookService;
         this.snippet     = SnippetService;
@@ -25,6 +29,9 @@ class NavbarController extends FluxController {
             tags     : [],
             workbook : null,
         };
+
+        this.feedbackContent = "";
+        this.feedbackShow = false;
         
         this.tags = [
                 { value: 'foo', text: 'Foo' },
@@ -42,6 +49,8 @@ class NavbarController extends FluxController {
             ROUTE_UPDATED     : this.stateUpdatedCallback,
 
             SNIPPET_STORE     : this.storedCallback,
+
+            FEEDBACK_SENT     : this.feedbackSentCallback,
         });
 
         this.account.fetchLoginedAccount();
@@ -50,7 +59,10 @@ class NavbarController extends FluxController {
             $state.go("workbookShow",{workbook:  pane.id});
         }
 
+        this.closeDialog = this.closeDialog.bind(this);
         this._shortcutParallelTaskToken = ShortcutTask.setParallelTask(this.keyupTask.bind(this));
+        this.initializeFlag = true;
+        this.savingFlag = false;
     }
 
     loadTags(query) {
@@ -61,7 +73,6 @@ class NavbarController extends FluxController {
     keyupTask(e) {
         
         var ctrlKey = (e.ctrlKey || e.metaKey);
-        console.log(e.keyCode + " " + KeyCode.KEY_B);   
         if(ctrlKey && e.keyCode === KeyCode.KEY_B) {
             this.newSnippet();
 
@@ -76,23 +87,27 @@ class NavbarController extends FluxController {
             this.workbooks = [];
             this.showWorkbookListFlag = false;
         }else {
-            this.updateSelectedPane();
-            this.workbook.fetchAll();
+            if(this.initializeFlag){
+                this.initializeFlag = false;
+                this.workbook.fetchAll();
+            }else{
+                this.updateSelectedPane();
+            }
+            
+            
             this.showWorkbookListFlag = true;
 
         }
     }
 
-    fetchAllCallback(parameters) {
-        this.workbooks = parameters.response;
-        if(!this.workbooks) {
-            return;
-        }
+    fetchAllCallback() {
 
+        console.log(this.workbook.getAll().length);
+        
         var workbookId = this.route.getCurrentParams().workbook;
         if(workbookId) {
             for (var i = 0; i < this.workbooks.length; i++) {
-                if(this.workbooks[i].id === parseInt(workbookId)) {
+                if(this.workbooks[i].id === workbookId) {
                     this.editor.workbook = this.workbooks[i];
                     break;
                 }
@@ -103,9 +118,10 @@ class NavbarController extends FluxController {
     }
 
     updateSelectedPane() {
-        var workbook = this.stateParams.workbook;
+        var workbook = this.route.getCurrentParams().workbook;
+        console.log("b " + workbook + " "+typeof workbook);
         if(workbook) {
-            this.selectedWorkbook = this.workbook.getById(workbook) || {};
+            this.selectedWorkbook = this.workbook.getDataById(workbook) || {};
         }
     }
 
@@ -122,12 +138,17 @@ class NavbarController extends FluxController {
      *
      */
     newSnippet() {
-        this.editor.workbook = this.workbook.workbook;
+        this.editor.workbook = this.workbook.getCurrentWorkbook();
         this.editor.show = true;
     }
 
     editorSavedCallback() {
-        // this.editor.show = false;
+        
+        if(this.savingFlag) {
+            return;
+        }
+        this.savingFlag = true;
+        
         this.snippet.store({
             title: this.editor.title,
             content: this.editor.content,
@@ -136,9 +157,18 @@ class NavbarController extends FluxController {
         });
     }
 
-    storedCallback(parameters) {
-        this.editor.show = false;
-        this.toast.success("作成完了！");
+    storedCallback(res) {
+        if(res.success) {
+            this.editor.show = false;
+            this.editor.title = "";
+            this.editor.content = "";
+            this.editor.tags = [];
+            this.toast.success("作成完了！");    
+        } else {
+            var error = res.error.error;
+            this.toast.error(Helper.parseErrorMessagesAsHtml(error));
+        }
+        this.savingFlag = false;
     }
 
     editorQuitCallback() {
@@ -148,6 +178,27 @@ class NavbarController extends FluxController {
     editorCancelCallback() {
         this.editor.show = false;
     }
+
+    closeDialog() {
+        this.feedbackShow = false;
+        this.notificationBoardShow = false;
+    }
+
+    /* Feedback */
+    // ===============
+    sendFeedback() {
+        if(this.feedbackContent.length > 0) {
+            this.feedback.send(this.feedbackContent);
+        }else {
+            this.toast.error("フィードバックの項目に空白しないでください");
+        }
+    }
+
+    feedbackSentCallback(res) {
+        this.toast.success("フィードバックいただき、ありがとうございます");
+        this.feedbackShow = false;
+    }
+
 }
 
 export default NavbarController;

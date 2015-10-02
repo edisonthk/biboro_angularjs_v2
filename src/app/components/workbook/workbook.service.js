@@ -1,168 +1,142 @@
-import BaseService from "../../base/base.service";
+import FluxService from "../flux/flux.service";
 
-class WorkbookService extends BaseService{
-    constructor($http, $stateParams, Dispatcher, SnippetService, Api) {
+class WorkbookService extends FluxService{
+    constructor($http, Dispatcher, $cacheFactory, SnippetService, Api) {
+        'ngInject';
+
+        super.constructor($http, Dispatcher, $cacheFactory);
         
-        this._http = $http;
-        this.stateParams  = $stateParams;
-        this._dispatcher = Dispatcher;
         this.snippet = SnippetService;
         this.api = Api;
 
-        this.workbook = null;
-        this.workbooks = [];
-        
-        this.WORKBOOK_FETCHALL = "WORKBOOK_FETCHALL";
-        this.WORKBOOK_STORE    = "WORKBOOK_STORE";
-        this.WORKBOOK_SHOW     = "WORKBOOK_SHOW";
-        this.WORKBOOK_UPDATE   = "WORKBOOK_UPDATE";
-        this.WORKBOOK_DESTROY  = "WORKBOOK_DESTROY";
-        this.WORKBOOK_SHOWMY   = "WORKBOOK_SHOWMY";
-        this.WORKBOOK_FORK     = "WORKBOOK_FORK";
-
-        // setTimeout(function() {
-
-        //     scope.$apply();
-        // });
-
+        this.setDispatcherKey([
+                "WORKBOOK_FETCHALL",
+                "WORKBOOK_STORE",
+                "WORKBOOK_SHOW",
+                "WORKBOOK_UPDATE",
+                "WORKBOOK_DESTROY",
+                "WORKBOOK_SHOWMY",
+            ]);
     }
     
     fetchAll() {
-        var self = this;
 
-        var req = {
-            method : self.api.workbook.index.method,
-            url    : self.api.workbook.index.url,
-        };
-
-        self._http[req.method](req.url, req.data)
-            .success(function(data){
-
-                self.workbooks = data;
-                self._dispatcher.dispatch(self.WORKBOOK_FETCHALL, {"success":true,"result":"success","response":self.getAll()});
-            })
-            .error(function(){
-                console.log("error in workbook.strore.js");
-                self._dispatcher.dispatch(self.WORKBOOK_FETCHALL, {"success":false,"result":"fail to fetch workbooks."});
-            });
-
+        this.request({
+            method : this.api.workbook.index.method,
+            url    : this.api.workbook.index.url,
+            dispatcher: "WORKBOOK_FETCHALL",
+            success: function(res) {
+                this.setWorkbooks(res);
+            }
+        });
     }
 
     store(params){
-        var self= this;
 
         if(typeof params === 'undefined') {
             params = {};
         }
-
-        var req = {
-            method : self.api.workbook.store.method,
-            url    : self.api.workbook.store.url,
+        
+        this.request({
+            method : this.api.workbook.store.method,
+            url    : this.api.workbook.store.url,
             data   : params,
-        };
-
-        self._http[req.method](req.url, req.data)
-            .success(function(response){
-                self._dispatcher.dispatch(self.WORKBOOK_STORE, {"success":true,"result":"success", "response": response});
-            })
-            .error(function(){
-                self._dispatcher.dispatch(self.WORKBOOK_STORE, {"success":false,"result":"fail to store workbooks."});
-            });
+            dispatcher: "WORKBOOK_STORE",
+            success: function(res) {
+                this.appendData(res);
+            }
+        });
     }
 
     show(id){
-        var self= this;
 
-        var req = {
-            method : self.api.workbook.show.method,
-            url    : self.api.workbook.show.url.replace(":id",id),
-        };
+        this.request({
+            method : this.api.workbook.show.method,
+            url    : this.api.workbook.show.url.replace(":id",id),
+            dispatcher: [
+                "WORKBOOK_SHOW",
+                this.snippet.key.SNIPPET_FETCHEDALL
+            ],
+            success: function(res) {
+                this.setFocusData(res.workbook);
+                this.snippet.setSnippets(res.snippets);
+            }
+        });
+    }
 
-        self._http[req.method](req.url, req.data)
-            .success(function(response){
-                self.workbook = response.workbook;
-                self.workbook.snippets = response.snippets;
-                self.snippet.setSnippets(response.snippets);
+    search(id, query) {
 
-
-                self._dispatcher.dispatch(self.WORKBOOK_SHOW, {"success":true,"result":"success"});
-                self._dispatcher.dispatch(self.snippet.SNIPPET_FETCHEDALL, {"success":true,"result":"success"});
-                
-            })
-            .error(function(){
-                self._dispatcher.dispatch(self.WORKBOOK_SHOW, {"success":false,"result":"fail to show workbooks."});
-                self._dispatcher.dispatch(self.snippet.SNIPPET_FETCHEDALL, {"success":false,"result":"fail to show workbooks."});
-                
-            });
+        this.request({
+            method : this.api.workbook.search.method,
+            url    : this.api.workbook.search.url.replace(":id",id).replace(":query",query),
+            dispatcher: [
+                "WORKBOOK_SHOW",
+                this.snippet.key.SNIPPET_FETCHEDALL
+            ],
+            success: function(res) {
+                this.setFocusData(res.workbook);
+                this.snippet.setSnippets(res.snippets);
+            }
+        });
     }
 
     update(id, params){
-        var self= this;
 
-        var req = {
-            method : self.api.workbook.update.method,
-            url    : self.api.workbook.update.url.replace(":id",id),
-            data   : params
-        };
-
-        self._http[req.method](req.url, req.data)
-            .success(function(response){
-                var wb = response;
-                console.log(response);
-                for (var i = 0; i < self.workbooks.length; i++) {
-                    if(self.workbooks[i].id === wb.id) {
-                        self.workbooks[i] = wb;
-                        break;
-                    }
-                }
-
-                self._dispatcher.dispatch(self.WORKBOOK_SHOW, {"success":true,"result":"success","response":response});
-                self._dispatcher.dispatch(self.WORKBOOK_UPDATE, {"success":true,"result":"success","response":response});
-            })
-            .error(function(){
-                self._dispatcher.dispatch(self.WORKBOOK_UPDATE, {"success":false,"result":"fail to update workbooks."});
-            });
+        this.request({
+            method : this.api.workbook.update.method,
+            url    : this.api.workbook.update.url.replace(":id",id),
+            data   : params,
+            dispatcher: [
+                "WORKBOOK_SHOW",
+                "WORKBOOK_UPDATE",
+            ],
+            success: function(res) {
+                this.setWorkbookInsideGroup(res);
+            }
+        });
     }
 
-    destroy(id){
-        var self= this;
-        var req = {
-            method : self.api.workbook.destroy.method,
-            url    : self.api.workbook.destroy.url.replace(":id",id),
-        };
+    destroy(id) {
+        this.request({
+            method : this.api.workbook.destroy.method,
+            url    : this.api.workbook.destroy.url.replace(":id",id),
+            dispatcher: "WORKBOOK_DESTROY",
+            success: function(res) {
+                this.disposeWorkbook(id);
+            }
+        });
 
-        self._http[req.method](req.url, req.data)
-            .success(function(response){
-                self._dispatcher.dispatch(self.WORKBOOK_DESTROY, {"success":true,"result":"workbook","response":response});
-            })
-            .error(function(){
-                self._dispatcher.dispatch(self.WORKBOOK_DESTROY, {"success":false,"result":"fail to destroy workbooks."});
-            });
     }
 
 
     getAll(){
-        return this.workbooks;
+        return this.getAllData();
     }
 
     getCurrentWorkbook() {
-        return this.workbook;
-    }
-
-    getById(workbookId) {
-        workbookId = parseInt(workbookId);
-        for (var i = 0; i < this.workbooks.length; i++) {
-            if(this.workbooks[i].id === workbookId) {
-                return this.workbooks[i];
-            }
-        }
-        return null;
+        return this.getFocusData();
     }
 
     getCurrentWorkbookSnippets(){
-        if(this.workbook){
-            return this.workbook.snippets;
+        if(this.getFocusData()){
+            return this.snippet.getAllData();
         }
+    }
+
+    disposeWorkbook(wbId) {
+        this.disposeDataById(wbId);
+    }
+
+    setWorkbooks(workbooks) {
+        this.setGroup(workbooks);
+    }
+
+    setWorkbook(wb) {
+        this.setFocusData(wb);
+    }
+
+    setWorkbookInsideGroup(wb) {
+        this.setDataInsideGroup(wb);
     }
 
 }

@@ -1,11 +1,12 @@
 
 import KeyCode from "../shortcut/shortcut.config";
 import ShortcutTask from "../shortcut/shortcut.task";
-// import TerminalController   from 'terminal.controller';
+import TerminalController from './terminal.controller';
 
 class TerminalDirective {
 
     constructor () {
+        'ngInject';
 
         this.PLACEHOLDER = "";
         this.lastTop = 0;
@@ -28,6 +29,7 @@ class TerminalDirective {
             ].join(""),
 
             link: this.linkFunc.bind(this),
+            controller: TerminalController,
         };
 
         return directive;

@@ -5,6 +5,8 @@ import ShortcutTask from "../shortcut/shortcut.task";
 
 class WorkbookListController extends FluxController {
     constructor($state, $scope ,Dispatcher,WorkbookService, AccountService) {
+        'ngInject';
+        
         super.constructor($scope, Dispatcher);
         
         this.state        = $state;
@@ -19,7 +21,6 @@ class WorkbookListController extends FluxController {
 
         // register action
         this.registerCallbacks({
-            WORKBOOK_FETCHALL  : this.fetchAllCallback,
             WORKBOOK_STORE     : this.storeCallback,
             WORKBOOK_UPDATE    : this.updateCallback,
         });
@@ -28,6 +29,7 @@ class WorkbookListController extends FluxController {
         this.editDialog.outsideClickedCallback   = this.editDialogOutsideClickedCallback.bind(this);
 
         this.initialize();
+
     }
 
     initialize() {
@@ -42,13 +44,6 @@ class WorkbookListController extends FluxController {
 
     testClick() {
         this.showCreateDialog();
-    }
-
-    fetchAllCallback(parameters) {
-        this.workbooks = parameters.response;
-
-        // set default value of workbook
-        // this.editor.workbook = this.workbooks.length > 0 ? this.workbooks[0] : null;
     }
 
     /**
@@ -80,8 +75,8 @@ class WorkbookListController extends FluxController {
         });
     }
 
-    storeCallback(parameters) {
-        var workbook = parameters.response;
+    storeCallback(res) {
+        var workbook = res.response;
 
         ShortcutTask.clearTask(this.handlerToken);
         this.createDialog.show = false;

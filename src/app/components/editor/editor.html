@@ -12,15 +12,25 @@
                 <div class="form-group">
                     <input class="form-control editor-ready-focus" ng-model="title" placeholder="タイトル">
                 </div>
-<!--                <div class="form-group">
-                    <tags-input ng-model="tags" placeholder="タグ">
-                        <auto-complete source="editor.loadTags($query)"></auto-complete>
-                    </tags-input>
-                </div>
--->                
+
                 <div class="form-group">
-                    <textarea class="form-control" ng-model="content"></textarea>
+                    <textarea class="form-control editor-textarea" ng-model="content"></textarea>
+
+                    <div class="tools clearfix">
+                        <div class="tools-group">
+                            <button title="太文字 ({{CMD_KEY}}+B)" ng-mouseup="editor.boldEvent()"><i class="fa fa-bold"></i></button>
+                            <button title="斜体 ({{CMD_KEY}}+I)" ng-mouseup="editor.italicEvent()"><i class="fa fa-italic"></i></button>
+                            <button title="見出し" ng-mouseup="editor.headingEvent()">H</button>
+                            <button title="横線"ng-mouseup="editor.strikethroughEvent()"><i class="fa fa-strikethrough"></i></button>
+                        </div>
+                        <div class="tools-group">
+                            <button title="リンク ({{CMD_KEY}}+L)"><i class="fa fa-link"></i></button>
+                            <button title="画像 "><i class="fa fa-picture-o"></i></button>
+                            <button title="コード ({{CMD_KEY}}+K)" ng-mouseup="editor.codeEvent()"><i class="fa fa-code"></i></button>
+                        </div>
+                    </div>   
                 </div>
+                
             </div>
             <div class="col-left md-parsed">
                 <div class="title" ng-bind="title"></div>
@@ -28,8 +38,8 @@
             </div>
         </div>
         <div class="inline-group">
-            <button ng-click="savedCallback()">保存 <small>⌘+S</small></button>
-            <button ng-click="cancelCallback()">キャンセル　<small>Esc</small></button>
+            <button class="btn btn-submit" ng-click="savedCallback()">保存 <small><span ng-bind="CMD_KEY"></span>+S</small></button>
+            <button class="btn btn-submit" ng-click="cancelCallback()">キャンセル　<small>Esc</small></button>
         </div>
         
     </div>

@@ -3,6 +3,8 @@ import FluxController from "../flux/flux.controller";
 class AccountController extends FluxController{
     
     constructor($scope, Dispatcher,$http,$state, $stateParams, AccountService ) {
+        'ngInject';
+        
         super.constructor($scope, Dispatcher);
         this._http = $http;
         this.state = $state;

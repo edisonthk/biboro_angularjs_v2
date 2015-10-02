@@ -37,7 +37,7 @@ $black: #515151;
 
 * {
 
-    font-family: "Roboto", Verdana, sans-serif;
+    font-family: ヒラギノ角ゴ Pro Regular ,"Roboto", Verdana, sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: inherit;
     -webkit-box-sizing: border-box;
@@ -45,17 +45,19 @@ $black: #515151;
     box-sizing: border-box;
 }
 
+
+
 body {
   margin: 0;
 }
 
 html, body {
     min-width: 100%;
-    height: 100%;
-    min-height: 100%;
+    height: calc(100% + #{$navbar-height});
+    min-height: calc(100% + #{$navbar-height});
 }
 
-p,span,input,i,small,h1,h2,h3,h4,h5,a {color: #515151;}
+p,input,h1,h2,h3,h4,h5,a {color: #515151;}
 
 a, a:hover {
     text-decoration: none;
@@ -65,10 +67,30 @@ input {
     outline: 0;
 }
 
+.btn:hover {
+    cursor: pointer;
+}
+.btn:hover {
+    opacity: 0.5;
+}
+
 /* Large desktop */
 
 tags-input .tags, tags-input .tags.focused {
     box-shadow: none;
+}
+
+.page-title {
+    width: 100%;
+    height: 90px;
+    margin-top: 60px;
+    line-height: 100px;
+    font-size: 30px;
+    text-align: center;
+
+    small {
+        font-size: 60%;
+    }
 }
 
 navbar {
@@ -106,13 +128,62 @@ navbar {
         padding: 0 20px;
     }
 
-    .tools {
+    .menu-tools {
         float: right;
         display: inline-block;
         i {
             font-size: 26px;
             padding: 12px;    
         }
+        .menu-item {
+            float: left;
+            position: relative;
+            display: inline-block;
+
+            .profile-image {
+                width: 44px;
+                height: 44px;
+                padding: 3px;
+            }
+            .menu-collapse {
+                display: block;
+                position: absolute;
+                right: 0;
+                width: 200px;
+                z-index: 4;
+                padding: 0;
+                margin: 0;
+                border: 1px solid #ccc;
+                background-color: white;
+                li {
+                    display: block;
+                }
+
+                li > a {
+                    width: 100%;
+                    display: block;
+                }
+                li > span {
+                    display: inline-block;
+                }
+                li > a, li > span {
+                    padding: 10px 14px;
+                }
+
+                li:hover {
+                    background-color: #f0f0f0;
+                }
+            }
+        }
+    }
+
+    .menu-collapse-background {
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
 
     .workbook-tabs {
@@ -124,10 +195,10 @@ navbar {
     }
     .workbook-tabs >pane.active {
         background-color: white;
-        border-bottom: 50px solid #ccc;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        height: 0;
+        // border-bottom: 50px solid #ccc;
+        // border-left: 10px solid transparent;
+        // border-right: 10px solid transparent;
+        // height: 0;
         width: 85px;
     }
 
@@ -164,7 +235,7 @@ navbar {
 .title {
     display: inline-block;
     font-size: 24px;
-    border-bottom: 5px solid $black;
+    // border-bottom: 5px solid $black;
     padding-bottom: 6px;
     margin-bottom: 15px;
 }
@@ -197,7 +268,7 @@ navbar {
 
 .cells-wrapper {
     $workbook-show-width: $wrapper-width;
-    margin: 150px auto 0 auto;
+    margin: 0 auto;
     display: block;
     width: $workbook-show-width;
     position: relative;
@@ -206,8 +277,12 @@ navbar {
         display: block;
         float: left;
         width: $workbook-show-width/3;
-        min-height: $workbook-show-width/3;
+        min-height: $workbook-show-width/5;
         border-right: 1px dashed $black;
+
+        &.mostleft {
+            border-right: 0;
+        }
 
         > .cell-wrapper {
             position: relative;
@@ -246,7 +321,7 @@ navbar {
             }
 
             .html-content {
-                font-size: 12px;
+                font-size: 14px;
                 h1 {
                     font-size: 250%;
                 }
@@ -255,6 +330,9 @@ navbar {
                 }
                 h3 {
                     font-size: 150%;
+                }
+                p {
+                    margin: 8px 0;
                 }
             }
 
@@ -360,6 +438,30 @@ navbar {
     .group:first-child {
         border-left-color: transparent;
     }
+
+    @media(max-width: $desktop-width) {
+        $workbook-list-width: 700px;
+        width: $workbook-list-width;
+    }
+
+    @media(max-width: $tablet-width) {
+        $workbook-show-width: 100%;
+        width: $workbook-show-width;
+        
+        .group {
+            width: calc(50% - 30px);
+        }
+    }
+
+    @media(max-width: $phone-width) {
+        width: 100%;
+
+        .group {
+            width: 100%;
+            border-left: 0;
+            margin-bottom: 30px;
+        }
+    }
 }
 
 .btn-dotted {
@@ -375,6 +477,31 @@ button:focus {
     cursor: pointer;
 }
 
+// Toastr
+.toast-message {
+    ul {
+        margin: 0 5px;
+        li {
+            color: white;
+            list-style-type: disc;     
+        }
+        
+    }
+}
+
+// profile image
+.profile-image {
+    width: 67px;
+    height: 67px;
+    
+    > img {
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        border-radius: 50%;
+        overflow: hidden;      
+    }
+}
 
 /**
  *  Do not remove this comments bellow. It's the markers used by gulp-inject to inject

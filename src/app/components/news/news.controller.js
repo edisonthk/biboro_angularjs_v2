@@ -1,17 +1,28 @@
-
+import Helper from "../helper/helper";
 import FluxController from "../flux/flux.controller";
 
 class NewsController extends FluxController {
-    constructor($scope ,$state ,$stateParams ,Dispatcher, SnippetService, NewsService,Markdown) {
+    constructor($scope ,$state ,$stateParams ,Dispatcher,WorkbookService, SnippetService, NewsService,Markdown, toastr) {
+        'ngInject';
+        
         super.constructor($scope, Dispatcher);
 
-        this._scope       = $scope;
+        this.toast        = toastr;
         this.state        = $state;
         this.stateParams  = $stateParams;
+        this.workbook     = WorkbookService;
         this.snippet      = SnippetService;
         this.news         = NewsService;
         this.markdown     = Markdown;
 
+        this.editor       = {
+            show     : false,
+            title    : "",
+            content  : "",
+            tags     : [],
+            refSnippetId: null,
+            workbook : null,
+        };
         
         this.commentBox = {
             show: false,
@@ -20,7 +31,9 @@ class NewsController extends FluxController {
 
         // register action
         this.registerCallbacks({
-            NEWS_FETCHALL:   this.fetchAllCallback.bind(this),
+            NEWS_FETCHALL:   this.fetchAllCallback,
+
+            SNIPPET_FORK:    this.newsForkCallback,
 
         });
 
@@ -33,10 +46,12 @@ class NewsController extends FluxController {
 
     initialize() {
         this.news.fetchAll();
+        this.workbook.fetchAll();
     }
 
     fetchAllCallback(parameters) {
         var self = this;
+        console.log("d");
         self.news.getAll().map(function(item) {
             if(item.workbooks.length > 0) {
                 item.workbookId = item.workbooks[0].id;
@@ -101,7 +116,47 @@ class NewsController extends FluxController {
         this.commentBox.snippet = snippet;
     }
 
+    /**
+     *  editor box
+     *
+     */
+    editorSavedCallback() {
+        var params = {
+            title:        this.editor.title,
+            content:      this.editor.content,
+            tags:         this.editor.tags,
+            workbookId:   this.editor.workbook === null ? 0 : this.editor.workbook.id,
+            refSnippetId: this.editor.refSnippetId,
+        }
 
+        this.snippet.fork(params);
+    }
+
+    forkSnippet(news) {
+        this.editor.title        = news.title;
+        this.editor.content      = news.content;
+        this.editor.tags         = news.tags;
+        this.editor.refSnippetId = news.id
+        this.editor.show         = true;
+    }
+
+    newsForkCallback(res) {
+        if(res.success) {
+            this.toast.success("フォークしました！");
+            this.editor.show = false;
+        }else {
+            var error = res.error.error;
+            this.toast.error(Helper.parseErrorMessagesAsHtml(error));
+        }
+    }
+
+    editorQuitCallback() {
+        this.editor.show = false;
+    }
+
+    editorCancelCallback() {
+        this.editor.show = false;
+    }
 }
 
 export default NewsController;

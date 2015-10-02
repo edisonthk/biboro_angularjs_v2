@@ -5,6 +5,8 @@ import Markdown from "../../../../bower_components/marked/lib/marked";
 class SnippetController extends FluxController {
     
     constructor($scope, $state,$stateParams,Dispatcher, WorkbookService, AccountService, SnippetService, RouteService) {
+        'ngInject';
+        
         super.constructor($scope, Dispatcher);
 
         this._scope         = $scope;
@@ -42,9 +44,6 @@ class SnippetController extends FluxController {
 
     initialize() {
 
-        // this.snippet.fetchAll();
-        // this.account.fetchLoginedAccount();
-
         // var snippet = this.stateParams.snippet;
         // if(snippet) {
         //     if(snippet.match(/^\d+$/g)) {
@@ -71,7 +70,7 @@ class SnippetController extends FluxController {
         this.editor.content = this.currentSnippet.content;
 
         var workbookId = this.stateParams.workbook;
-        this.editor.workbook = this.workbook.getById(workbookId);
+        this.editor.workbook = this.workbook.getDataById(workbookId);
 
         
     }

@@ -4,6 +4,8 @@ import "prettyprint";
 class MarkdownFactory {
 
     constructor () {
+        'ngInject';
+        
         this.renderer = new Markdown.Renderer();
         this.renderer.code = function(code, language) {
             var langCode = "";
@@ -17,15 +19,20 @@ class MarkdownFactory {
 
     parseMd(md) {
 
-        md = md.replace(/```((.|\r?\n)*?)```/g,function(match) {
-            return match.replace(/[<>]/g, function(match) {
-                if(match === "<") {
-                    return "&lt;";
-                }
-                return "&gt;";
-            });
-        });
+        md = md.replace(/<(script|style|form|input|textarea|button)>/g, this.replaceRegisterHtml);
+
+        md = md.replace(/(    (.*?)\r?\n|```((.|\r?\n)*?)```)/g,this.replaceRegisterHtml);
+
         return Markdown(md, {renderer: this.renderer});
+    }
+
+    replaceRegisterHtml(match) {
+        return match.replace(/[<>]/g, function(match) {
+            if(match === "<") {
+                return "&lt;";
+            }
+            return "&gt;";
+        });
     }
 }
 

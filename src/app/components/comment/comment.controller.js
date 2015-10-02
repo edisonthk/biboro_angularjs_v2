@@ -1,7 +1,10 @@
+import ShortcutTask from "../shortcut/shortcut.task";
 import FluxController from "../flux/flux.controller";
 
 class CommentController extends FluxController{
     constructor ($scope,Dispatcher, CommentService, AccountService) {
+        'ngInject';
+        
         super.constructor($scope, Dispatcher);
 
         this.IN_PROGRESS = "IN_PROGRESS";
@@ -23,14 +26,14 @@ class CommentController extends FluxController{
 
         this.scope.$watch('snippet', this.snippetUpdatedCallback.bind(this));
 
-        console.log($scope.snippet);
-
         this.status   = this.IN_PROGRESS;
         this.snippet = null;
         this.comments = [];
         this.editor   = {
             text: "",
         };
+
+        this._shortcutTaskToken = ShortcutTask.setTask(this.keyupTask.bind(this));
     }
 
 
@@ -73,6 +76,10 @@ class CommentController extends FluxController{
         }else{
             console.log("errors");
         }
+    }
+
+    keyupTask(e) {
+
     }
 
     updateCallback(parameters) {

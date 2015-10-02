@@ -69,23 +69,69 @@
             background-color: #dcdcdc;
             height: 100%;
 
+            .form-group {
+                position: relative;
+            }
+
             .form-group:last-child {
                 margin-bottom: 0;
             }
 
             &.md-parsed {
-                background-color: #eeeeee;
+                background-color: #fbfbfb;
                 overflow: auto;
+            }
+
+            .tools {
+                position: absolute;
+                top: 0;
+                left: 0;
+                font-size: 14px;
+                padding: 6px 0;
+                border: 1px solid #ccc;
+                margin: 0;
+
+                .tools-group {
+                    margin-left: 5px;
+                    float: left;
+                }
+
+                button {
+                    float: left;
+                    padding: 5px 10px;
+                    font-size: 12px;
+                    line-height: 1.5;
+                    background-color: white;
+                    border:1px solid #ccc ;
+                    border-left: 0;
+                }
+                button:first-child {
+                    border-left:1px solid #ccc ;
+                }
+                button:hover {
+                    background-color: #f0f0f0;
+                }
             }
         }
 
-
-        
-        textarea.form-control {
+        .editor-textarea {
+            margin-top: 44px;
             height: 350px;
         }
         
 
     }    
+
+    .btn.btn-submit{
+        border: 0;
+        background-color: #545353;
+        padding: 4px 14px;
+        font-size: 16px;
+        text-align: center;
+        font-weight: bold;
+    }
+    .btn.btn-submit, .btn.btn-submit > * {
+        color: white;
+    }
 }
 

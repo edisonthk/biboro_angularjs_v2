@@ -6,10 +6,12 @@ import Dispatcher from './base/dispatcher';
 import AccountService  from '../app/components/account/account.service';
 import SnippetService  from '../app/components/snippet/snippet.service';
 import WorkbookService from '../app/components/workbook/workbook.service';
-import RouteService    from './components/route/route.service';
-import CommentService  from './components/comment/comment.service';
-import NewsService  from './components/news/news.service';
-import MarkdownHelper from './components/markdown/markdown.factory';
+import RouteService    from '../app/components/route/route.service';
+import CommentService  from '../app/components/comment/comment.service';
+import NewsService  from '../app/components/news/news.service';
+import FeedbackService from '../app/components/feedback/feedback.service';
+import MarkdownHelper from '../app/components/markdown/markdown.factory';
+
 
 // directives
 import CommentDirective        from '../app/components/comment/comment.directive';
@@ -19,21 +21,21 @@ import EditorDirective         from '../app/components/editor/editor.directive';
 import TerminalDirective       from '../app/components/terminal/terminal.directive';
 import TabsDirective           from '../app/components/tabs/tabs.directive';
 import FloatLayoutDirective    from '../app/components/float_layout/float_layout.directive';
+import CellDirective           from '../app/components/float_layout/cell.directive';
 
 // constant
-import apiConstant from './components/api/api.filter';
+import apiConstant from '../app/components/api/api.filter';
 
 // config
-import routeConfig from './components/route/route.config';
-import toastrConfig from './components/toastr/toastr.config';
+import routeConfig from '../app/components/route/route.config';
+import toastrConfig from '../app/components/toastr/toastr.config';
 
 angular.module('biboroAngular', [
         'ngAnimate',
-        'toastr',
         'ngCookies',
         'ngSanitize',
         'ngResource',
-
+        'toastr',
         'ui.router',
         'ngTagsInput',
         'wu.masonry',
@@ -50,6 +52,7 @@ angular.module('biboroAngular', [
     .service('AccountService', AccountService)
     .service('CommentService', CommentService)
     .service('NewsService', NewsService)
+    .service('FeedbackService', FeedbackService)
 
     .factory('Dispatcher', () => new Dispatcher())
     .factory('Markdown', () => new MarkdownHelper())
@@ -60,7 +63,8 @@ angular.module('biboroAngular', [
     .directive('dialog',   () => new DialogDirective())
     .directive('navbar',   () => new NavbarDirective())
     .directive('tabs',     () => new TabsDirective())
-    .directive('floatLayout', () => new FloatLayoutDirective())
+    .directive('cellsWrapper', () => new FloatLayoutDirective())
+    .directive('cell', () => new CellDirective())
 
 ;
     

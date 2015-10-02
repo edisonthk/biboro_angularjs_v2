@@ -1,5 +1,6 @@
 class TabsDirective {
     constructor () {
+        'ngInject';
 
         let directive = {
             restrict: 'E',
@@ -41,6 +42,11 @@ class TabsDirective {
         });
 
         scope.$watch("ngModel", function(selectedPane) {
+            console.log(selectedPane);
+            if(!selectedPane.id) {
+                return;
+            }
+            
             var panes = el.find("pane");
             for (var i = 0; i < panes.length; i++) {
                 var index = parseInt(panes[i].getAttribute("index"));
