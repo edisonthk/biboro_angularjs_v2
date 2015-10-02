@@ -12,6 +12,11 @@ class EditorController extends FluxController {
         this.markdown = Markdown;
         this.scope.$watch("content", this.contentChangeCallback.bind(this));  
 
+        this.dragDrop = document.getElementById('dragDrop');
+        this.dragDrop.ondragover = this.preventer1;
+        this.dragDrop.dragenter = this.preventer2;
+        this.dragDrop.ondrop = this.dropping;
+
         this.textarea = document.querySelector("editor .editor-textarea");
 
         // this.scope.$watch("selectedWorkbook", function(newVal) {
@@ -207,6 +212,41 @@ class EditorController extends FluxController {
         var selectedText = readyBoldText.substring(el.selectionStart, el.selectionEnd) ;
         var handlerText = handler(selectedText, el.selectionStart, el.selectionEnd) || selectedText;
         return readyBoldText.substring(0,el.selectionStart) + handlerText + readyBoldText.substring(el.selectionEnd, readyBoldText.length);
+    }
+
+
+    //add-----------------------------------------
+    preventer1(e){
+        console.log("ondragover");
+        e.preventDefault();
+    }
+    preventer2(e){
+        console.log("ondragenter")
+        e.preventDefault();
+    }
+    dropping(e){
+        // e.preventDefault();
+
+        var files = e.dataTransfer.files;
+        if(!files){
+            alert('dataTransfer.files未実装');
+        }
+        if(typeof FileReader != "undefined"){
+            //I.E.はFileReader未実装
+            var reader = new FileReader();
+            reader.onload = function(evt) {
+            var img = document.createElement("p");
+            img.innerHTML = evt.target.result;
+            this.dragDrop.appendChild(document.createElement('br'));
+            this.dragDrop.appendChild(img);
+        };
+            reader.readAsText(files[0]);
+            console.log("![alt text](/upload/img/" + files[0].name + ")");
+        } 
+        else {
+            alert("本ブラウザではFileReader未実装");
+        }
+        
     }
 
 
