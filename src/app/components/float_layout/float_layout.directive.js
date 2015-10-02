@@ -103,6 +103,13 @@ class FloatLayoutDirective {
             colHeight     = self.getColHeight(self.nextIndex);
             if(colHeight === 0 || self.getColHeight(lastIndex) >= colHeight) {
                 el._colIndex = self.nextIndex;
+                if(el._colIndex == maxCols - 1) {
+                    if(el[0].className.indexOf("mostleft") < 0) {
+                        el[0].className += " mostleft";
+                    }
+                }else {
+                    el[0].className = el[0].className.replace(/\s?mostleft/g,"");
+                }
                 self.els.push(el);
                 break;
             }

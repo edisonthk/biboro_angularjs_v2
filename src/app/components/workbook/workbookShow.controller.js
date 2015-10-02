@@ -76,6 +76,7 @@ class WorkbookShowController extends FluxController {
 
         this.workbook.fetchAll();
         this.currentWorkbook = null;
+        this.savingFlag = false;
 
         var workbook = this.stateParams.workbook;
         if(workbook) {
@@ -112,6 +113,11 @@ class WorkbookShowController extends FluxController {
     }
 
     createDialogWorkbookEvent() {
+        if(this.savingFlag) {
+            return;
+        }
+
+        this.savingFlag = true;
         this.workbook.store({
             title: this.createDialog.title
         });
@@ -123,6 +129,7 @@ class WorkbookShowController extends FluxController {
             this.state.go("workbook.show",{workbook: workbook.id});
         }
         this.createDialog.show = false;
+        this.savingFlag = false;
     }
 
     // 
@@ -136,6 +143,11 @@ class WorkbookShowController extends FluxController {
     }
 
     editDialogUpdateWorkbookEvent() {
+        if(this.savingFlag) {
+            return;
+        }
+        this.savingFlag = true;
+
         var formData = {
             title: this.editDialog.title
         };
@@ -146,7 +158,7 @@ class WorkbookShowController extends FluxController {
     workbookUpdatedCallback() {
         // var workbook = parameters.response;
         this.editDialog.show = false;
-        console.log("f");
+        this.savingFlag  = false;
     }
 
 
@@ -195,7 +207,6 @@ class WorkbookShowController extends FluxController {
     }
 
     updatedCallback(res) {
-        console.log(res);
         if(res.success) {
             this.toast.success("編集しました");
             this.editor.show = false;
@@ -203,11 +214,17 @@ class WorkbookShowController extends FluxController {
             var error = res.error.error;
             this.toast.error(Helper.parseErrorMessagesAsHtml(error));
         }
+        this.savingFlag = false;
     }
 
     editorSavedCallback() {
+        if(this.savingFlag) {
+            return;
+        }
 
         if(this.editor.type === this.TYPE_FORK) {
+            this.savingFlag = true;
+
             var params = {
                 title:        this.editor.title,
                 content:      this.editor.content,
@@ -218,6 +235,8 @@ class WorkbookShowController extends FluxController {
 
             this.snippet.fork(params);
         }else if(this.editor.type === this.TYPE_UPDATE) {
+            this.savingFlag = true;
+
             var formData = {
                 title: this.editor.title,
                 content: this.editor.content,
@@ -272,6 +291,7 @@ class WorkbookShowController extends FluxController {
             var error = res.error.error;
             this.toast.error(Helper.parseErrorMessagesAsHtml(error));
         }
+        this.savingFlag = false;
     }    
 
 }

@@ -62,6 +62,7 @@ class NavbarController extends FluxController {
         this.closeDialog = this.closeDialog.bind(this);
         this._shortcutParallelTaskToken = ShortcutTask.setParallelTask(this.keyupTask.bind(this));
         this.initializeFlag = true;
+        this.savingFlag = false;
     }
 
     loadTags(query) {
@@ -142,7 +143,12 @@ class NavbarController extends FluxController {
     }
 
     editorSavedCallback() {
-        // this.editor.show = false;
+        
+        if(this.savingFlag) {
+            return;
+        }
+        this.savingFlag = true;
+        
         this.snippet.store({
             title: this.editor.title,
             content: this.editor.content,
@@ -162,6 +168,7 @@ class NavbarController extends FluxController {
             var error = res.error.error;
             this.toast.error(Helper.parseErrorMessagesAsHtml(error));
         }
+        this.savingFlag = false;
     }
 
     editorQuitCallback() {

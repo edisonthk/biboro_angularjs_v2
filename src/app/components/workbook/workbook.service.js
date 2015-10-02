@@ -1,10 +1,10 @@
 import FluxService from "../flux/flux.service";
 
 class WorkbookService extends FluxService{
-    constructor($http, Dispatcher, SnippetService, Api) {
+    constructor($http, Dispatcher, $cacheFactory, SnippetService, Api) {
         'ngInject';
 
-        super.constructor($http, Dispatcher);
+        super.constructor($http, Dispatcher, $cacheFactory);
         
         this.snippet = SnippetService;
         this.api = Api;

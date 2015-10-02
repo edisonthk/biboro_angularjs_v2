@@ -5,11 +5,16 @@
 
 class FluxService {
     
-    constructor($http, Dispatcher) {
+    constructor($http, Dispatcher, $cacheFactory) {
         'ngInject';
 
         this._http = $http;
         this._dispatcher = Dispatcher;
+
+        if($cacheFactory) {
+            this._cache = $cacheFactory("fluxCache");    
+        }
+        
 
         this.key = {};
         this.groupData = [];
@@ -137,7 +142,7 @@ class FluxService {
 
     disposeDataById(dataId) {
         dataId = parseInt(dataId);
-        if(dataId === this.focusData.id) {
+        if(this.focusData && dataId === this.focusData.id) {
             this.disposeFocusData();
         }
 

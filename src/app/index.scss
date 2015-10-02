@@ -195,10 +195,10 @@ navbar {
     }
     .workbook-tabs >pane.active {
         background-color: white;
-        border-bottom: 50px solid #ccc;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        height: 0;
+        // border-bottom: 50px solid #ccc;
+        // border-left: 10px solid transparent;
+        // border-right: 10px solid transparent;
+        // height: 0;
         width: 85px;
     }
 
@@ -279,6 +279,10 @@ navbar {
         width: $workbook-show-width/3;
         min-height: $workbook-show-width/5;
         border-right: 1px dashed $black;
+
+        &.mostleft {
+            border-right: 0;
+        }
 
         > .cell-wrapper {
             position: relative;

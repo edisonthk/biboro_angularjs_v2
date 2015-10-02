@@ -27,7 +27,7 @@ class SnippetService extends FluxService{
             data   : this.filterParams(params),   
             dispatcher: "SNIPPET_FORK",
             success: function(res) {
-                this.appendData(res);
+                // this.appendData(res);
             }
         });
     }
@@ -61,10 +61,9 @@ class SnippetService extends FluxService{
         this.request({
             method : this.api.snippet.destroy.method,
             url    : this.api.snippet.destroy.url.replace(":id",id),
-            data   : params,   
             dispatcher: "SNIPPET_DESTROY",
             success: function(res) {
-                this.disposeDataById(wbId);
+                this.disposeDataById(id);
             }
         });
     }

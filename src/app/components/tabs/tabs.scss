@@ -19,12 +19,3 @@ tabs > pane {
     width: 80px;
     text-align: center;
 }    
-
-tabs > pane.active {
-    background-color: white;
-    border-bottom: 30px solid #ccc;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    height: 0;
-    width: 80px;
-}

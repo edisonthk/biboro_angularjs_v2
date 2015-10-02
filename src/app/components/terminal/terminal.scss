@@ -31,6 +31,14 @@
         }
     }
 
+    @media(max-width: $tablet-width) {
+        .terminal-wrapper {
+            > .terminal-input {
+                width: 460px;  
+            } 
+        }
+    }
+
     @media(max-width: $phone-width) {
 
         .terminal-wrapper {
