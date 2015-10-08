@@ -17,7 +17,6 @@ class CommentController extends FluxController{
 
 
         this.registerCallbacks({
-            COMMENT_FETCH   : this.fetchCallback,
             COMMENT_UPDATE  : this.updateCallback,
             COMMENT_DESTROY : this.destroyCallback,
             COMMENT_STORE   : this.storeCallback,
@@ -51,13 +50,6 @@ class CommentController extends FluxController{
         //console.log(this.user);
     }
 
-
-    fetchCallback() {
-        this.status = this.DONE;
-        this.comments = this.comment.getCommentsBySnippetId(this.snippet.id);
-        //console.log(this.snippet.id);
-    }
-
     submit() {
         var params = {
             comment: this.editor.text,
@@ -70,6 +62,7 @@ class CommentController extends FluxController{
     }
 
     storeCallback(parameters) {
+        console.log(this.comment.getComments());
         if(parameters.success) {
             this.editor.text = "";
             // this.comments.push(parameters.response);    
@@ -79,7 +72,6 @@ class CommentController extends FluxController{
     }
 
     keyupTask(e) {
-
     }
 
     updateCallback(parameters) {

@@ -400,21 +400,6 @@ navbar {
     }
 }
 
-.workbook-show {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    .snippet-box {
-        flex: 1;
-        width: 33%;
-    }
-}
-@media(max-width: $phone-width) {
-    .workbook-show {
-        flex-direction: column;
-    }
-}
-
 .dialog .workbook {
     .btn {
         margin: 0;

@@ -110,15 +110,18 @@ class WorkbookService extends FluxService{
 
 
     getAll(){
+        // console.log("b2");
         return this.getAllData();
     }
 
     getCurrentWorkbook() {
+        // console.log("b2");
         return this.getFocusData();
     }
 
     getCurrentWorkbookSnippets(){
         if(this.getFocusData()){
+            // console.log("b2");
             return this.snippet.getAllData();
         }
     }

@@ -12,6 +12,7 @@ class TerminalDirective {
         this.lastTop = 0;
         this.lastLength = 0;
         this.lastFirstContent = "";
+        this.requiredApply = false;
 
         let directive = {
             restrict: 'E',
@@ -32,7 +33,13 @@ class TerminalDirective {
             controller: TerminalController,
         };
 
+        
+
         return directive;
+    }
+
+    intervalEvent() {
+        
     }
 
     linkFunc(scope, el) {
@@ -63,10 +70,8 @@ class TerminalDirective {
 
             if(ShortcutTask.haveParallelTask()) {
                 ShortcutTask.parallelCb(e);
+                scope.$apply();
             }
-
-
-            
 
             var ctrlKey = (e.ctrlKey || e.metaKey);
 
@@ -90,7 +95,6 @@ class TerminalDirective {
                 $input.blur();
             }
 
-            scope.$apply();
         }, false);
     }     
 

@@ -7,7 +7,6 @@ class EditorController extends FluxController {
         'ngInject';
         
         super.constructor($scope,Dispatcher);
-        console.log("editor");
         this.scope = $scope;
         this.markdown = Markdown;
         this.scope.$watch("content", this.contentChangeCallback.bind(this));  
@@ -15,7 +14,7 @@ class EditorController extends FluxController {
         this.dragDrop = document.getElementById('dragDrop');
         this.dragDrop.ondragover = this.preventer1;
         this.dragDrop.dragenter = this.preventer2;
-        this.dragDrop.ondrop = this.dropping;
+        this.dragDrop.ondrop = this.droppingCallback.bind(this);
 
         this.textarea = document.querySelector("editor .editor-textarea");
 
@@ -23,7 +22,12 @@ class EditorController extends FluxController {
         //     console.log(newVal);
         // });
         // console.log(this.scope.selectedWorkbook);
+
         
+        this.scope.$watch("ngIf", function(newVal, oldVal) {
+            
+        });
+
         var el_fo = document.getElementsByClassName("editor-ready-focus");
         if(el_fo.length > 0) {
             el_fo[0].focus();
@@ -156,14 +160,11 @@ class EditorController extends FluxController {
             
             var beginPosition = 0;
             for(var i = 0; i < lines.length; i ++) {
-                    
-                console.log(lines[i].length);
+                
                 if(beginPosition <= start && start <= beginPosition + lines[i].length) {
                     lines[i] = "```\n" + lines[i];
 
                 }
-
-                console.log(lines[i].length);
 
                 if(beginPosition <= (end + 4) && (end + 4) <= beginPosition + lines[i].length) {
                     lines[i] = lines[i] + "\n```";
@@ -224,29 +225,26 @@ class EditorController extends FluxController {
         console.log("ondragenter")
         e.preventDefault();
     }
-    dropping(e){
+    droppingCallback(e){
         e.preventDefault();
 
+        var self = this;
+
         var files = e.dataTransfer.files;
-        if(!files){
-            alert('dataTransfer.files未実装');
-        }
+
         if(typeof FileReader != "undefined"){
             //I.E.はFileReader未実装
             var reader = new FileReader();
             reader.onload = function(evt) {
-            var img = document.createElement("p");
-            img.innerHTML = evt.target.result;
-            this.dragDrop.appendChild(document.createElement('br'));
-            this.dragDrop.appendChild(img);
-        };
+                self.scope.content = "```\n"+evt.target.result+"\n```";
+                self.scope.$apply();
+            };
             reader.readAsText(files[0]);
             console.log("![alt text](/upload/img/" + files[0].name + ")");
         } 
         else {
             alert("本ブラウザではFileReader未実装");
         }
-        
     }
 
 

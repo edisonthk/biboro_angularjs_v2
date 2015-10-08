@@ -20,7 +20,6 @@ class NavbarController extends FluxController {
         this.state       = $state;
 
         this.command = {};
-        this.workbooks = [];
         this.showWorkbookListFlag = false;
         this.editor         = {
             show     : false,
@@ -75,16 +74,13 @@ class NavbarController extends FluxController {
         var ctrlKey = (e.ctrlKey || e.metaKey);
         if(ctrlKey && e.keyCode === KeyCode.KEY_B) {
             this.newSnippet();
-
+            this._scope.$apply();
         }
-
-        this._scope.$apply();
     }
 
     stateUpdatedCallback(parameters) {
 
         if(parameters.toState.name === 'workbook') {
-            this.workbooks = [];
             this.showWorkbookListFlag = false;
         }else {
             if(this.initializeFlag){
@@ -102,24 +98,20 @@ class NavbarController extends FluxController {
 
     fetchAllCallback() {
 
-        console.log(this.workbook.getAll().length);
-        
-        var workbookId = this.route.getCurrentParams().workbook;
-        if(workbookId) {
-            for (var i = 0; i < this.workbooks.length; i++) {
-                if(this.workbooks[i].id === workbookId) {
-                    this.editor.workbook = this.workbooks[i];
-                    break;
-                }
-            };
-        }
+        // if(workbookId) {
+        //     for (var i = 0; i < this.workbooks.length; i++) {
+        //         if(this.workbooks[i].id === workbookId) {
+        //             this.editor.workbook = this.workbooks[i];
+        //             break;
+        //         }
+        //     };
+        // }
 
         this.updateSelectedPane();
     }
 
     updateSelectedPane() {
         var workbook = this.route.getCurrentParams().workbook;
-        console.log("b " + workbook + " "+typeof workbook);
         if(workbook) {
             this.selectedWorkbook = this.workbook.getDataById(workbook) || {};
         }

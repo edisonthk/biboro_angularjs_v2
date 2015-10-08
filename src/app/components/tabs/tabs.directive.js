@@ -19,6 +19,7 @@ class TabsDirective {
 
     linkFunc(scope, el) {
 
+
         scope.$watch("panes", function(panes) {
             var parent = el[0];
             parent.innerHTML = "";

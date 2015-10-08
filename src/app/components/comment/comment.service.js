@@ -26,8 +26,7 @@ class CommentService extends FluxService {
             url    : this.api.comment.show.url.replace(":snippetId",snippetId),
             dispatcher : "COMMENT_FETCH",
             success: function(res) {
-                console.log("fetch comment");
-                this.setComments(snippetId, res);
+                this.setComments(res);
             }
         });
     }
@@ -37,40 +36,23 @@ class CommentService extends FluxService {
             method : this.api.comment.store.method,
             url    : this.api.comment.store.url.replace(":snippetId",snippetId),
             dispatcher : "COMMENT_STORE",
+            data   : params,
             success: function(res) {
-                //console.log(res);
-                this.appendComment(snippetId, res);
+                this.appendComment(res);
             }
         });
     }
 
-    update(snippetId, commentId, params){
+    update(snippetId, params){
         this.request({
             method : this.api.comment.update.method,
             url    : this.api.comment.update.url.replace(":snippetId",snippetId).replace(":commentId",commentId),
+            data   : params,
             dispatcher : "COMMENT_UPDATE",
             success: function(res) {
-                this.updateComment(snippetId, commentId, res);
+                this.updateComment(snippetId, res);
             }
         });
-
-/*
-        var self= this;
-
-        var req = {
-            method : self.api.comment.update.method,
-            url    : self.api.comment.update.url.replace(":snippetId",snippetId).replace(":commentId",commentId),
-            data   : params,
-        };
-
-        self._http[req.method](req.url, req.data)
-            .success(function(response){
-                self.updateComment(snippetId, commentId, response);
-                self._dispatcher.dispatch(self.COMMENT_UPDATE, {"success":true,"result":"success","response":response});
-            })
-            .error(function(){
-                self._dispatcher.dispatch(self.COMMENT_UPDATE, {"success":false,"result":"fail to fetch comments from following snippet :"+snippetId+" with commentId :"+commentId});
-            });*/
     }
 
     destroy(snippetId, commentId){
@@ -79,93 +61,50 @@ class CommentService extends FluxService {
             url    : this.api.comment.destroy.url.replace(":snippetId",snippetId).replace(":commentId",commentId),
             dispatcher : "COMMENT_UPDATE",
             success: function(res) {
-                this.destroyComment(snippetId, commentId);
+                this.destroyComment(commentId);
             }
         });
-/*
-        var self= this;
-
-        var req = {
-            method : self.api.comment.destroy.method,
-            url    : self.api.comment.destroy.url.replace(":snippetId",snippetId).replace(":commentId",commentId),
-        };
-
-        self._http[req.method](req.url, req.data)
-            .success(function(response){
-                // for (var i = 0; i < self.length; i++) {
-                //     self.[i]
-                // };
-                self.destroyComment(snippetId, commentId);
-
-
-                self._dispatcher.dispatch(self.COMMENT_DESTROY, {"success":true,"result":"success","response":response});
-            })
-            .error(function(){
-                self._dispatcher.dispatch(self.COMMENT_DESTROY, {"success":false,"result":"fail to destroy snippets."});
-            });*/
     }
 
-    setComments(snippetId, comments) {
-        console.log(comments);
+    setComments(comments) {
         this.setGroup(comments);
     }
 
-    appendComment(snippetId, comment) {
-        console.log(comment);
+    appendComment(comment) {
         this.appendData(comment);
     }
 
-    getComment(snippetId, commentId) {
-        this.getDataById(commentId);
-
-        /*for (var i = 0; i < this.commentSnippets.length; i++) {
-            if(this.commentSnippets[i].id === snippetId) {
-
-                for (var j = 0; j < this.commentSnippets[i].comments.length; j++) {
-                    if(this.commentSnippets[i].comments[j].id === commentId) {
-                        return this.commentSnippets[i].comments[j];    
-                    }
-                }
-                
-            }
-        }
-
-        return null;*/
+    getComments() {
+        return this.getAllData();
     }
 
-    destroyComment(snippetId, commentId) {
+    getComment(commentId) {
+        return this.getDataById(commentId);
+    }
+
+    destroyComment(commentId) {
         this.disposeDataById(commentId);
-
-        /*for (var i = 0; i < this.commentSnippets.length; i++) {
-            if(this.commentSnippets[i].id === snippetId) {
-                for (var j = 0; j < this.commentSnippets[i].comments.length; j++) {
-                    if(this.commentSnippets[i].comments[j].id === commentId) {
-                        this.commentSnippets[i].comments.splice(j,1);    
-                        return;
-                    }
-                }
-                
-            }
-        }*/
     }
 
-    updateComment(snippetId, commentId, comment) {
-        this.getAllData();
-    }
-
-    getCommentGroup(snippetId) {
-        for (var i = 0; i < this.commentSnippets.length; i++) {
-            if(this.commentSnippets[i].id === snippetId) {
-                return this.commentSnippets[i];
-            }
+    updateComment(snippetId, comment) {
+        if(parseInt(comment.snippet_id) === parseInt(snippetId)) {
+            setDataInsideGroup(comment);
         }
-        // dummy data
-        return {id:0, comments:[]};
     }
 
-    getCommentsBySnippetId(snippetId) {
-        return this.getCommentGroup(snippetId).comments;
-    }
+    // getCommentGroup(snippetId) {
+    //     for (var i = 0; i < this.commentSnippets.length; i++) {
+    //         if(this.commentSnippets[i].id === snippetId) {
+    //             return this.commentSnippets[i];
+    //         }
+    //     }
+    //     // dummy data
+    //     return {id:0, comments:[]};
+    // }
+
+    // getCommentsBySnippetId(snippetId) {
+    //     return this.getCommentGroup(snippetId).comments;
+    // }
 
 }
 

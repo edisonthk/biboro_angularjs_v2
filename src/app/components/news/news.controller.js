@@ -51,7 +51,7 @@ class NewsController extends FluxController {
 
     fetchAllCallback(parameters) {
         var self = this;
-        console.log("d");
+        
         self.news.getAll().map(function(item) {
             if(item.workbooks.length > 0) {
                 item.workbookId = item.workbooks[0].id;
@@ -84,22 +84,6 @@ class NewsController extends FluxController {
             snippet.htmlContent = this.markdown.parseMd(snippet.content);
         }
 
-    }
-
-    extractDomain( url) {
-        var domain;
-        //find & remove protocol (http, ftp, etc.) and get domain
-        if (url.indexOf("://") > -1) {
-            domain = url.split('/')[2];
-        }
-        else {
-            domain = url.split('/')[0];
-        }
-
-        //find & remove port number
-        domain = domain.split(':')[0];
-
-        return domain;
     }
 
 

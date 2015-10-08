@@ -77,10 +77,12 @@ class SnippetService extends FluxService{
     }
 
     getFocusSnippet() {
+        // console.log("b2");
         return this.getFocusData();
     }
 
     getSnippets(){
+        // console.log("b1");
         return this.getAllData();
     }
 
