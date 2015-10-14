@@ -3,28 +3,36 @@ import KeyCode from "../shortcut/shortcut.config";
 import ShortcutTask from "../shortcut/shortcut.task";
 
 class EditorController extends FluxController {
-    constructor ($window, $scope, Markdown, Dispatcher) {
+    constructor ($window, $scope, Markdown, Dispatcher, FileUploader, Api) {
         'ngInject';
         
         super.constructor($scope,Dispatcher);
-        this.scope = $scope;
+        this.api = Api;
         this.markdown = Markdown;
-        this.scope.$watch("content", this.contentChangeCallback.bind(this));  
+        this.uploader = FileUploader;
+        this._scope.$watch("content", this.contentChangeCallback.bind(this));  
 
         this.dragDrop = document.getElementById('dragDrop');
-        this.dragDrop.ondragover = this.preventer1;
-        this.dragDrop.dragenter = this.preventer2;
+        // this.dragDrop.ondragleave = this.textareaOnDragLeave.bind(this);
+        this.dragDrop.ondragover = this.textareaOnDragOver.bind(this);
         this.dragDrop.ondrop = this.droppingCallback.bind(this);
 
+        this.fileupload = document.querySelector(".editor-fileupload");
+        this.fileupload.onchange = this.fileUploadOnSelected.bind(this);
         this.textarea = document.querySelector("editor .editor-textarea");
+        this.textarea.onblur = this.textareaOnBlur.bind(this);
 
-        // this.scope.$watch("selectedWorkbook", function(newVal) {
+        this.lastSelectionStart = 0;
+        this.lastSelectionEnd = 0;
+        this.showCoverFlag = false;
+
+        // this._scope.$watch("selectedWorkbook", function(newVal) {
         //     console.log(newVal);
         // });
-        // console.log(this.scope.selectedWorkbook);
+        // console.log(this._scope.selectedWorkbook);
 
         
-        this.scope.$watch("ngIf", function(newVal, oldVal) {
+        this._scope.$watch("ngIf", function(newVal, oldVal) {
             
         });
 
@@ -36,15 +44,78 @@ class EditorController extends FluxController {
         this._shortcutTaskToken = ShortcutTask.setTask(this.keyupTask.bind(this));
     }
 
+    textareaOnDragOver(e) {
+        e.preventDefault();
+
+        var self = this;
+        clearTimeout(self.dragIntervalId);
+        self.dragIntervalId = setTimeout(function() {
+            self.showCoverFlag = false;
+            self._scope.$apply();    
+        }, 500);
+        self.showCoverFlag = true;
+        self._scope.$apply();
+    }
+
+    textareaOnBlur(e) {
+        this.lastSelectionEnd = e.target.selectionEnd;
+        this.lastSelectionStart = e.target.selectionStart;
+    }
+
+    fileUploadOnSelected(e) {
+        var files = e.target.files;
+        this.uploadFile(files);
+    }
+
+    uploadFile(files) {
+        var self = this;
+
+        var cb = function(success, data, status) {
+            if(success) {
+                var msg = "";
+                for (var i = 0; i < data.length; i++) {
+                    
+                    msg += "![alt]("+self.api.host[self.api.env] + data[i].message.destination_path.substring(1) + data[i].message.filename+")\n";
+                }
+                
+                self._scope.content = self.insertText(self.lastSelectionStart, self._scope.content, msg);
+                
+            }else {
+                // failed to 
+            }
+        };
+
+        var splitted = files[0].type.split("/");
+        if(splitted.length > 0 && splitted[0] === 'image') {
+            // image
+            this.uploader.upload(this.api.image.upload.url, this.api.image.upload.method,[files[0]] , cb); 
+        }else {
+            // text
+            if(typeof FileReader != "undefined"){
+                var reader = new FileReader();
+                reader.onload = function(evt) {
+                    self._scope.content = self.insertText(self.lastSelectionStart,self._scope.content,"```\n"+evt.target.result+"\n```");
+                    self._scope.$apply();
+                };
+                reader.readAsText(files[0]);
+            }
+        }
+
+        
+
+        
+        
+    }
+
     keyupTask(e) {
         
         var ctrlKey = (e.ctrlKey || e.metaKey);
         if(ctrlKey && e.keyCode === KeyCode.KEY_S) {
             e.preventDefault();
-            this.scope.savedCallback();
+            this._scope.savedCallback();
         }else if(e.keyCode === KeyCode.KEY_ESC) {
             e.preventDefault();
-            this.scope.cancelCallback();
+            this._scope.cancelCallback();
         }else{
 
             if(ctrlKey && e.target.className.indexOf("editor-textarea") >= 0) {
@@ -68,14 +139,14 @@ class EditorController extends FluxController {
     }
 
     contentChangeCallback() {
-        this.htmlContent = this.markdown.parseMd(this.scope.content);
+        this.htmlContent = this.markdown.parseMd(this._scope.content);
     }
 
     boldEvent() {
         var end = this.textarea.selectionEnd;
         var lastTop = this.textarea.scrollTop;
 
-        this.scope.content = this.replaceSelectedText(this.textarea, function(selectedText) {
+        this._scope.content = this.replaceSelectedText(this.textarea, function(selectedText) {
             return "**" + selectedText + "**";
         });
         
@@ -86,7 +157,7 @@ class EditorController extends FluxController {
         var end = this.textarea.selectionEnd;
         var lastTop = this.textarea.scrollTop;
 
-        this.scope.content = this.replaceSelectedText(this.textarea, function(selectedText) {
+        this._scope.content = this.replaceSelectedText(this.textarea, function(selectedText) {
             return "*" + selectedText + "*";
         });
 
@@ -97,11 +168,17 @@ class EditorController extends FluxController {
         var end = this.textarea.selectionEnd;
         var lastTop = this.textarea.scrollTop;
 
-        this.scope.content = this.replaceSelectedText(this.textarea, function(selectedText) {
+        this._scope.content = this.replaceSelectedText(this.textarea, function(selectedText) {
             return "~~" + selectedText + "~~";
         });
         
         this.restoreCursorPositionAndScrollTop(lastTop, end + 4);
+    }
+
+    fileEvent() {
+        if(this.fileupload) {
+            this.fileupload.click();
+        }   
     }
 
     anchorEvent() {
@@ -109,7 +186,7 @@ class EditorController extends FluxController {
         var end = this.textarea.selectionEnd;
         var lastTop = this.textarea.scrollTop;
         var linkFlag = false;
-        this.scope.content = this.replaceSelectedText(this.textarea, function(selectedText) {
+        this._scope.content = this.replaceSelectedText(this.textarea, function(selectedText) {
             if(selectedText.match(/\[(.*?|TITLE)\]\((https?:\/\/(.*?)|LINK_HERE)\)/)) {
                 return selectedText;
             }
@@ -134,7 +211,7 @@ class EditorController extends FluxController {
         var end = self.textarea.selectionEnd;
         var headingText = this.textarea.value;
         var lastTop = self.textarea.scrollTop;
-        this.scope.content = this.replaceSelectedText(this.textarea, function(selectedText, start, end) {
+        this._scope.content = this.replaceSelectedText(this.textarea, function(selectedText, start, end) {
             var lines = self.textarea.value.split("\n");
             var beginPosition = 0;
             for(var i = 0; i < lines.length; i ++) {
@@ -147,7 +224,7 @@ class EditorController extends FluxController {
             return selectedText;
         });
 
-        this.scope.content = headingText;
+        this._scope.content = headingText;
         this.restoreCursorPositionAndScrollTop(lastTop,end + 2);
     }
 
@@ -156,7 +233,7 @@ class EditorController extends FluxController {
         var end = self.textarea.selectionEnd;
         var lines = self.textarea.value.split("\n");
         var lastTop = self.textarea.scrollTop;
-        this.scope.content = this.replaceSelectedText(this.textarea, function(selectedText, start, end) {
+        this._scope.content = this.replaceSelectedText(this.textarea, function(selectedText, start, end) {
             
             var beginPosition = 0;
             for(var i = 0; i < lines.length; i ++) {
@@ -174,7 +251,7 @@ class EditorController extends FluxController {
             return selectedText;
         });
 
-        this.scope.content = lines.join("\n");
+        this._scope.content = lines.join("\n");
         this.restoreCursorPositionAndScrollTop(lastTop,end + 8);
 
     }
@@ -208,6 +285,10 @@ class EditorController extends FluxController {
         }
     }
 
+    insertText(start, text, textInsert) {
+        return text.substring(0,start) + textInsert + text.substring(start, text.length);
+    }
+
     replaceSelectedText(el,handler) {
         var readyBoldText = el.value;
         var selectedText = readyBoldText.substring(el.selectionStart, el.selectionEnd) ;
@@ -217,34 +298,16 @@ class EditorController extends FluxController {
 
 
     //add-----------------------------------------
-    preventer1(e){
-        console.log("ondragover");
-        e.preventDefault();
-    }
-    preventer2(e){
-        console.log("ondragenter")
+    preventer(e){
         e.preventDefault();
     }
     droppingCallback(e){
         e.preventDefault();
-
-        var self = this;
-
+        this.showCoverFlag = false;
         var files = e.dataTransfer.files;
+        this.uploadFile(files);
 
-        if(typeof FileReader != "undefined"){
-            //I.E.はFileReader未実装
-            var reader = new FileReader();
-            reader.onload = function(evt) {
-                self.scope.content = "```\n"+evt.target.result+"\n```";
-                self.scope.$apply();
-            };
-            reader.readAsText(files[0]);
-            console.log("![alt text](/upload/img/" + files[0].name + ")");
-        } 
-        else {
-            alert("本ブラウザではFileReader未実装");
-        }
+        this._scope.$apply();
     }
 
 

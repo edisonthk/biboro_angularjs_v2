@@ -11,7 +11,7 @@ import CommentService  from '../app/components/comment/comment.service';
 import NewsService  from '../app/components/news/news.service';
 import FeedbackService from '../app/components/feedback/feedback.service';
 import MarkdownHelper from '../app/components/markdown/markdown.factory';
-
+import FileUploader from '../app/components/fileupload/fileupload.service';
 
 // directives
 import CommentDirective        from '../app/components/comment/comment.directive';
@@ -51,9 +51,12 @@ angular.module('biboroAngular', [
     .service('CommentService', CommentService)
     .service('NewsService', NewsService)
     .service('FeedbackService', FeedbackService)
+    .service('FileUploader', FileUploader)
 
     .factory('Dispatcher', () => new Dispatcher())
     .factory('Markdown', () => new MarkdownHelper())
+
+    
         
     .directive('comment',   () => new CommentDirective())
     .directive('editor',   () => new EditorDirective())

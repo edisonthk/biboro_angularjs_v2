@@ -42,6 +42,9 @@ class WorkbookShowController extends FluxController {
             show: false,
             snippet: null
         };
+        this.deleteWorkbookDialog = {
+            show: false
+        };
 
         // register action
         this.registerCallbacks({
@@ -66,7 +69,7 @@ class WorkbookShowController extends FluxController {
         this.editDialog.outsideClickedCallback   = this.editDialogOutsideClickedCallback.bind(this);
         this.commentBox.outsideClickedCallback  = this.commentsBoxOutsideClickedCallback.bind(this);
         this.deleteDialog.outsideClickedCallback   = this.deleteDialogOutsideClickedCallback.bind(this);
-
+        this.deleteWorkbookDialog.outsideClickedCallback = this.deleteWorkbookDialogOutsideClickedCallback.bind(this);
         this.initialize();
 
     }
@@ -77,6 +80,7 @@ class WorkbookShowController extends FluxController {
         this.workbook.fetchAll();
         this.currentWorkbook = null;
         this.savingFlag = false;
+        this.notfound = false;
 
         var workbook = this.stateParams.workbook;
         if(workbook) {
@@ -84,7 +88,11 @@ class WorkbookShowController extends FluxController {
         }
     }
 
-    showCallback() {
+    showCallback(res) {
+        if(!res.success) {
+            this.notfound = true;
+            return;
+        }
 
         this.currentWorkbook = this.workbook.getCurrentWorkbook();
         this.editDialog.title = this.currentWorkbook.title;
@@ -100,7 +108,7 @@ class WorkbookShowController extends FluxController {
 
     stateUpdatedCallback() {
         // console.log(parameters);
-        // this.currentWorkbook = null;
+        this.currentWorkbook = null;
         // console.log(parameters);
     }
 
@@ -161,6 +169,19 @@ class WorkbookShowController extends FluxController {
         this.savingFlag  = false;
     }
 
+    deleteWorkbookDialogOutsideClickedCallback() {
+        this.deleteWorkbookDialog.show = false;
+    }
+
+    deleteWorkbookDialogDeleteEvent() {
+        this.workbook.destroy(this.stateParams.workbook);
+        this.state.go("workbook");
+    }
+
+    deleteWorkbookDialogClose() {
+        this.deleteWorkbookDialog.show = false;
+    }
+
 
     // delete dialog event
     deleteDialogOutsideClickedCallback () {
@@ -171,9 +192,9 @@ class WorkbookShowController extends FluxController {
         this.deleteDialog.show = false;
     }
 
-    deleteDialogDeleteEvent(snippet){
-        this.snippet.destroy(snippet.id);
-        this.state.go(this.state.current, {}, {reload: true});
+    deleteDialogDeleteEvent(){
+        this.snippet.destroy(this.deleteDialog.snippet.id);
+        // this.state.go(this.state.current, {}, {reload: true});
     }
 
     /**
@@ -261,8 +282,8 @@ class WorkbookShowController extends FluxController {
     }
 
     deleteWorkbook() {
-        this.workbook.destroy(this.stateParams.workbook);
-        this.state.go("workbook");
+        // confirm 
+        this.deleteWorkbookDialog.show = true;
     }
 
     deleteSnippet(snippet){

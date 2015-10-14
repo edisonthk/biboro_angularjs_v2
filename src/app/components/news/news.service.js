@@ -1,43 +1,31 @@
-import BaseService from "../../base/base.service";
+import FluxService from "../flux/flux.service";
 
-class NewsService extends BaseService{
+class NewsService extends FluxService{
     constructor($http,Dispatcher, Api) {
         'ngInject';
         
-        this._http = $http;
-        this._dispatcher = Dispatcher;
+        super.constructor($http, Dispatcher);
+
         this.api = Api;
 
-        this.news = [];
+        this.setDispatcherKey([    
+                "NEWS_FETCHALL",
+                "NEWS_SHOW",
+            ]);
         
-        this.NEWS_FETCHALL = "NEWS_FETCHALL";
-        this.NEWS_SHOW     = "NEWS_SHOW";
-
-        // setTimeout(function() {
-
-        //     scope.$apply();
-        // });
-
     }
     
     fetchAll() {
-        var self = this;
-
-        var req = {
-            method : self.api.news.index.method,
-            url    : self.api.news.index.url,
-        };
-
-        self._http[req.method](req.url, req.data)
-            .success(function(res){
-                self.news = res.news;
-                self._dispatcher.dispatch(self.NEWS_FETCHALL, {"success":true,"result":"success"});
-            })
-            .error(function(){
-                console.log("error in workbook.strore.js");
-                self._dispatcher.dispatch(self.NEWS_FETCHALL, {"success":false,"result":"fail to fetch workbooks."});
-            });
-
+        this.disposeAllData();
+        
+        this.request({
+            method : this.api.news.index.method,
+            url    : this.api.news.index.url,
+            dispatcher: "NEWS_FETCHALL",
+            success: function(res) {
+                this.setGroup(res.news);
+            }
+        });
     }
 
     show(id){
@@ -61,7 +49,7 @@ class NewsService extends BaseService{
     }
 
     getAll(){
-        return this.news;
+        return this.getAllData();
     }
 
 }

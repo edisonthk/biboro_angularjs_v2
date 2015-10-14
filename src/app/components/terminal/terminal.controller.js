@@ -9,7 +9,6 @@ class TerminalController extends FluxController {
         this.stateParams = $stateParams;
         this.workbook = WorkbookService;
 
-
         $scope.$watch("query", this.changeCallback.bind(this));
 
         this.workbookLoaded = false;
@@ -17,7 +16,6 @@ class TerminalController extends FluxController {
             WORKBOOK_SHOW: this.workbookShowCallback.bind(this),
         });
     }
-
 
     changeCallback(q) {
         if(!q || q.length <= 0) {

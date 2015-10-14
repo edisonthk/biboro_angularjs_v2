@@ -1,50 +1,34 @@
-class AccountService {
+import FluxService from "../flux/flux.service";
 
-    constructor($http,Dispatcher,Api) {
+class AccountService extends FluxService{
+
+    constructor($http,Dispatcher, Api) {
         'ngInject';
-        
-        this.ACCOUNT_FETCH = "ACCOUNT_FETCH";
-        
-        this._dispatcher = Dispatcher;
-        this._http       = $http;
-        this.api         = Api;
 
-        this.fetchedAccountData = false;
+        super.constructor($http, Dispatcher);
+        
+        this.api = Api;
+
+        this.setDispatcherKey([
+                "ACCOUNT_FETCH",
+            ]);
+
         this.account = null;
 
     }
 
-    fetchLoginedAccount(forceUpdate) {
+    fetchLoginedAccount() {
         var self = this;
 
-        if(!forceUpdate) {
-            if(self.fetchedAccountData) {
-                if(self.account === null) {
-                    self._dispatcher.dispatch(self.ACCOUNT_FETCH, {"success":false,"result":"fail to fetch  info."});
-                }else{
-                    self._dispatcher.dispatch(self.ACCOUNT_FETCH, {"success":true,"result":"success","data":self.account});
-                }
-                return;
+        this.request({
+            method : this.api.account.info.method,
+            url    : this.api.account.info.url,
+            dispatcher: "ACCOUNT_FETCH",
+            success: function(res) {
+                console.log(res);
+                this.setUser(res);
             }
-        }
-
-        var req = {
-            method : self.api.account.info.method,
-            url    : self.api.account.info.url,
-        };
-
-        self._http[req.method](req.url)
-            .success(function(data){
-                self.setUser(data);
-                self.fetchedAccountData = true;
-                self._dispatcher.dispatch(self.ACCOUNT_FETCH, {"success":true,"result":"success","data":self.account});
-            })
-            .error(function(){
-                self.account = null;
-                self.fetchedAccountData = true;
-                self._dispatcher.dispatch(self.ACCOUNT_FETCH, {"success":false,"result":"fail to fetch  info."});
-            });
-
+        });
     }
 
     getProfileImage() {
@@ -64,7 +48,7 @@ class AccountService {
     }
 
     signIn() {
-        window.location.href = this.api.account.login + "?origin="+encodeURIComponent(window.location.hash.replace("#",""));
+        window.location.href = this.api.account.login + "?origin="+encodeURIComponent(window.location.pathname);
     }
 
     setUser(data) {

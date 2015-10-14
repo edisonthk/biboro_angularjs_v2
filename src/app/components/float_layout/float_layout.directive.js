@@ -53,6 +53,7 @@ class FloatLayoutDirective {
 
     updateCells() 
     {
+        console.log("b");
         var self = this;
         clearTimeout(self.timeoutId);
         self.timeoutId = setTimeout(function() {
@@ -69,9 +70,11 @@ class FloatLayoutDirective {
                 
             });
 
+            self.updatedCallback
             self.scope.$apply();
+            console.log("c");
 
-        }, 100);
+        });
     }
 
     updateCellSize(el)

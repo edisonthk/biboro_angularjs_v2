@@ -7,6 +7,7 @@ class EditorDirective {
         let directive = {
             restrict: 'E',
             scope: {
+                headline: '@',
                 title: '=',
                 content: '=',
                 tags: '=',

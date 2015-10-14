@@ -100,6 +100,10 @@ class SnippetService extends FluxService{
         return params;
     }
 
+    clearSnippets() {
+        this.disposeAllData();
+    }
+
 }
 
 export default SnippetService;

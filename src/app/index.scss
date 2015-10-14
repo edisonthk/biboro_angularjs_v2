@@ -67,6 +67,10 @@ input {
     outline: 0;
 }
 
+small {
+    font-size: 80%;
+}
+
 .btn:hover {
     cursor: pointer;
 }
@@ -102,7 +106,6 @@ navbar {
     .navbar {
         display: block;
         width: 100%;
-        border-bottom: 1px solid #ccc;
     }
 
     .logo {
@@ -131,14 +134,29 @@ navbar {
     .menu-tools {
         float: right;
         display: inline-block;
-        i {
-            font-size: 26px;
-            padding: 12px;    
-        }
+
         .menu-item {
             float: left;
             position: relative;
             display: inline-block;
+            height: 50px;
+            padding: 9px;
+            i {
+                font-size: 26px;    
+            }
+            
+
+            .icon {
+                display: block;
+                width: auto;
+                height: 100%;
+            }
+            .icon.icon-plus {
+                margin: 0 auto;
+                height: calc(100% - 13px);
+            }
+
+
 
             .profile-image {
                 width: 44px;
@@ -191,21 +209,18 @@ navbar {
     }
 
     .workbook-tabs > pane {
-        line-height: 50px;
+        line-height: 37px;
+        width: 96px;
+        padding: 6px 12px;
+        font-size: 14px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        border-bottom: 2px solid transparent;
+        opacity: 0.4;
     }
     .workbook-tabs >pane.active {
-        background-color: white;
-        // border-bottom: 50px solid #ccc;
-        // border-left: 10px solid transparent;
-        // border-right: 10px solid transparent;
-        // height: 0;
-        width: 85px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        opacity: 1;
     }
 
 }
@@ -247,6 +262,12 @@ navbar {
     margin-bottom: 15px;
     overflow: scroll;
     text-overflow: clip;
+}
+
+.md-content {
+    img {
+        max-width: 100%;
+    }
 }
 
 .form-group {
@@ -321,6 +342,7 @@ navbar {
             }
 
             > .follow {
+                opacity: 0.7;
                 font-style: italic;
                 font-size: 12px;
             } 

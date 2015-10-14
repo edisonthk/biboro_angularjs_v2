@@ -17,6 +17,35 @@
         opacity: 0.6;    
     }
 
+    .text-field {
+        position: relative;
+    }
+
+    .dragdrop-cover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #DAD9D9;
+        opacity: 0.8;
+        color: $black;
+
+        i {
+            font-size: 100px;
+            text-align: center;
+            display: inherit;
+            margin-top: calc(50% - 35px);
+        }
+        p {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    }
+
     .editor-content {
         position: fixed;
         padding: 10px 30px;
@@ -27,6 +56,11 @@
         z-index: 201;
         width: 900px;
         left: calc(50% - 450px);
+
+        .headline {
+            font-weight: bold;
+            margin-bottom: 0;
+        }
 
         @media(max-width: $desktop-width) {
             width: 720px;
@@ -56,8 +90,19 @@
                 margin-bottom: -3px;
             }
 
-            tabs > pane.active {
-                border-bottom-color: #dcdcdc;
+            tabs > pane {
+                line-height: 24px;
+                width: 90px;
+                padding: 6px 6px;
+                font-size: 14px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                border-bottom: 2px solid transparent;
+                opacity: 0.4;
+            }
+            tabs >pane.active {
+                opacity: 1;
             }
 
         }
@@ -118,7 +163,11 @@
             margin-top: 44px;
             height: 350px;
         }
-        
+        .editor-fileupload {
+            position: absolute;
+            top: 0;
+            z-index: -1;
+        }
 
     }    
 

@@ -2,8 +2,9 @@
     <div class="editor-background"></div>
 
     <div class="editor-content">
+        <h3 class="headline" ng-bind="headline"></h3>
         <div class="cleafix">
-            <div class="workbooks col-left">
+            <div class="workbooks">
                 <tabs ng-model="selectedWorkbook" panes="workbooks" empty-pane="{id:0}"></tabs>
             </div>
         </div>
@@ -25,12 +26,18 @@
                         </div>
                         <div class="tools-group">
                             <button title="リンク ({{CMD_KEY}}+L)"><i class="fa fa-link"></i></button>
-                            <button title="画像 "><i class="fa fa-picture-o"></i></button>
+                            <button title="画像 " ng-click="editor.fileEvent()"><i class="fa fa-picture-o"></i></button>
                             <button title="コード ({{CMD_KEY}}+K)" ng-mouseup="editor.codeEvent()"><i class="fa fa-code"></i></button>
                         </div>
                     </div>   
+                    <input type="file" class="editor-fileupload"> 
                 </div>
-                
+
+                <div class="dragdrop-cover" ng-if="editor.showCoverFlag">
+                    <i class="fa fa-file-text"></i>
+                    <p>ドロップして<br/>ソースコード、画像をアップ</p>
+                </div>
+
             </div>
             <div class="col-left md-parsed">
                 <div class="title" ng-bind="title"></div>

@@ -54,7 +54,6 @@ class DialogController extends FluxController {
         'ngInject';
         
         super.constructor($scope, Dispatcher);
-        console.log("ff");
         this._shortcutTaskToken = ShortcutTask.setTask(this.keyupTask.bind(this));
     }
 

@@ -18,16 +18,21 @@
     </tabs>
 
     <div class="menu-tools" ng-if="navbar.accountInfo == null">
-        <a ng-click="navbar.account.signIn()"><i class="fa fa-sign-in"></i></a>
+        <a class="menu-item" ng-click="navbar.account.signIn()"><i class="fa fa-sign-in"></i></a>
     </div>
     <div class="menu-tools" ng-if="navbar.accountInfo != null">
         <div class="menu-item">
-            <a ng-click="navbar.notificationBoardShow = true"><i class="fa fa-info"></i></a>
+            <a ng-click="navbar.notificationBoardShow = true"><img class="icon" src="assets/images/ic_info.png"></a>
         </div>
-        <div class="menu-item"><a ng-click="navbar.newSnippet()"><i class="fa fa-plus"></i></a></div>
+        <div class="menu-item">
+            <a ng-click="navbar.newSnippet()">
+                <img class="icon icon-plus" src="assets/images/ic_plus.png">
+                <small>{{CMD_KEY}}+B</small>
+            </a>
+        </div>
         <div class="menu-item">
             <a ng-click="navbar.collapseMenuShow = !navbar.collapseMenuShow">
-                <i ng-if="navbar.account.getProfileImage() === null" class="fa fa-user"></i>
+                <img ng-if="navbar.account.getProfileImage() === null" class="icon" src="assets/images/ic_menu.png">
                 <div ng-if="navbar.account.getProfileImage() !== null" class="profile-image">
                     <img ng-src="{{navbar.account.getProfileImage()}}">
                 </div>
@@ -71,6 +76,7 @@
 
 <editor
     ng-if="navbar.editor.show"
+    headline="新しいスニペットを作成"
     title="navbar.editor.title" 
     content="navbar.editor.content"
     tags="navbar.editor.tags"

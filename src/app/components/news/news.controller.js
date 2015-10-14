@@ -2,7 +2,7 @@ import Helper from "../helper/helper";
 import FluxController from "../flux/flux.controller";
 
 class NewsController extends FluxController {
-    constructor($scope ,$state ,$stateParams ,Dispatcher,WorkbookService, SnippetService, NewsService,Markdown, toastr) {
+    constructor($scope ,$state ,$stateParams ,Dispatcher,AccountService,WorkbookService, SnippetService, NewsService,Markdown, toastr) {
         'ngInject';
         
         super.constructor($scope, Dispatcher);
@@ -13,6 +13,7 @@ class NewsController extends FluxController {
         this.workbook     = WorkbookService;
         this.snippet      = SnippetService;
         this.news         = NewsService;
+        this.account      = AccountService;
         this.markdown     = Markdown;
 
         this.editor       = {
@@ -31,9 +32,11 @@ class NewsController extends FluxController {
 
         // register action
         this.registerCallbacks({
-            NEWS_FETCHALL:   this.fetchAllCallback,
+            ACCOUNT_FETCH :   this.fetchLoginAccount,
 
-            SNIPPET_FORK:    this.newsForkCallback,
+            NEWS_FETCHALL :   this.fetchAllCallback,
+
+            SNIPPET_FORK :    this.newsForkCallback,
 
         });
 
@@ -45,8 +48,15 @@ class NewsController extends FluxController {
     }
 
     initialize() {
+
         this.news.fetchAll();
         this.workbook.fetchAll();
+    }
+
+    fetchLoginAccount(res) {
+        if(!res.success) {
+            this.account.signIn();
+        }
     }
 
     fetchAllCallback(parameters) {
@@ -71,7 +81,7 @@ class NewsController extends FluxController {
         });
     }
 
-    showCallback(parameters) {
+    showCallback(res) {
 
         this.currentWorkbook = this.workbook.getCurrentWorkbook();
         this.editDialog.title = this.currentWorkbook.title;

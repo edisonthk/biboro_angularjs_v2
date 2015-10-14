@@ -23,6 +23,7 @@ class WorkbookListController extends FluxController {
         this.registerCallbacks({
             WORKBOOK_STORE     : this.storeCallback,
             WORKBOOK_UPDATE    : this.updateCallback,
+            ACCOUNT_FETCH      : this.accountFetchCallback,
         });
 
         this.createDialog.outsideClickedCallback = this.createDialogOutsideClickedCallback.bind(this);
@@ -40,6 +41,12 @@ class WorkbookListController extends FluxController {
         this.workbooks = [];
         this.currentWorkbook = null;
 
+    }
+
+    accountFetchCallback(res) {
+        if(!res.success) {
+            this.account.signIn();
+        }
     }
 
     testClick() {

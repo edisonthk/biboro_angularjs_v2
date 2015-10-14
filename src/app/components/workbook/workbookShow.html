@@ -1,73 +1,87 @@
-<h1 class="page-title">
-    <i class="fa fa-book"></i> 
-    <span ng-bind="workbookCtrl.workbook.getCurrentWorkbook().title"></span>&nbsp;
-    <small ng-if="workbookCtrl.workbook.getCurrentWorkbook().account_id == workbookCtrl.account.getUserId()">
-        <i class="btn fa fa-pencil" ng-click="workbookCtrl.showEditDialog()"></i>
-        <i class="btn fa fa-trash" ng-click="workbookCtrl.deleteWorkbook()"></i>
-    </small>
-</h1>
-<div class="workbook-show cells-wrapper clearfix">
-    <div class="cell clearfix"
-        ng-repeat="snippet in workbookCtrl.snippet.getSnippets()"
-        ng-mouseenter="snippet.showTools = true"
-        ng-mouseleave="snippet.showTools = false" >
-        <div class="cell-wrapper">
-            <div class="line"></div>
-            <h3 class="title" ng-bind="snippet.title"></h3>
+<div ng-if="workbookCtrl.notfound">
+    <h1 class="page-title">404 NOT FOUND</h1>
+</div>
+<div ng-if="!workbookCtrl.notfound">
+    <h1 class="page-title">
+        <i class="fa fa-book"></i> 
+        <span ng-bind="workbookCtrl.workbook.getCurrentWorkbook().title"></span>&nbsp;
+        <small ng-if="workbookCtrl.workbook.getCurrentWorkbook().account_id == workbookCtrl.account.getUserId()">
+            <i class="btn fa fa-pencil" ng-click="workbookCtrl.showEditDialog()"></i>
+            <i class="btn fa fa-trash" ng-click="workbookCtrl.deleteWorkbook()"></i>
+        </small>
+    </h1>
+    <div class="workbook-show cells-wrapper clearfix">
+        <div class="cell clearfix"
+            ng-repeat="snippet in workbookCtrl.snippet.getSnippets()"
+            ng-mouseenter="snippet.showTools = true"
+            ng-mouseleave="snippet.showTools = false" >
+            <div class="cell-wrapper">
+                <div class="line"></div>
+                <h3 class="title" ng-bind="snippet.title"></h3>
 
-            <div class="follow" ng-if="snippet.reference != null">
-                <a ng-if="snippet.reference.method === 2" ng-href="{{snippet.reference.target}}">Ref
-                    &nbsp;<span ng-bind="workbookCtrl.extractDomain(snippet.reference.target)"></span>
-                </a>
-                <a ng-if="snippet.reference.method === 1" ng-href="/snippets/{{snippet.reference.target}}">Ref 
-                    from snippets
-                </a>
+                <div class="follow" ng-if="snippet.reference != null">
+                    <a ng-if="snippet.reference.method === 2" ng-href="{{snippet.reference.target}}">Ref
+                        &nbsp;<span ng-bind="workbookCtrl.extractDomain(snippet.reference.target)"></span>
+                    </a>
+                    <a ng-if="snippet.reference.method === 1" ng-href="/snippets/{{snippet.reference.target}}">Ref 
+                        from snippets
+                    </a>
+                </div>
+
+                <div class="tools" ng-if="snippet.showTools">
+                    <button ng-if="snippet.editable" ng-click="workbookCtrl.editSnippet(snippet)">
+                        <i class="fa fa-wrench"></i>
+                    </button>
+                    <button ng-if="!snippet.editable" ng-click="workbookCtrl.forkSnippet(snippet)">
+                        <i class="fa fa-code-fork"></i>
+                    </button>
+                    <button ng-click="workbookCtrl.showCommentBox(snippet)"><i class="fa fa-comment-o"></i></button>
+                    <button ng-if="snippet.editable" ng-click="workbookCtrl.deleteSnippet(snippet)"><i class="fa fa-trash-o"></i></button>
+                </div>
+
+                <div ng-bind-html="workbookCtrl.markdown.parseMd(snippet.content)" class="html-content"></div>
             </div>
-
-            <div class="tools" ng-if="snippet.showTools">
-                <button ng-if="snippet.editable" ng-click="workbookCtrl.editSnippet(snippet)">
-                    <i class="fa fa-wrench"></i>
-                </button>
-                <button ng-if="!snippet.editable" ng-click="workbookCtrl.forkSnippet(snippet)">
-                    <i class="fa fa-code-fork"></i>
-                </button>
-                <button ng-click="workbookCtrl.showCommentBox(snippet)"><i class="fa fa-comment-o"></i></button>
-                <button ng-if="snippet.editable" ng-click="workbookCtrl.deleteSnippet(snippet)"><i class="fa fa-trash-o"></i></button>
-            </div>
-
-            <div ng-bind-html="workbookCtrl.markdown.parseMd(snippet.content)" class="html-content"></div>
         </div>
     </div>
+
+    <dialog 
+        open 
+        ng-if="workbookCtrl.editDialog.show" 
+        outside-clicked-callback="workbookCtrl.editDialog.outsideClickedCallback" >
+        <div ng-include="'app/components/workbook/workbook.editDialog.html'"></div>
+    </dialog>
+
+    <comment
+        ng-if="workbookCtrl.commentBox.show" 
+        snippet="workbookCtrl.commentBox.snippet"
+        outside-clicked-callback="workbookCtrl.commentBox.outsideClickedCallback" >
+    ></comment>
+
+    <dialog 
+        open 
+        ng-if="workbookCtrl.deleteDialog.show" 
+        outside-clicked-callback="workbookCtrl.deleteDialog.outsideClickedCallback" >
+        <div ng-include="'app/components/snippet/snippet.deleteDialog.html'"></div>
+    </dialog>
+
+    <dialog 
+        open 
+        ng-if="workbookCtrl.deleteWorkbookDialog.show" 
+        outside-clicked-callback="workbookCtrl.deleteWorkbookDialog.outsideClickedCallback" >
+        <div ng-include="'app/components/workbook/workbook.deleteDialog.html'"></div>
+    </dialog>
+
+    <editor
+        ng-if="workbookCtrl.editor.show"
+        headline="スニペットを編集"
+        title="workbookCtrl.editor.title" 
+        content="workbookCtrl.editor.content"
+        tags="workbookCtrl.editor.tags"
+        selected-workbook="workbookCtrl.editor.workbook"
+        workbooks="workbookCtrl.workbook.getAll()"
+        saved-callback="workbookCtrl.editorSavedCallback()"
+        quit-callback="workbookCtrl.editorQuitCallback()"
+        cancel-callback="workbookCtrl.editorCancelCallback()" >
+    </editor> 
+
 </div>
-
-<dialog 
-    open 
-    ng-if="workbookCtrl.editDialog.show" 
-    outside-clicked-callback="workbookCtrl.editDialog.outsideClickedCallback" >
-    <div ng-include="'app/components/workbook/workbook.editDialog.html'"></div>
-</dialog>
-
-<comment
-    ng-if="workbookCtrl.commentBox.show" 
-    snippet="workbookCtrl.commentBox.snippet"
-    outside-clicked-callback="workbookCtrl.commentBox.outsideClickedCallback" >
-></comment>
-
-<dialog 
-    open 
-    ng-if="workbookCtrl.deleteDialog.show" 
-    outside-clicked-callback="workbookCtrl.deleteDialog.outsideClickedCallback" >
-    <div ng-include="'app/components/snippet/snippet.deleteDialog.html'"></div>
-</dialog>
-
-<editor
-    ng-if="workbookCtrl.editor.show"
-    title="workbookCtrl.editor.title" 
-    content="workbookCtrl.editor.content"
-    tags="workbookCtrl.editor.tags"
-    selected-workbook="workbookCtrl.editor.workbook"
-    workbooks="workbookCtrl.workbook.getAll()"
-    saved-callback="workbookCtrl.editorSavedCallback()"
-    quit-callback="workbookCtrl.editorQuitCallback()"
-    cancel-callback="workbookCtrl.editorCancelCallback()" >
-</editor> 

@@ -117,9 +117,9 @@ class NavbarController extends FluxController {
         }
     }
 
-    fetchLoginAccount(parameters) {
-        if(parameters.result) {
-            this.accountInfo = parameters.data;
+    fetchLoginAccount(res) {
+        if(res.success) {
+            this.accountInfo = this.account.getUser();
         }else{
             this.accountInfo = null;
         }

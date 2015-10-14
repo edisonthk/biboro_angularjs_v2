@@ -71,6 +71,9 @@ var api = {
         feedback: {
             send     : {method: 'post', url:'api/v1/feedback'}
         },
+        image: {
+            upload   : {method: 'post', url:'api/v1/images/upload'}
+        },
     }
 };
 

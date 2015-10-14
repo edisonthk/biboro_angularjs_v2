@@ -19,12 +19,38 @@ class FluxService {
         this.key = {};
         this.groupData = [];
         this.focusData = null;
+        this.requesting = [];
     }
 
     setDispatcherKey(keys) {
         for (var i = 0; i < keys.length; i++) {
             this.key[keys[i]] = keys[i];
         }
+    }
+
+    isRequesting(url, method) {
+        for (var i = 0; i < this.requesting.length; i++) {
+            if(this.requesting[i].url === url && this.requesting[i].method === method) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    unsetRequesting(url, method) {
+        for (var i = 0; i < this.requesting.length; i++) {
+            if(this.requesting[i].url === url && this.requesting[i].method === method) {
+                this.requesting.splice(i, 1);
+                return;
+            }
+        }
+    }
+
+    setRequesting(url, method) {
+        this.requesting.push({
+            url: url,
+            method: method
+        });
     }
 
     request(config) {
@@ -38,7 +64,10 @@ class FluxService {
             config.error   = config.error.bind(self);
         }
         
-        
+        if(self.isRequesting(config.url, config.method)) {
+            return;
+        }
+        self.setRequesting(config.url, config.method);
 
         // self.throwIfDispatcherKeyNotSet(config.dispatcher);
 
@@ -56,7 +85,7 @@ class FluxService {
                 }else {
                     self._dispatcher.dispatch(config.dispatcher, {"success":true,"response":res});
                 }
-                
+                self.unsetRequesting(config.url, config.method);
             })
             .error(function(err){
 
@@ -71,6 +100,7 @@ class FluxService {
                 }else {
                     self._dispatcher.dispatch(config.dispatcher, {"success":false, "error":err});
                 }
+                self.unsetRequesting(config.url, config.method);
             });
 
     }
@@ -153,6 +183,10 @@ class FluxService {
                 return;
             }
         }
+    }
+
+    disposeAllData() {
+        this.groupData = [];
     }
 
     setFocusData(data) {

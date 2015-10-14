@@ -49,6 +49,12 @@ class WorkbookService extends FluxService{
     }
 
     show(id){
+        this.snippet.clearSnippets();
+        
+        var cacheWorkbook = this.getWorkbookFromCache(id);
+        if(cacheWorkbook != null) {
+            this.setFocusData(cacheWorkbook);
+        }
 
         this.request({
             method : this.api.workbook.show.method,
@@ -140,6 +146,16 @@ class WorkbookService extends FluxService{
 
     setWorkbookInsideGroup(wb) {
         this.setDataInsideGroup(wb);
+    }
+
+    getWorkbookFromCache(id) {
+        var workbooks = this.getAllData();
+        for (var i = 0; i < workbooks.length; i++) {
+            if(workbooks[i].id === parseInt(id)) {
+                return workbooks[i];
+            }
+        }
+        return null;
     }
 
 }

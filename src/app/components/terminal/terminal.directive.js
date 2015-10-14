@@ -23,6 +23,7 @@ class TerminalDirective {
             template: [
                 '<div class="terminal">',
                     '<div class="terminal-wrapper">',
+                        '<img class="animation" src="assets/images/ic_logo_fadeout.gif">',
                         '<i class="fa fa-search"></i>',
                         '<input class="terminal-input" type="text" placeholder="{{placeholder}}" ng-model="query">',
                     '</div>',
@@ -47,15 +48,38 @@ class TerminalDirective {
         var $input = el.find("input")[0];
         var $wrapper = el[0].getElementsByClassName("terminal")[0];
 
+        var iconAnimation = el[0].getElementsByClassName("animation")[0];
+        
+
+        var addClass = function(element, className) {
+            if(element.className.indexOf(className) < 0) {
+                element.className += " "+className;
+            }
+        }
+
+        
+        var removeClass = function(element, className) {
+            if(element.className.indexOf(className) >= 0) {
+                var regex = new RegExp("\s?"+className);
+                element.className = element.className.replace(regex,"");
+            }
+        }
+
+        var changeImageSrc = function(src) {
+            if(iconAnimation.src.indexOf(src) >= 0) {
+                return;
+            }
+            iconAnimation.src = src;
+        }
+
         window.addEventListener("scroll", function(e){
             if(window.pageYOffset > 52) {
-                if($wrapper.className.indexOf("fix") < 0) {
-                    $wrapper.className += " fix";
-                }
+                addClass($wrapper, "fix");
+                changeImageSrc("assets/images/ic_logo_fadein.gif");
             } else {
-                if($wrapper.className.indexOf("fix") >= 0) {
-                    $wrapper.className = $wrapper.className.replace(/\s?fix/,"");
-                }
+                removeClass($wrapper, "fix");
+                changeImageSrc("assets/images/ic_logo_fadeout.gif");
+                // iconAnimation.src = "assets/images/ic_logo_fadeout.gif";
             }
             
         });
