@@ -20,6 +20,18 @@ class SnippetService extends FluxService{
         
     }
 
+    show(snippetId) {
+        this.request({
+            method : this.api.snippet.show.method,
+            url    : this.api.snippet.show.url.replace(":id",snippetId),
+            dispatcher: "SNIPPET_SHOW",
+            success: function(res) {
+                this.setFocusSnippet(res);
+                this.setSingleSnippet(res);
+            }
+        });
+    }
+
     fork(params) {
         this.request({
             method : this.api.snippet.fork.method,
@@ -27,7 +39,7 @@ class SnippetService extends FluxService{
             data   : this.filterParams(params),   
             dispatcher: "SNIPPET_FORK",
             success: function(res) {
-                // this.appendData(res);
+                this.setSingleSnippet(res);
             }
         });
     }
@@ -70,6 +82,10 @@ class SnippetService extends FluxService{
 
     setSingleSnippet(snippet) {
         this.setDataInsideGroup(snippet);
+    }
+
+    setFocusSnippet(snippet) {
+        this.setFocusData(snippet);
     }
 
     setSnippets(snippets) {

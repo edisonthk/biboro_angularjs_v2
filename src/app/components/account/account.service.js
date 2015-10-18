@@ -25,7 +25,6 @@ class AccountService extends FluxService{
             url    : this.api.account.info.url,
             dispatcher: "ACCOUNT_FETCH",
             success: function(res) {
-                console.log(res);
                 this.setUser(res);
             }
         });

@@ -69,7 +69,14 @@
 
         @media(max-width: $tablet-width) {
             width: 460px;
-            left: calc(50% - 230px);            
+            left: calc(50% - 230px);         
+
+            .col-left {
+                width: 100% !important;
+            }
+            .col-left.md-parsed {
+                display: none;
+            }   
         }
 
         @media(max-width: $phone-width) {

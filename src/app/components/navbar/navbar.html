@@ -22,7 +22,7 @@
     </div>
     <div class="menu-tools" ng-if="navbar.accountInfo != null">
         <div class="menu-item">
-            <a ng-click="navbar.notificationBoardShow = true"><img class="icon" src="assets/images/ic_info.png"></a>
+            <a ng-click="navbar.showNotificationBoard()"><img class="icon" src="assets/images/ic_info.png"></a>
         </div>
         <div class="menu-item">
             <a ng-click="navbar.newSnippet()">
@@ -57,8 +57,27 @@
 <dialog 
     open
     ng-if="navbar.notificationBoardShow"
-    outside-clicked-callback="navbar.closeDialog">
-    Chromeアプリのダウンロード
+    outside-clicked-callback="navbar.closeNotificationDialog">
+    <ul class="notification">
+        <li ng-repeat="n in navbar.notification.getAll()" 
+            ng-class="{read: n.read}" 
+            class="clearfix" 
+            ng-click="navbar.moveToTarget(n)" >
+            <div class="profile">
+                <div ng-if="n.by_user.profile_image.length > 0" class="profile-image">
+                    <img ng-src="{{n.account.profile_image}}">
+                </div>
+                <div ng-if="n.by_user.profile_image.length === 0" class="profile-image">
+                    <img src="assets/images/default-user-image.png" alt="default-image">
+                </div>
+                <div class="name">{{n.by_user.name}}</div>
+            </div>
+            <div class="description-inner-wrappper">
+                <div class="description" ng-bind-html="n.description"></div>
+                <div class="time">{{n.created_at.substring(0,n.created_at.indexOf(" "))}}</div>
+            </div>
+        </li>
+    </ul>
 </dialog>
 
 <dialog

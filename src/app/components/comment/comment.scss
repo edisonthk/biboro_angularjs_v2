@@ -45,35 +45,49 @@
     background-color: white;
 }
 
-li.comment {
-  width: 100%;
-}
-.myleft.profile{
-  width: 20%;
-  margin-top: 15px;}
+.comment-wrapper {
+    width: 100%;
+    
+    > * {
+        float: left;
+    }
 
-.myleft.mycomment{
-  width: 80%;
-}
-.myleft.mycomment > .comment_me {
-  width: 100%;
-  word-break: break-all;
-  padding-top: 15px;
-  margin-bottom: 15px;
-  margin-right: 40px;
-  border-top: 1px solid #999999;
-  color: #999999;
-}
+    > .profile {
+        width: 20%;
+        margin-top: 15px;
+    }
+    > .comment-inner-wrappper {
+        width: 80%;
 
-.time{
-  width: 100%;
-  height: 30%;
-  color: #999999;
-  font-size: 13px
-}
+        > .comment {
+            width: 100%;
+            word-break: break-all;
+            padding-top: 15px;
+            margin-bottom: 15px;
+            margin-right: 40px;
+            border-top: 1px solid #999999;
+            color: #999999;
+        }
 
-.myleft{
-    float: left;
+        > .time {
+            float: left;
+            height: 30%;
+            color: #999999;
+            font-size: 13px
+        }
+
+        > .tools {
+            float: right;
+
+            .tool-item {
+                text-decoration: underline;
+            }
+            .tool-item:hover {
+                cursor: hand;
+            }
+        }
+    }
+
 }
 
 .comment-box.dialog-box .comment-list {

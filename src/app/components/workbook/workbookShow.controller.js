@@ -7,9 +7,6 @@ class WorkbookShowController extends FluxController {
         
         super.constructor($scope, Dispatcher);
 
-        this.TYPE_FORK    = "TYPE_FORK";
-        this.TYPE_UPDATE  = "TYPE_UPDATE";
-
         this.toast        = toastr;
         this.state        = $state;
         this.stateParams  = $stateParams;
@@ -18,29 +15,13 @@ class WorkbookShowController extends FluxController {
         this.workbook     = WorkbookService;
         this.account      = AccountService;
         this.markdown     = Markdown;
-        this.editor         = {
-            show     : false,
-            title    : "",
-            content  : "",
-            tags     : [],
-            workbook : null,
-            snippetId    : null,
-            refSnippetId : null,
-        };
+
 
         this.createDialog = {
             show: false
         };
         this.editDialog   = {
             show: false
-        };
-        this.commentBox = {
-            show: false,
-            snippet: null,
-        };
-        this.deleteDialog = {
-            show: false,
-            snippet: null
         };
         this.deleteWorkbookDialog = {
             show: false
@@ -58,17 +39,10 @@ class WorkbookShowController extends FluxController {
 
             // route
             ROUTE_UPDATED    : this.stateUpdatedCallback,
-
-            // snippet
-            SNIPPET_UPDATE    : this.updatedCallback,
-            SNIPPET_FORK      : this.forkedCallback,
         });
 
         // dialog
-        this.createDialog.outsideClickedCallback = this.createDialogOutsideClickedCallback.bind(this);
         this.editDialog.outsideClickedCallback   = this.editDialogOutsideClickedCallback.bind(this);
-        this.commentBox.outsideClickedCallback  = this.commentsBoxOutsideClickedCallback.bind(this);
-        this.deleteDialog.outsideClickedCallback   = this.deleteDialogOutsideClickedCallback.bind(this);
         this.deleteWorkbookDialog.outsideClickedCallback = this.deleteWorkbookDialogOutsideClickedCallback.bind(this);
         this.initialize();
 
@@ -107,9 +81,7 @@ class WorkbookShowController extends FluxController {
     }
 
     stateUpdatedCallback() {
-        // console.log(parameters);
         this.currentWorkbook = null;
-        // console.log(parameters);
     }
 
     showCreateDialog() {
@@ -182,138 +154,10 @@ class WorkbookShowController extends FluxController {
         this.deleteWorkbookDialog.show = false;
     }
 
-
-    // delete dialog event
-    deleteDialogOutsideClickedCallback () {
-        this.deleteDialog.show = false;
-    }
-
-    deleteDialogClose(){
-        this.deleteDialog.show = false;
-    }
-
-    deleteDialogDeleteEvent(){
-        this.snippet.destroy(this.deleteDialog.snippet.id);
-        // this.state.go(this.state.current, {}, {reload: true});
-    }
-
-    /**
-     *  comments box
-     *
-     */
-    commentsBoxOutsideClickedCallback() {
-        this.commentBox.show = false;
-    }
-
-    showCommentBox(snippet) {
-        this.commentBox.show = true;
-        this.commentBox.snippet = snippet;
-    }
-
-
-    /**
-     *  crud snippet
-     *
-     */
-    editSnippet(snippet) {
-
-        this.editor.type      = this.TYPE_UPDATE;
-        this.editor.show      = true;
-        this.editor.title     = snippet.title;
-        this.editor.content   = snippet.content;
-        this.editor.tags      = snippet.tags;
-        this.editor.snippetId = snippet.id;
-        this.editor.workbook  = this.currentWorkbook;
-        this.editor.refSnippetId = null;
-    }
-
-    updatedCallback(res) {
-        if(res.success) {
-            this.toast.success("編集しました");
-            this.editor.show = false;
-        }else {
-            var error = res.error.error;
-            this.toast.error(Helper.parseErrorMessagesAsHtml(error));
-        }
-        this.savingFlag = false;
-    }
-
-    editorSavedCallback() {
-        if(this.savingFlag) {
-            return;
-        }
-
-        if(this.editor.type === this.TYPE_FORK) {
-            this.savingFlag = true;
-
-            var params = {
-                title:        this.editor.title,
-                content:      this.editor.content,
-                tags:         this.editor.tags,
-                workbookId:   this.editor.workbook === null ? 0 :this.editor.workbook.id,
-                refSnippetId: this.editor.refSnippetId,
-            };
-
-            this.snippet.fork(params);
-        }else if(this.editor.type === this.TYPE_UPDATE) {
-            this.savingFlag = true;
-
-            var formData = {
-                title: this.editor.title,
-                content: this.editor.content,
-                tags: this.editor.tags,
-                workbookId: this.editor.workbook === null ? 0 :this.editor.workbook.id,
-            };
-
-
-            this.snippet.update(this.editor.snippetId, formData);
-        }else {
-            console.error("unknown editor type");
-        }
-        
-    }
-
-    editorQuitCallback() {
-        this.editor.show = false;
-    }
-
-    editorCancelCallback() {
-        this.editor.show = false;
-    }
-
     deleteWorkbook() {
         // confirm 
         this.deleteWorkbookDialog.show = true;
     }
-
-    deleteSnippet(snippet){
-        this.deleteDialog.show = true;
-        this.deleteDialog.snippet = snippet;
-    }
-
-    /*
-     * Fork
-     */
-    forkSnippet(snippet) {
-        this.editor.type         = this.TYPE_FORK;
-        this.editor.title        = snippet.title;
-        this.editor.content      = snippet.content;
-        this.editor.tags         = snippet.tags;
-        this.editor.snippetId    = null;
-        this.editor.refSnippetId = snippet.id;
-        this.editor.show         = true;
-    }
-
-    forkedCallback(res) {
-        if(res.success) {
-            this.toast.success("フォークしました！");
-            this.editor.show = false;
-        }else {
-            var error = res.error.error;
-            this.toast.error(Helper.parseErrorMessagesAsHtml(error));
-        }
-        this.savingFlag = false;
-    }    
 
 }
 

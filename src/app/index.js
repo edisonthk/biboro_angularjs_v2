@@ -12,6 +12,7 @@ import NewsService  from '../app/components/news/news.service';
 import FeedbackService from '../app/components/feedback/feedback.service';
 import MarkdownHelper from '../app/components/markdown/markdown.factory';
 import FileUploader from '../app/components/fileupload/fileupload.service';
+import NotificationService from '../app/components/notification/notification.service';
 
 // directives
 import CommentDirective        from '../app/components/comment/comment.directive';
@@ -20,8 +21,8 @@ import NavbarDirective         from '../app/components/navbar/navbar.directive';
 import EditorDirective         from '../app/components/editor/editor.directive';
 import TerminalDirective       from '../app/components/terminal/terminal.directive';
 import TabsDirective           from '../app/components/tabs/tabs.directive';
-import FloatLayoutDirective    from '../app/components/float_layout/float_layout.directive';
-import CellDirective           from '../app/components/float_layout/cell.directive';
+import CellsDirective    from '../app/components/cells/cells.directive';
+import CellDirective           from '../app/components/cells/cell.directive';
 
 // constant
 import apiConstant from '../app/components/api/api.filter';
@@ -52,6 +53,7 @@ angular.module('biboroAngular', [
     .service('NewsService', NewsService)
     .service('FeedbackService', FeedbackService)
     .service('FileUploader', FileUploader)
+    .service('NotificationService', NotificationService)
 
     .factory('Dispatcher', () => new Dispatcher())
     .factory('Markdown', () => new MarkdownHelper())
@@ -64,7 +66,7 @@ angular.module('biboroAngular', [
     .directive('dialog',   () => new DialogDirective())
     .directive('navbar',   () => new NavbarDirective())
     .directive('tabs',     () => new TabsDirective())
-    .directive('cellsWrapper', () => new FloatLayoutDirective())
+    .directive('cellsWrapper', () => new CellsDirective())
     .directive('cell', () => new CellDirective())
 
 ;

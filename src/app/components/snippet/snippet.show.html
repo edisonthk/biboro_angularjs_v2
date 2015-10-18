@@ -1,10 +1,56 @@
+<div ng-if="snippetCtrl.notfound">
+    <h1 class="page-title">404 NOT FOUND</h1>
+</div>
+<div ng-if="!snippetCtrl.notfound" class="snippet-page wrapper">
+    <div class="page-title" ng-bind="snippetCtrl.currentSnippet.title"></div>
+
+    <div class="tools">
+        <button ng-if="snippetCtrl.currentSnippet.editable" ng-click="snippetCtrl.editSnippet()">
+            <i class="fa fa-wrench"></i>
+        </button>
+        <button ng-if="!snippetCtrl.currentSnippet.editable" ng-click="snippetCtrl.forkSnippet()">
+            <i class="fa fa-code-fork"></i>
+        </button>
+        <button ng-if="snippetCtrl.currentSnippet.editable" ng-click="snippetCtrl.deleteSnippet()"><i class="fa fa-trash-o"></i></button>
+    </div>
+
+    <div ng-bind-html="snippetCtrl.markdown.parseMd(snippetCtrl.currentSnippet.content)" class="html-content"></div>
+
+    <comment snippet="snippetCtrl.currentSnippet"></comment>
+
+    <dialog 
+        open 
+        ng-if="snippetCtrl.deleteDialog.show" 
+        outside-clicked-callback="snippetCtrl.deleteDialog.outsideClickedCallback" >
+        <div ng-include="'app/components/snippet/snippet.deleteDialog.html'"></div>
+    </dialog>
+
+    
+
+    <editor
+        ng-if="snippetCtrl.editor.show"
+        headline="スニペットを編集"
+        title="snippetCtrl.editor.title" 
+        content="snippetCtrl.editor.content"
+        tags="snippetCtrl.editor.tags"
+        selected-workbook="snippetCtrl.editor.workbook"
+        workbooks="snippetCtrl.workbook.getAll()"
+        saved-callback="snippetCtrl.editorSavedCallback()"
+        quit-callback="snippetCtrl.editorQuitCallback()"
+        cancel-callback="snippetCtrl.editorCancelCallback()" >
+    </editor> 
+
+</div>
+<!-- 
+
 <editor
     title="snippetCtrl.editor.title" 
     content="snippetCtrl.editor.content"
     tags="snippetCtrl.editor.tags"
     selected-workbook="snippetCtrl.editor.workbook"
-    workbooks="workbookCtrl.workbooks"
+    workbooks="snippetCtrl.workbooks"
     saved-callback="snippetCtrl.editorSavedCallback()"
     quit-callback="snippetCtrl.editorQuitCallback()"
     cancel-callback="snippetCtrl.editorCancelCallback()" >
 </editor> 
+ -->

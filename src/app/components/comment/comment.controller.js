@@ -1,4 +1,4 @@
-import ShortcutTask from "../shortcut/shortcut.task";
+
 import FluxController from "../flux/flux.controller";
 
 class CommentController extends FluxController{
@@ -11,7 +11,6 @@ class CommentController extends FluxController{
         this.ERROR       = "ERROR";
         this.DONE        = "DONE";
 
-        this.scope   = $scope;
         this.comment = CommentService;
         this.account = AccountService;
 
@@ -23,7 +22,7 @@ class CommentController extends FluxController{
 
         }); 
 
-        this.scope.$watch('snippet', this.snippetUpdatedCallback.bind(this));
+        this._scope.$watch('snippet', this.snippetUpdatedCallback.bind(this));
 
         this.status   = this.IN_PROGRESS;
         this.snippet = null;
@@ -32,7 +31,6 @@ class CommentController extends FluxController{
             text: "",
         };
 
-        this._shortcutTaskToken = ShortcutTask.setTask(this.keyupTask.bind(this));
     }
 
 
@@ -44,7 +42,10 @@ class CommentController extends FluxController{
 
         this.status = this.IN_PROGRESS;
         this.snippet = snippet;
-        this.comment.fetchComments(snippet.id);
+        if(this.snippet.id) {
+            this.comment.fetchComments(snippet.id);    
+        }
+        
         this.user   = this.account.getUser();
 
         //console.log(this.user);
@@ -69,9 +70,6 @@ class CommentController extends FluxController{
         }else{
             console.log("errors");
         }
-    }
-
-    keyupTask(e) {
     }
 
     updateCallback(parameters) {

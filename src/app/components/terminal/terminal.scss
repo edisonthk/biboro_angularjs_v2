@@ -14,19 +14,17 @@
         position: relative;
         z-index: 3;
 
-        .animation {
+        .animation, .link {
             display: inline-block;
             width: 70px;
-            
-            z-index: -1;
+            height: 70px;
             position: absolute;
             left: -60px;
             top: -10px;
+        }
 
-            &.hide {
-                display: none;
-            }
-
+        .link.hide {
+            z-index: -1;
         }
 
         > .fa, .terminal-input {

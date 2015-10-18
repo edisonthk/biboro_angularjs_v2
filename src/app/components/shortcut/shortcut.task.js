@@ -28,7 +28,6 @@ var ShortcutTask = {
         return typeof this.parallelCb !== "undefined";
     },
     haveTask: function() {
-        
         return typeof this.cb !== "undefined";
     },
 };

@@ -5,7 +5,7 @@ import Helper from "../helper/helper";
 
 
 class NavbarController extends FluxController {
-    constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $stateParams, $state, toastr, FeedbackService) {
+    constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $interval, $stateParams, $state, toastr, FeedbackService, NotificationService) {
         'ngInject';
         
         super.constructor($scope, Dispatcher);
@@ -18,6 +18,7 @@ class NavbarController extends FluxController {
         this.snippet     = SnippetService;
         this.stateParams = $stateParams;
         this.state       = $state;
+        this.notification   = NotificationService;
 
         this.command = {};
         this.showWorkbookListFlag = false;
@@ -59,14 +60,26 @@ class NavbarController extends FluxController {
         }
 
         this.closeDialog = this.closeDialog.bind(this);
+        this.closeNotificationDialog = this.closeNotificationDialog.bind(this);
         this._shortcutParallelTaskToken = ShortcutTask.setParallelTask(this.keyupTask.bind(this));
         this.initializeFlag = true;
         this.savingFlag = false;
+
+        this.notification.fetchAll();
+        $interval(this.updateNotificationIntervally.bind(this), 10000);
     }
 
-    loadTags(query) {
-        console.log(query);
-        return [];
+    updateNotificationIntervally() {
+        this.notification.fetchAll();
+    }
+
+    moveToTarget(notice) {
+        if(notice.comment) {
+            this.state.go("snippet",{snippet:  notice.comment.snippet_id});
+        }else if(notice.snippet) {
+            this.state.go("snippet",{snippet:  notice.snippet.id});
+        }
+        this.closeNotificationDialog();
     }
 
     keyupTask(e) {
@@ -171,9 +184,33 @@ class NavbarController extends FluxController {
         this.editor.show = false;
     }
 
+    showNotificationBoard() {
+        this.notificationBoardShow = true;
+
+        var noticeIds = [];
+        var notices = this.notification.getAll();
+        for (var i = 0; i < notices.length; i++) {
+            if(!notices[i].read) {
+                noticeIds.push(notices[i].id);
+            }
+        }
+
+        if(noticeIds.length > 0) {
+            this.notification.markAsRead(noticeIds);    
+        }
+    }
+
+    closeNotificationDialog() {
+        this.notificationBoardShow = false;
+
+        var notices = this.notification.getAll();
+        for (var i = 0; i < notices.length; i++) {
+            notices[i].read = true;
+        }
+    }
+
     closeDialog() {
         this.feedbackShow = false;
-        this.notificationBoardShow = false;
     }
 
     /* Feedback */

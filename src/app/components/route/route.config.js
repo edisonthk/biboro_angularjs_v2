@@ -29,12 +29,12 @@ export default function ($httpProvider, $stateProvider,$locationProvider, $urlRo
                 controller:   WorkbookShowController,
                 controllerAs: 'workbookCtrl',
             })
-            // .state('workbookShow.snippet', {
-            //     url: '/snippet/:snippet',
-            //     templateUrl:  '../app/components/snippet/snippet.show.html',
-            //     controller:   SnippetController,
-            //     controllerAs: 'snippetCtrl',
-            // })
+            .state('snippet', {
+                url: '/snippet/:snippet',
+                templateUrl:  '../app/components/snippet/snippet.show.html',
+                controller:   SnippetController,
+                controllerAs: 'snippetCtrl',
+            })
             // .state('workbook.news', {
             //     url: '/news',
             //     templateUrl:  'app/main/main.html',

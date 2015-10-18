@@ -9,7 +9,6 @@ class CommentDirective {
             restrict: 'E',
             scope: {
                 snippet: '=',
-                outsideClickedCallback: '=',
             },
             controller: CommentController,
             controllerAs: 'comment',
@@ -21,12 +20,12 @@ class CommentDirective {
     }
 
     linkFunc(scope) {
-        document.querySelector(".dialog-background").addEventListener('click',function() {
-            if(typeof scope.outsideClickedCallback === 'function') {
-                scope.outsideClickedCallback();
-                scope.$apply();
-            }
-        }, true);
+        // document.querySelector(".dialog-background").addEventListener('click',function() {
+        //     if(typeof scope.outsideClickedCallback === 'function') {
+        //         scope.outsideClickedCallback();
+        //         scope.$apply();
+        //     }
+        // }, true);
     }
 
 }

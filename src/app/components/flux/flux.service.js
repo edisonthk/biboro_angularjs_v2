@@ -150,6 +150,32 @@ class FluxService {
         this.groupData = group;
     }
 
+    updateGroup(group) {
+        // slice
+        for (var i = 0; i < this.groupData.length; i++) {
+            var groupDataId = this.groupData[i].id;
+            var found = false;
+            for (var j = 0; j < group.length; j++) {
+                if(parseInt(group[j].id) === groupDataId) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if(!found) {
+                this.disposeDataById(groupDataId);   
+            }
+        }
+
+        // append
+        for (var i = 0; i < group.length; i++) {
+
+            if(this.getDataById(group[i].id) === null) {
+                this.appendData(this.transformData(group[i]));
+            }   
+        }        
+    }
+
     setDataInsideGroup(data) {
 
         data = this.transformData(data);

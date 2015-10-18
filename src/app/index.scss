@@ -131,6 +131,12 @@ navbar {
         padding: 0 20px;
     }
 
+    @media(max-width: $phone-width) {
+        .workbook-tabs {
+            display: none;
+        }
+    }
+
     .menu-tools {
         float: right;
         display: inline-block;
@@ -262,6 +268,7 @@ navbar {
     margin-bottom: 15px;
     overflow: scroll;
     text-overflow: clip;
+    word-wrap: break-word;
 }
 
 .md-content {
@@ -298,11 +305,7 @@ navbar {
 
 .cells-wrapper {
     $workbook-show-width: $wrapper-width;
-    margin: 0 auto;
-    display: block;
-    width: $workbook-show-width;
-    position: relative;
-
+    
     .cell {
         display: block;
         float: left;
@@ -316,6 +319,8 @@ navbar {
 
         > .cell-wrapper {
             position: relative;
+            max-height: 600px;
+            overflow: hidden;
 
             > * { margin: 5px 12px; }
             > .line { border: 1px dashed $black; }
@@ -374,6 +379,28 @@ navbar {
         }
     }
 
+    .title-cell h1{
+        font-size: 30px;
+        text-align: center;
+        margin-top: 80px; 
+    }
+    .title-cell h1 > small {
+        font-size: 13px;
+    }
+    .title-cell .author {
+        text-align: center;
+    }
+}
+
+.wrapper {
+
+    width: $wrapper-width;
+    margin: 0 auto;
+    display: block;
+    position: relative;
+
+    $workbook-show-width: $wrapper-width;
+
     @media(min-width: $large-desktop-width) {
         $workbook-show-width: 1200px;
         width: $workbook-show-width;
@@ -408,17 +435,13 @@ navbar {
             width: 100%;
         }
     }
+}
 
-    .title-cell h1{
-        font-size: 30px;
-        text-align: center;
-        margin-top: 80px; 
-    }
-    .title-cell h1 > small {
-        font-size: 13px;
-    }
-    .title-cell .author {
-        text-align: center;
+.snippet-page.wrapper {
+    @media(max-width: $phone-width) {
+        .html-content {
+            margin: 12px;
+        }
     }
 }
 

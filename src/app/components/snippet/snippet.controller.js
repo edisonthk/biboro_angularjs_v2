@@ -1,40 +1,50 @@
 
 import FluxController from "../flux/flux.controller";
-import Markdown from "../../../../bower_components/marked/lib/marked";
 
 class SnippetController extends FluxController {
     
-    constructor($scope, $state,$stateParams,Dispatcher, WorkbookService, AccountService, SnippetService, RouteService) {
+    constructor($scope, $state,$stateParams,Dispatcher, WorkbookService, AccountService, SnippetService, Markdown, toastr) {
         'ngInject';
         
         super.constructor($scope, Dispatcher);
 
-        this._scope         = $scope;
+        this.TYPE_FORK    = "TYPE_FORK";
+        this.TYPE_UPDATE  = "TYPE_UPDATE";
+        
+        this.toast          = toastr;        
         this.state          = $state;
         this.stateParams    = $stateParams;
         this.workbook       = WorkbookService;
         this.account        = AccountService;
         this.snippet        = SnippetService;
-        this.route          = RouteService;
-        this.currentSnippet = null;
+        this.markdown       = Markdown;
+
         this.editor         = {
+            show     : false,
             title    : "",
             content  : "",
             tags     : [],
             workbook : null,
+            snippetId    : null,
+            refSnippetId : null,
+        };
+
+        this.currentSnippet = {
+            title: "",
+            content: "",
+        };
+
+        this.deleteDialog = { 
+            show: false,
+            outsideClickedCallback: this.deleteDialogOutsideClickedCallback.bind(this),
         };
         
-
-        // register callback for all kinds of action
-        // this.snippet.registerFetchedAllCallback(this.fetchedAllCallback.bind(this));
-
         this.registerCallbacks({
-            ACCOUNT_FETCH     : this.fetchedLoginedAccountCallback,
-
             SNIPPET_SHOW      : this.showCallback,
-            SNIPPET_STORE     : this.storedCallback,
-            SNIPPET_UPDATE    : this.updatedCallback,
 
+            // snippet
+            SNIPPET_UPDATE    : this.updatedCallback,
+            SNIPPET_FORK      : this.forkedCallback,
         });
 
         // perform first action
@@ -43,102 +53,162 @@ class SnippetController extends FluxController {
     }
 
     initialize() {
+        this.notfound = false;
 
-        // var snippet = this.stateParams.snippet;
-        // if(snippet) {
-        //     if(snippet.match(/^\d+$/g)) {
-        //         // snippetId
-        //         this.snippet.show(snippet);
-        //     }
-        // }
 
         var snippet = this.stateParams.snippet;
-
         if(snippet.match(/^\d+$/g)) {
             this.snippet.show(snippet);
         }else{
-            console.error("unknown snippet");
+            this.notfound = true;
         }
     }
 
     
-    showCallback (parameters) {
-        this.currentSnippet = parameters.response;
-        this.currentSnippet.htmlContent = Markdown(this.currentSnippet.content);
+    showCallback (res) {
+        if(!res.success) {
+            this.notfound = true;
+            return;
+        }
 
-        this.editor.title   = this.currentSnippet.title;
-        this.editor.content = this.currentSnippet.content;
-
-        var workbookId = this.stateParams.workbook;
-        this.editor.workbook = this.workbook.getDataById(workbookId);
-
-        
+        var snippet = this.snippet.getFocusSnippet();
+        this.editor.title   = snippet.title;
+        this.editor.content = snippet.content;
+        this.editor.workbook = snippet.workbooks.length > 0 ? snippet.workbooks[0] :null;
+        this.currentSnippet = snippet;
     }
 
-    fetchedLoginedAccountCallback() {
-        // console.log(parameters);
+
+
+    // delete dialog event
+    deleteDialogOutsideClickedCallback () {
+        this.deleteDialog.show = false;
     }
 
-    edit() {
-        this.editor.show = true;
+    deleteDialogClose(){
+        this.deleteDialog.show = false;
     }
 
-    fork() {
-        this.editor.show = true;
+    deleteDialogDeleteEvent(){
+        this.snippet.destroy(this.currentSnippet.id);
+
+
+        if(this.currentSnippet.workbooks.length > 0) {
+            this.state.go("workbookShow", {workbook: this.currentSnippet.workbooks[0].id});
+            return;
+        }
+
+        this.state.go("news");
     }
 
-    comment() {
+    /**
+     *  comments box
+     *
+     */
+    commentsBoxOutsideClickedCallback() {
+        this.commentBox.show = false;
+    }
 
+    /**
+     *  crud snippet
+     *
+     */
+    editSnippet() {
+
+        var snippet = this.currentSnippet;
+
+        this.editor.type      = this.TYPE_UPDATE;
+        this.editor.show      = true;
+        this.editor.title     = snippet.title;
+        this.editor.content   = snippet.content;
+        this.editor.tags      = snippet.tags;
+        this.editor.snippetId = snippet.id;
+        this.editor.refSnippetId = null;
+    }
+
+    updatedCallback(res) {
+        if(res.success) {
+            this.toast.success("編集しました");
+            this.editor.show = false;
+        }else {
+            var error = res.error.error;
+            this.toast.error(Helper.parseErrorMessagesAsHtml(error));
+        }
+        this.savingFlag = false;
     }
 
     editorSavedCallback() {
-        var formData = {
-            title: this.editor.title,
-            content: this.editor.content,
-            tags: this.editor.tags,
-            workbookId: this.stateParams.workbook === null ? 0 : this.stateParams.workbook,
-        };
-
-        console.log(formData);
-
-        if(this.stateParams.snippet) {
-            this.snippet.update(this.stateParams.snippet, formData);
-        }else{
-            this.snippet.store(formData);
+        if(this.savingFlag) {
+            return;
         }
-    }
 
-    storedCallback(parameters) {
-        console.log("stored");
-        console.log(parameters);
-    }
+        if(this.editor.type === this.TYPE_FORK) {
+            this.savingFlag = true;
 
-    updatedCallback(parameters) {
-        console.log("udpated");
+            var params = {
+                title:        this.editor.title,
+                content:      this.editor.content,
+                tags:         this.editor.tags,
+                workbookId:   this.editor.workbook === null ? 0 :this.editor.workbook.id,
+                refSnippetId: this.editor.refSnippetId,
+            };
+
+            this.snippet.fork(params);
+        }else if(this.editor.type === this.TYPE_UPDATE) {
+            this.savingFlag = true;
+
+            var formData = {
+                title: this.editor.title,
+                content: this.editor.content,
+                tags: this.editor.tags,
+                workbookId: this.editor.workbook === null ? 0 :this.editor.workbook.id,
+            };
+
+
+            this.snippet.update(this.editor.snippetId, formData);
+        }else {
+            console.error("unknown editor type");
+        }
         
-        var response = parameters.response;
-        var snippets = this.workbook.workbook.snippets;
-        for(var i = 0; i < snippets.length; i++){
-            if(response.id === snippets[i].id){
-                this.workbook.workbook.snippets[i] = response;
-            }
-        }
-        this.state.go("workbookShow",{workbook: this.stateParams.workbook});
-    }
-
-
-
-    editorCancelCallback() {
-        this.state.go("workbookShow",{
-            workbook: this.stateParams.workbook
-        });
     }
 
     editorQuitCallback() {
-        this.state.go("workbookShow",{
-            workbook: this.stateParams.workbook
-        });
+        this.editor.show = false;
     }
+
+    editorCancelCallback() {
+        this.editor.show = false;
+    }
+
+    deleteSnippet(){
+        this.deleteDialog.show = true;
+    }
+
+    /*
+     * Fork
+     */
+    forkSnippet() {
+        var snippet = this.currentSnippet;
+
+        this.editor.type         = this.TYPE_FORK;
+        this.editor.title        = snippet.title;
+        this.editor.content      = snippet.content;
+        this.editor.tags         = snippet.tags;
+        this.editor.snippetId    = null;
+        this.editor.refSnippetId = snippet.id;
+        this.editor.show         = true;
+    }
+
+    forkedCallback(res) {
+        if(res.success) {
+            this.toast.success("フォークしました！");
+            this.editor.show = false;
+        }else {
+            var error = res.error.error;
+            this.toast.error(Helper.parseErrorMessagesAsHtml(error));
+        }
+        this.savingFlag = false;
+    }    
 
 }
 

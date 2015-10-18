@@ -1,3 +1,52 @@
-.acme-navbar-text {
-  color: black;
+.notification li {
+    width: 100%;
+    background-color: #FBFBEA;
+    
+    &.read {
+        background-color: white;
+    }
+
+    > * {
+        float: left;
+    }
+
+    > .profile {
+        width: 20%;
+        margin-top: 15px;
+    }
+    > .description-inner-wrappper:hover {
+        cursor: pointer;
+    }
+    > .description-inner-wrappper {
+        width: 80%;
+
+        > .description {
+            width: 100%;
+            word-break: break-all;
+            padding-top: 15px;
+            margin-bottom: 15px;
+            margin-right: 40px;
+            border-top: 1px solid #999999;
+            color: #999999;
+        }
+
+        > .time {
+            float: left;
+            height: 30%;
+            color: #999999;
+            font-size: 13px
+        }
+
+        > .tools {
+            float: right;
+
+            .tool-item {
+                text-decoration: underline;
+            }
+            .tool-item:hover {
+                cursor: hand;
+            }
+        }
+    }
+
 }

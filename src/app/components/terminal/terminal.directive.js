@@ -24,6 +24,7 @@ class TerminalDirective {
                 '<div class="terminal">',
                     '<div class="terminal-wrapper">',
                         '<img class="animation" src="assets/images/ic_logo_fadeout.gif">',
+                        '<a ui-sref="workbook" class="link hide"></a>',
                         '<i class="fa fa-search"></i>',
                         '<input class="terminal-input" type="text" placeholder="{{placeholder}}" ng-model="query">',
                     '</div>',
@@ -49,6 +50,7 @@ class TerminalDirective {
         var $wrapper = el[0].getElementsByClassName("terminal")[0];
 
         var iconAnimation = el[0].getElementsByClassName("animation")[0];
+        var iconLink = el[0].getElementsByClassName("link")[0];
         
 
         var addClass = function(element, className) {
@@ -75,9 +77,11 @@ class TerminalDirective {
         window.addEventListener("scroll", function(e){
             if(window.pageYOffset > 52) {
                 addClass($wrapper, "fix");
+                removeClass(iconLink, "hide");
                 changeImageSrc("assets/images/ic_logo_fadein.gif");
             } else {
                 removeClass($wrapper, "fix");
+                addClass(iconLink, "hide");
                 changeImageSrc("assets/images/ic_logo_fadeout.gif");
                 // iconAnimation.src = "assets/images/ic_logo_fadeout.gif";
             }
@@ -85,10 +89,11 @@ class TerminalDirective {
         });
 
         window.addEventListener("keydown",function(e) {
-
             if(ShortcutTask.haveTask()) {
-                ShortcutTask.cb(e);
-                scope.$apply();
+                if(ShortcutTask.cb(e)) {
+                    e.preventDefault();
+                    scope.$apply();    
+                }
                 return;
             }
 
@@ -99,7 +104,9 @@ class TerminalDirective {
 
             var ctrlKey = (e.ctrlKey || e.metaKey);
 
-            if($input === document.activeElement) {
+            if(document.activeElement === $input) {
+            }else if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                return;
             }else if(ctrlKey) {
                 if(e.keyCode === KeyCode.KEY_A) {
                     e.preventDefault();

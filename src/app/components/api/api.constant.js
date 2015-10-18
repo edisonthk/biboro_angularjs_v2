@@ -74,6 +74,10 @@ var api = {
         image: {
             upload   : {method: 'post', url:'api/v1/images/upload'}
         },
+        notification: {
+            index    : {method: 'get', url:'api/v1/notification'},
+            read     : {method: 'post', url:'api/v1/notification'},
+        },
     }
 };
 

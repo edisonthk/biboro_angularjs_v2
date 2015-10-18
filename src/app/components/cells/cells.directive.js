@@ -1,4 +1,4 @@
-class FloatLayoutDirective {
+class CellsDirective {
     constructor () {
         'ngInject';
 
@@ -179,4 +179,4 @@ class FloatLayoutDirective {
     }
 }
 
-export default FloatLayoutDirective;
+export default CellsDirective;

@@ -12,8 +12,10 @@ class EditorController extends FluxController {
         this.uploader = FileUploader;
         this._scope.$watch("content", this.contentChangeCallback.bind(this));  
 
-        this.dragDrop = document.getElementById('dragDrop');
-        // this.dragDrop.ondragleave = this.textareaOnDragLeave.bind(this);
+        this.preventBodyFromScroll();
+
+        this.dragDrop = document.getElementsByClassName('text-field')[0];
+        this.dragDrop.ondragleave = this.textareaOnDragLeave.bind(this);
         this.dragDrop.ondragover = this.textareaOnDragOver.bind(this);
         this.dragDrop.ondrop = this.droppingCallback.bind(this);
 
@@ -42,6 +44,20 @@ class EditorController extends FluxController {
         }
 
         this._shortcutTaskToken = ShortcutTask.setTask(this.keyupTask.bind(this));
+    }
+
+    onDestruct() {
+        super.onDestruct();
+
+        this.restoreScrollingBody();
+    }
+
+    restoreScrollingBody() {
+        document.body.style.overflow = "auto";
+    }
+
+    preventBodyFromScroll() {
+        document.body.style.overflow = "hidden";
     }
 
     textareaOnDragOver(e) {
@@ -100,46 +116,52 @@ class EditorController extends FluxController {
                 reader.readAsText(files[0]);
             }
         }
-
-        
-
-        
-        
     }
 
+    // return true to digest scope and prevent default action
+    // if nothing is return, no scope will be digest and action will be default
     keyupTask(e) {
         
         var ctrlKey = (e.ctrlKey || e.metaKey);
         if(ctrlKey && e.keyCode === KeyCode.KEY_S) {
-            e.preventDefault();
             this._scope.savedCallback();
+            return true;
         }else if(e.keyCode === KeyCode.KEY_ESC) {
-            e.preventDefault();
             this._scope.cancelCallback();
-        }else{
+            return true;
+        }
 
-            if(ctrlKey && e.target.className.indexOf("editor-textarea") >= 0) {
-                // editor textarea shortcut
-                if(e.keyCode === KeyCode.KEY_B) {
-                    e.preventDefault();
-                    this.boldEvent();
-                }else if(e.keyCode === KeyCode.KEY_I) {
-                    e.preventDefault();
-                    this.italicEvent();
-                }else if(e.keyCode === KeyCode.KEY_L) {
-                    e.preventDefault();
-                    this.anchorEvent();
-                }else if(e.keyCode === KeyCode.KEY_K) {
-                    e.preventDefault();
-                    this.codeEvent()
-                }
-                return;
+        if(ctrlKey && e.target.className.indexOf("editor-textarea") >= 0) {
+            // editor textarea shortcut
+            if(e.keyCode === KeyCode.KEY_B) {
+                this.boldEvent();
+                return true;
+            }else if(e.keyCode === KeyCode.KEY_I) {
+                this.italicEvent();
+                return true;
+            }else if(e.keyCode === KeyCode.KEY_L) {
+                e.preventDefault();
+                return true;
+            }else if(e.keyCode === KeyCode.KEY_K) {
+                this.codeEvent();
+                return true;
             }
         }
     }
 
     contentChangeCallback() {
-        this.htmlContent = this.markdown.parseMd(this._scope.content);
+        if(this.markdownCompiling) {
+           return; 
+        }
+
+        var self = this;
+        self.markdownCompiling = true;
+        self.markdownTimeoutId = setTimeout(function() {
+            self.htmlContent = self.markdown.parseMd(self._scope.content);
+            self.markdownCompiling = false;
+            self._scope.$apply();
+        }, 1000);
+        
     }
 
     boldEvent() {
@@ -296,11 +318,10 @@ class EditorController extends FluxController {
         return readyBoldText.substring(0,el.selectionStart) + handlerText + readyBoldText.substring(el.selectionEnd, readyBoldText.length);
     }
 
-
-    //add-----------------------------------------
-    preventer(e){
+    textareaOnDragLeave(e){
         e.preventDefault();
     }
+
     droppingCallback(e){
         e.preventDefault();
         this.showCoverFlag = false;
