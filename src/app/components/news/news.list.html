@@ -40,6 +40,12 @@
             </div>
 
             <div ng-bind-html="news.htmlContent" class="html-content"></div>
+
+            <div class="more" ng-class="{'show' :news.showTools}">
+                <a ui-sref="snippet({snippet: news.id})">
+                    <img src="assets/images/ic_arrow_down.gif">
+                </a>
+            </div>
         </div>
     </div>
 </div>
