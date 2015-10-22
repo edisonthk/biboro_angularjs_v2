@@ -7,6 +7,7 @@ class NotificationService extends FluxService{
         super.constructor($http, Dispatcher);
 
         this.api = Api;
+        this.unreadMessage = false;
 
         this.setDispatcherKey([    
                 "NOTICE_FETCHALL",
@@ -22,8 +23,21 @@ class NotificationService extends FluxService{
             dispatcher: "NOTICE_FETCHALL",
             success: function(res) {
                 this.updateGroup(res);
+
+                this.updateUnreadMessage();
             }
         });
+    }
+
+    updateUnreadMessage() {
+        this.unreadMessage = false;
+        var notices = this.getAllData();
+        for (var i = 0; i < notices.length; i++) {
+            if(!notices[i].read) {
+                this.unreadMessage = true;
+                return;
+            }
+        }
     }
 
     markAsRead(noticeIds) {
@@ -34,12 +48,19 @@ class NotificationService extends FluxService{
             dispatcher: "NOTICE_MARKED",
             data   : {
                 noticeIds: noticeIds
+            },
+            success: function(res) {
+                this.updateUnreadMessage();
             }
         });   
     }
 
     getAll(){
         return this.getAllData();
+    }
+
+    haveUnreadNotice() {
+        return this.unreadMessage;
     }
 
 }

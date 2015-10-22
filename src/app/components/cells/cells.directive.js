@@ -56,9 +56,12 @@ class CellsDirective {
         console.log("b");
         var self = this;
         clearTimeout(self.timeoutId);
+
+        var maxHeight = 600;
+
         self.timeoutId = setTimeout(function() {
             self.els = [];
-            self.nextIndex = -1;
+            self.currentIndex = -1;
 
             angular.forEach(self.scope.cells, function(cell, index) {
                 cell.el._index = index;
@@ -66,6 +69,14 @@ class CellsDirective {
                     cell.$destroy();
                     return;
                 }
+
+                if(cell.el[0].clientHeight >= maxHeight) {
+                    // do overflow action
+                    self.addClass(cell.el[0], "overflow");
+                }else {
+                    self.removeClass(cell.el[0], "overflow");
+                }
+
                 self.updateCellSize(cell.el);    
                 
             });
@@ -94,24 +105,22 @@ class CellsDirective {
         var nextColHeight = 0;
         var tolerantHeight = 100;
 
-        var lastIndex = self.nextIndex;
+        var lastIndex = self.currentIndex;
 
         for (var c = 0; c < maxCols; c++) {
 
-            self.nextIndex += 1;
-            if(self.nextIndex >= maxCols) {
-                self.nextIndex = 0;
+            self.currentIndex += 1;
+            if(self.currentIndex >= maxCols) {
+                self.currentIndex = 0;
             }
 
-            colHeight     = self.getColHeight(self.nextIndex);
+            colHeight     = self.getColHeight(self.currentIndex);
             if(colHeight === 0 || self.getColHeight(lastIndex) >= colHeight) {
-                el._colIndex = self.nextIndex;
+                el._colIndex = self.currentIndex;
                 if(el._colIndex == maxCols - 1) {
-                    if(el[0].className.indexOf("mostleft") < 0) {
-                        el[0].className += " mostleft";
-                    }
+                    self.addClass(el[0], "mostleft");
                 }else {
-                    el[0].className = el[0].className.replace(/\s?mostleft/g,"");
+                    self.removeClass(el[0], "mostleft");
                 }
                 self.els.push(el);
                 break;
@@ -143,6 +152,17 @@ class CellsDirective {
         }
 
         return !firstKeyFound;
+    }
+
+    addClass(el, className) {
+        if(el.className.indexOf(className) < 0) {
+            el.className += " "+className;
+        }
+    }
+
+    removeClass(el, className) {
+        var regex = new RegExp("\s?"+className,"g");
+        el.className = el.className.replace(regex,"");
     }
 
     getColHeight(index)

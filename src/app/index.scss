@@ -74,9 +74,6 @@ small {
 .btn:hover {
     cursor: pointer;
 }
-.btn:hover {
-    opacity: 0.5;
-}
 
 /* Large desktop */
 
@@ -176,7 +173,7 @@ navbar {
                 width: 200px;
                 z-index: 4;
                 padding: 0;
-                margin: 0;
+                margin: 9px 4px;
                 border: 1px solid #ccc;
                 background-color: white;
                 li {
@@ -308,10 +305,79 @@ navbar {
     
     .cell {
         display: block;
-        float: left;
         width: $workbook-show-width/3;
-        min-height: $workbook-show-width/5;
         border-right: 1px dashed $black;
+
+        &, > .cell-wrapper {
+            min-height: $workbook-show-width/5;
+            max-height: 600px;
+            overflow: hidden;
+        }
+
+        &.overflow .more {
+            display: block;
+        }
+        &.overflow {
+            .more {
+                height: 80px;
+                display: block;
+            }
+        }
+
+
+        .more {
+            display: none;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 24px;
+            width: calc(100% - 24px);
+
+            background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0)), to(rgba(255,255,255,1)));
+
+            transition:         all 0.5s ease;
+              -o-transition:      all 0.5s ease;
+              -moz-transition:    all 0.5s ease;
+              -webkit-transition: all 0.5s ease;
+
+            a {
+                position: absolute;
+                bottom: 50px;
+                left: 0;
+                right: 24px;
+            }
+
+            &.show{
+                height: 150px;
+
+                img {
+                    opacity: 0.6;
+
+                    transform:translateY(20px);
+                  -o-transform:translateY(20px);
+                  -moz-transform:translateY(20px);
+                  -webkit-transform:translateY(20px);
+                }
+
+            } 
+
+            img {
+                display: block;
+                margin: 0 auto;
+                width: 100px;
+
+                transform:translateY(0);
+              -o-transform:translateY(0);
+              -moz-transform:translateY(0);
+              -webkit-transform:translateY(0);
+
+              opacity: 0;
+              transition:         all 0.5s ease;
+              -o-transition:      all 0.5s ease;
+              -moz-transition:    all 0.5s ease;
+              -webkit-transition: all 0.5s ease;
+            }
+        }
 
         &.mostleft {
             border-right: 0;
@@ -319,9 +385,9 @@ navbar {
 
         > .cell-wrapper {
             position: relative;
-            max-height: 600px;
-            overflow: hidden;
+            height: 100%;
 
+            > .title > .index {color: #999; font-size: 80%;}
             > * { margin: 5px 12px; }
             > .line { border: 1px dashed $black; }
 
@@ -438,10 +504,20 @@ navbar {
 }
 
 .snippet-page.wrapper {
+
+    max-width: 670px;
+
     @media(max-width: $phone-width) {
         .html-content {
             margin: 12px;
         }
+    }
+}
+
+.html-content {
+    img {
+        max-width: 100%;
+        display: block;
     }
 }
 

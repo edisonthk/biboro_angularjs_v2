@@ -105,6 +105,10 @@ class TerminalDirective {
             var ctrlKey = (e.ctrlKey || e.metaKey);
 
             if(document.activeElement === $input) {
+                if(e.keyCode === KeyCode.KEY_ENTER && typeof scope.enterCallback === 'function') {
+                    scope.enterCallback(scope.query, $input);
+                    return;
+                }
             }else if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
                 return;
             }else if(ctrlKey) {

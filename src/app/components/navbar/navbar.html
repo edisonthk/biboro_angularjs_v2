@@ -22,7 +22,10 @@
     </div>
     <div class="menu-tools" ng-if="navbar.accountInfo != null">
         <div class="menu-item">
-            <a ng-click="navbar.showNotificationBoard()"><img class="icon" src="assets/images/ic_info.png"></a>
+            <a ng-click="navbar.showNotificationBoard()">
+                <img ng-if="navbar.notification.haveUnreadNotice()" class="icon" src="assets/images/ic_info_green.png">
+                <img ng-if="!navbar.notification.haveUnreadNotice()" class="icon" src="assets/images/ic_info.png">
+            </a>
         </div>
         <div class="menu-item">
             <a ng-click="navbar.newSnippet()">
@@ -58,6 +61,7 @@
     open
     ng-if="navbar.notificationBoardShow"
     outside-clicked-callback="navbar.closeNotificationDialog">
+    <h3 style="text-align: center;">通知</h3>
     <ul class="notification">
         <li ng-repeat="n in navbar.notification.getAll()" 
             ng-class="{read: n.read}" 

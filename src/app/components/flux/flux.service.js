@@ -145,6 +145,7 @@ class FluxService {
 
     setGroup(group) {
         for (var i = 0; i < group.length; i++) {
+            group[i].index = i+1;
             group[i] = this.transformData(group[i]);
         }
         this.groupData = group;
@@ -194,6 +195,7 @@ class FluxService {
     }
 
     appendData(data) {
+        data.index = this.groupData.length+1;
         this.groupData.push(this.transformData(data));
     }
 

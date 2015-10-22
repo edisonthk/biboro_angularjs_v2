@@ -72,6 +72,15 @@ class WorkbookService extends FluxService{
 
     search(id, query) {
 
+        if(query.match(/^[0-9]+$/)) {
+            var snippets = this.getAllData();
+            for (var i = 0; i < snippets.length; i++) {
+                if((""+snippets[i].index).indexOf(query)) {
+                    
+                }
+            }
+        }
+
         this.request({
             method : this.api.workbook.search.method,
             url    : this.api.workbook.search.url.replace(":id",id).replace(":query",query),
