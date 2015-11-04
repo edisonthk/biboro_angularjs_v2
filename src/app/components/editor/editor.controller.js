@@ -171,7 +171,7 @@ class EditorController extends FluxController {
     // return true to digest scope and prevent default action
     // if nothing is return, no scope will be digest and action will be default
     onkeydown(e) {
-        
+        console.log("a");
         var ctrlKey = (e.ctrlKey || e.metaKey);
         if(ctrlKey && e.keyCode === KeyCode.KEY_S) {
             this._scope.savedCallback();
@@ -189,22 +189,27 @@ class EditorController extends FluxController {
             // editor textarea shortcut
             if(e.keyCode === KeyCode.KEY_B) {
                 this.boldEvent();
+                e.preventDefault();
+                this._scope.$apply();
             }else if(e.keyCode === KeyCode.KEY_I) {
                 this.italicEvent();
+                e.preventDefault();
+                this._scope.$apply();
             }else if(e.keyCode === KeyCode.KEY_L) {
                 this.anchorEvent();
+                e.preventDefault();
+                this._scope.$apply();
             }else if(e.keyCode === KeyCode.KEY_K) {
                 this.codeEvent();
+                e.preventDefault();
+                this._scope.$apply();
             }
-            e.preventDefault();
-            this._scope.$apply();
         }
         
     }
 
     contentChangeCallback() {
         this._scope.content = this.content;
-        console.log(this.content);
         if(this.markdownCompiling) {
            return; 
         }

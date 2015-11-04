@@ -166,20 +166,17 @@ class NavbarController extends FluxController {
 
     editorSavedCallback() {
 
-
-        console.log(this.editor.title);
-        console.log(this.editor.content);
-        // if(this.savingFlag) {
-        //     return;
-        // }
-        // this.savingFlag = true;
+        if(this.savingFlag) {
+            return;
+        }
+        this.savingFlag = true;
         
-        // this.snippet.store({
-        //     title: this.editor.title,
-        //     content: this.editor.content,
-        //     tags: this.editor.tags,
-        //     workbookId: this.editor.workbook === null ? 0 : this.editor.workbook.id ,
-        // });
+        this.snippet.store({
+            title: this.editor.title,
+            content: this.editor.content,
+            tags: this.editor.tags,
+            workbookId: this.editor.workbook === null ? 0 : this.editor.workbook.id ,
+        });
     }
 
     storedCallback(res) {

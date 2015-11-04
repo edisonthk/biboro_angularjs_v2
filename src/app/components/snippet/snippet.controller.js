@@ -160,7 +160,7 @@ class SnippetController extends FluxController {
         this.savingFlag = false;
     }
 
-    editorSavedCallback(selectedWorkbook) {
+    editorSavedCallback() {
         if(this.savingFlag) {
             return;
         }
@@ -172,7 +172,7 @@ class SnippetController extends FluxController {
                 title:        this.editor.title,
                 content:      this.editor.content,
                 tags:         this.editor.tags,
-                workbookId:   selectedWorkbook === null ? 0 : selectedWorkbook.id,
+                workbookId:   this.editor.workbook === null ? 0 : this.editor.workbook.id,
                 refSnippetId: this.editor.refSnippetId,
             };
 
@@ -184,7 +184,7 @@ class SnippetController extends FluxController {
                 title: this.editor.title,
                 content: this.editor.content,
                 tags: this.editor.tags,
-                workbookId: selectedWorkbook === null ? 0 :selectedWorkbook.id,
+                workbookId:   this.editor.workbook === null ? 0 : this.editor.workbook.id,
             };
 
 
