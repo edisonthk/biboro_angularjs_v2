@@ -1,7 +1,7 @@
 <nav class="navbar clearfix">
       
     <a ui-sref="workbook" class="logo">
-        <img src="assets/images/logo_blue.png" alt="BIBORO logo">
+        <img src="assets/images/logo_white.png" alt="BIBORO logo">
     </a>
 
     
@@ -24,18 +24,18 @@
         <div class="menu-item">
             <a ng-click="navbar.showNotificationBoard()">
                 <img ng-if="navbar.notification.haveUnreadNotice()" class="icon" src="assets/images/ic_info_green.png">
-                <img ng-if="!navbar.notification.haveUnreadNotice()" class="icon" src="assets/images/ic_info.png">
+                <img ng-if="!navbar.notification.haveUnreadNotice()" class="icon" src="assets/images/ic_info_white.png">
             </a>
         </div>
         <div class="menu-item">
             <a ng-click="navbar.newSnippet()">
-                <img class="icon icon-plus" src="assets/images/ic_plus.png">
+                <img class="icon icon-plus" src="assets/images/ic_plus_white.png">
                 <small>{{CMD_KEY}}+B</small>
             </a>
         </div>
         <div class="menu-item">
             <a ng-click="navbar.collapseMenuShow = !navbar.collapseMenuShow">
-                <img ng-if="navbar.account.getProfileImage() === null" class="icon" src="assets/images/ic_menu.png">
+                <img ng-if="navbar.account.getProfileImage() === null" class="icon" src="assets/images/ic_menu_white.png">
                 <div ng-if="navbar.account.getProfileImage() !== null" class="profile-image">
                     <img ng-src="{{navbar.account.getProfileImage()}}">
                 </div>
@@ -46,6 +46,7 @@
                         <span class="underline">プロフィール</span>
                     </a>
                 </li> -->
+                <li ng-click="navbar.dndDialog.show = true"><span>タブ管理</span></li>
                 <li ng-click="navbar.feedbackShow = true">
                     <span>フィードバック</span>
                 </li>
@@ -109,3 +110,28 @@
     quit-callback="navbar.editorQuitCallback()"
     cancel-callback="navbar.editorCancelCallback()" >
 </editor> 
+
+<dialog
+    open
+    ng-if="navbar.dndDialog.show"
+    class="dnd-dialog"
+    outside-clicked-callback="navbar.closeDialog">
+
+    <p>タブ管理 (ドラッグ＆ドロップで順番を調整)</p>
+    <ul dnd-list="navbar.dndDialog.list">
+        <!-- The dnd-draggable directive makes an element draggable and will
+             transfer the object that was assigned to it. If an element was
+             dragged away, you have to remove it from the original list
+             yourself using the dnd-moved attribute -->
+        <li ng-repeat="item in navbar.dndDialog.list"
+            dnd-draggable="item"
+            dnd-moved="navbar.dndDialog.list.splice($index, 1)"
+            dnd-effect-allowed="move"
+            dnd-selected="navbar.dndDialog.selected = item"
+            ng-class="{'selected': navbar.dndDialog.selected === item}"
+            >
+            {{item.title}}
+        </li>
+    </ul>
+    <button ng-click="navbar.dndDialogSubmit()">順番を更新</button>
+</dialog>

@@ -103,6 +103,7 @@ navbar {
     .navbar {
         display: block;
         width: 100%;
+        background-color: #353f67;
     }
 
     .logo {
@@ -118,6 +119,7 @@ navbar {
         float: left;
         margin: 0;
         list-style-type: none;
+        color: white;
     }
 
     .workbook-tabs li {
@@ -147,7 +149,10 @@ navbar {
             i {
                 font-size: 26px;    
             }
-            
+
+            small {
+                color: white;
+            }
 
             .icon {
                 display: block;
@@ -261,7 +266,6 @@ navbar {
     display: inline-block;
     font-size: 24px;
     // border-bottom: 5px solid $black;
-    padding-bottom: 6px;
     margin-bottom: 15px;
     overflow: scroll;
     text-overflow: clip;
@@ -300,6 +304,15 @@ navbar {
     margin: 0 5px;
 }
 
+.news {
+    .list {
+        padding-left: 10px;
+        li {
+            font-size: 150%;    
+        }
+    }
+}
+
 .cells-wrapper {
     $workbook-show-width: $wrapper-width;
     
@@ -333,7 +346,7 @@ navbar {
             right: 24px;
             width: calc(100% - 24px);
 
-            background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0)), to(rgba(255,255,255,1)));
+            background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0)), to(rgba(255,255,255,1)), color-stop(.7,#fff));
 
             transition:         all 0.5s ease;
               -o-transition:      all 0.5s ease;
@@ -342,7 +355,7 @@ navbar {
 
             a {
                 position: absolute;
-                bottom: 50px;
+                bottom: 20px;
                 left: 0;
                 right: 24px;
             }
@@ -353,10 +366,10 @@ navbar {
                 img {
                     opacity: 0.6;
 
-                    transform:translateY(20px);
-                  -o-transform:translateY(20px);
-                  -moz-transform:translateY(20px);
-                  -webkit-transform:translateY(20px);
+                    transform:          translateY(10px);
+                    -o-transform:       translateY(10px);
+                    -moz-transform:     translateY(10px);
+                    -webkit-transform:  translateY(10px);
                 }
 
             } 
@@ -389,7 +402,7 @@ navbar {
 
             > .title > .index {color: #999; font-size: 80%;}
             > * { margin: 5px 12px; }
-            > .line { border: 1px dashed $black; }
+            > .line { border: 1px dashed $black; z-index: 0;}
 
             > .tools {
                 position: absolute;
@@ -503,13 +516,53 @@ navbar {
     }
 }
 
+.gray-section {
+    background-color: #F8F8F8;
+    width: 100%;
+    padding: 0 13px 20px 13px;
+}
+
 .snippet-page.wrapper {
 
     max-width: 670px;
 
+    .title {
+
+    }
+
+    .html-content {
+        min-height: 300px;
+    }
+
     @media(max-width: $phone-width) {
         .html-content {
             margin: 12px;
+        }
+    }
+
+    .tools {
+        display: block;
+        float: right;
+        margin-top: -60px;
+
+        > button {
+            display: inline-block;
+            width: 60px;
+            color: #686868;
+            background-color: white;
+            border: 1px solid #eee;
+            font-size: 18px;
+            text-align: center;
+            padding: 6px 0;
+        }
+
+        small {
+            font-size: 70%;
+        }
+
+        > button:hover {
+            cursor: pointer;
+            background-color: #f0f0f0;
         }
     }
 }

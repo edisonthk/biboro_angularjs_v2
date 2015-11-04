@@ -7,6 +7,7 @@ class EditorDirective {
         let directive = {
             restrict: 'E',
             scope: {
+                type: '=',
                 headline: '@',
                 title: '=',
                 content: '=',
@@ -28,10 +29,18 @@ class EditorDirective {
 
     linkFunc(scope, el, attr, vm) {
 
-        var es = el[0].getElementsByClassName("text-field")[0];
-        var md = el[0].getElementsByClassName("md-parsed")[0];
+        scope.mobile = false;
+        if(window.innerWidth < 480) {
+            scope.mobile = true;
+        }
 
-        md.style.height = es.clientHeight + "px";
+        var es = el[0].getElementsByClassName("text-field");
+        var md = el[0].getElementsByClassName("md-parsed");
+
+        if(es.length > 0 && md.length > 0) {
+            md[0].style.height = es[0].clientHeight + "px";    
+        }
+        
 
         document.querySelector(".editor-background").addEventListener('click',function(e) {
             if(typeof scope.quitCallback === 'function') {

@@ -31,7 +31,10 @@ class AccountService extends FluxService{
     }
 
     getProfileImage() {
-        return this.account.profile_image;
+        if(this.account) {
+            return this.account.profile_image;    
+        }
+        return null;
     }
 
     getUserId() {

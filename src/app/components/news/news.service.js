@@ -10,7 +10,7 @@ class NewsService extends FluxService{
 
         this.setDispatcherKey([    
                 "NEWS_FETCHALL",
-                "NEWS_SHOW",
+                "NEWS_SEARCHED",
             ]);
         
     }
@@ -28,24 +28,17 @@ class NewsService extends FluxService{
         });
     }
 
-    show(id){
-        var self= this;
-
-        var req = {
-            method : self.api.news.show.method,
-            url    : self.api.news.show.url.replace(":id",id),
-        };
-
-        self._http[req.method](req.url, req.data)
-            .success(function(response){
-                
-                self._dispatcher.dispatch(self.NEWS_SHOW, {"success":true,"result":"success"});
-                
-            })
-            .error(function(){
-                self._dispatcher.dispatch(self.NEWS_SHOW, {"success":false,"result":"fail to show workbooks."});
-                
-            });
+    search(query) {
+        this.request({
+            method : this.api.news.search.method,
+            url    : this.api.news.search.url.replace(":query",encodeURIComponent(query)),
+            dispatcher: [
+                "NEWS_SEARCHED",
+            ],
+            success: function(res) {
+                this.setGroup(res);
+            }
+        });
     }
 
     getAll(){

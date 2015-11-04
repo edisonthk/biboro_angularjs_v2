@@ -1,10 +1,5 @@
-<div ng-if="comment.user != null" class="comment-text">
-
-    <textarea ng-model="comment.editor.text"></textarea>
-    <button ng-click="comment.submit()">send</button>
-</div>
 <div ng-if="comment.comment.getComments().length == 0" class="comment-empty">
-    このスニペットにコメントがありません
+    最初の一人目のコメントになりませんか？
 </div>
 <ul ng-if="comment.comment.getComments().length > 0" class="comment-list">
     <li class="comment-wrapper clearfix" ng-repeat="c in comment.comment.getComments()">
@@ -27,3 +22,18 @@
         
     </li>
 </ul>
+<div class="comment-wrapper clearfix comment-text">
+    <div class="profile">
+        <div ng-if="comment.account.getProfileImage()" class="profile-image">
+            <img ng-src="{{comment.account.getProfileImage()}}">
+        </div>
+        <div ng-if="!comment.account.getProfileImage()" class="profile-image">
+            <img src="assets/images/default-user-image.png" alt="default-image">
+        </div>
+        <div class="name">{{comment.account.getUser().name}}</div>
+    </div>
+    <div class="comment-inner-wrappper">
+        <textarea ng-model="comment.editor.text"></textarea><br/>
+        <button ng-click="comment.submit()">コメント</button>
+    </div>
+</div>

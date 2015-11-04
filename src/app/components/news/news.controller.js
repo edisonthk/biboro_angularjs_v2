@@ -1,10 +1,11 @@
 import Helper from "../helper/helper";
 import FluxController from "../flux/flux.controller";
 
-class NewsController extends FluxController {
+class NewsController extends FluxController {    
+
     constructor($scope ,$state ,$stateParams ,Dispatcher,AccountService,WorkbookService, SnippetService, NewsService,Markdown, toastr) {
         'ngInject';
-        
+
         super.constructor($scope, Dispatcher);
 
         this.toast        = toastr;
@@ -17,6 +18,7 @@ class NewsController extends FluxController {
         this.markdown     = Markdown;
 
         this.editor       = {
+            type     : "fork",
             show     : false,
             title    : "",
             content  : "",
@@ -35,6 +37,7 @@ class NewsController extends FluxController {
             ACCOUNT_FETCH :   this.fetchLoginAccount,
 
             NEWS_FETCHALL :   this.fetchAllCallback,
+            NEWS_SEARCHED :   this.fetchAllCallback,
 
             SNIPPET_FORK :    this.newsForkCallback,
 
@@ -49,19 +52,27 @@ class NewsController extends FluxController {
 
     initialize() {
 
+        this.editorSavedCallback = this.editorSavedCallback.bind(this);
+
         this.news.fetchAll();
         this.workbook.fetchAll();
     }
 
+    /**
+     *
+     */ 
     fetchLoginAccount(res) {
         if(!res.success) {
             this.account.signIn();
         }
     }
 
-    fetchAllCallback(parameters) {
+    /**
+     *
+     */ 
+    fetchAllCallback() {
         var self = this;
-        
+
         self.news.getAll().map(function(item) {
             if(item.workbooks.length > 0) {
                 item.workbookId = item.workbooks[0].id;
@@ -115,6 +126,7 @@ class NewsController extends FluxController {
      *
      */
     editorSavedCallback() {
+
         var params = {
             title:        this.editor.title,
             content:      this.editor.content,
@@ -122,7 +134,7 @@ class NewsController extends FluxController {
             workbookId:   this.editor.workbook === null ? 0 : this.editor.workbook.id,
             refSnippetId: this.editor.refSnippetId,
         }
-
+        
         this.snippet.fork(params);
     }
 

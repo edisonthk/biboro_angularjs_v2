@@ -1,6 +1,4 @@
-
-import KeyCode from "../shortcut/shortcut.config";
-import ShortcutTask from "../shortcut/shortcut.task";
+import ShortcutTask from '../shortcut/shortcut.task';
 import TerminalController from './terminal.controller';
 
 class TerminalDirective {
@@ -46,12 +44,12 @@ class TerminalDirective {
 
     linkFunc(scope, el) {
         var self = this;
-        var $input = el.find("input")[0];
         var $wrapper = el[0].getElementsByClassName("terminal")[0];
 
         var iconAnimation = el[0].getElementsByClassName("animation")[0];
         var iconLink = el[0].getElementsByClassName("link")[0];
         
+        scope.$input = el.find("input")[0];
 
         var addClass = function(element, className) {
             if(element.className.indexOf(className) < 0) {
@@ -88,49 +86,49 @@ class TerminalDirective {
             
         });
 
-        window.addEventListener("keydown",function(e) {
-            if(ShortcutTask.haveTask()) {
-                if(ShortcutTask.cb(e)) {
-                    e.preventDefault();
-                    scope.$apply();    
-                }
-                return;
-            }
+        // window.addEventListener("keydown",function(e) {
+        //     if(ShortcutTask.haveTask()) {
+        //         if(ShortcutTask.cb(e)) {
+        //             e.preventDefault();
+        //             scope.$apply();    
+        //         }
+        //         return;
+        //     }
 
-            if(ShortcutTask.haveParallelTask()) {
-                ShortcutTask.parallelCb(e);
-                scope.$apply();
-            }
+        //     if(ShortcutTask.haveParallelTask()) {
+        //         ShortcutTask.parallelCb(e);
+        //         scope.$apply();
+        //     }
 
-            var ctrlKey = (e.ctrlKey || e.metaKey);
+        //     var ctrlKey = (e.ctrlKey || e.metaKey);
 
-            if(document.activeElement === $input) {
-                if(e.keyCode === KeyCode.KEY_ENTER && typeof scope.enterCallback === 'function') {
-                    scope.enterCallback(scope.query, $input);
-                    return;
-                }
-            }else if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
-                return;
-            }else if(ctrlKey) {
-                if(e.keyCode === KeyCode.KEY_A) {
-                    e.preventDefault();
-                    self.highlightText(self.getNextElement());
-                }else if(e.keyCode === KeyCode.KEY_S) {
-                    e.preventDefault();
-                }
-                return;
-            }
+        //     if(document.activeElement === $input) {
+        //         if(e.keyCode === KeyCode.KEY_ENTER && typeof scope.enterCallback === 'function') {
+        //             scope.enterCallback(scope.query, $input);
+        //             return;
+        //         }
+        //     }else if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+        //         return;
+        //     }else if(ctrlKey) {
+        //         if(e.keyCode === KeyCode.KEY_A) {
+        //             e.preventDefault();
+        //             self.highlightText(self.getNextElement());
+        //         }else if(e.keyCode === KeyCode.KEY_S) {
+        //             e.preventDefault();
+        //         }
+        //         return;
+        //     }
             
-            if( (e.keyCode >= KeyCode.KEY_0 && e.keyCode <= KeyCode.KEY_9) || 
-                    (e.keyCode >= KeyCode.KEY_A && e.keyCode <= KeyCode.KEY_Z) ){
-                // focus to searchbox input
-                $input.focus();
-            }else if( e.keyCode === KeyCode.KEY_ESC){
-                // blur focus from searchbox input
-                $input.blur();
-            }
+        //     if( (e.keyCode >= KeyCode.KEY_0 && e.keyCode <= KeyCode.KEY_9) || 
+        //             (e.keyCode >= KeyCode.KEY_A && e.keyCode <= KeyCode.KEY_Z) ){
+        //         // focus to searchbox input
+        //         $input.focus();
+        //     }else if( e.keyCode === KeyCode.KEY_ESC){
+        //         // blur focus from searchbox input
+        //         $input.blur();
+        //     }
 
-        }, false);
+        // }, false);
     }     
 
     getNextElement() {

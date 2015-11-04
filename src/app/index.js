@@ -23,6 +23,9 @@ import TerminalDirective       from '../app/components/terminal/terminal.directi
 import TabsDirective           from '../app/components/tabs/tabs.directive';
 import CellsDirective    from '../app/components/cells/cells.directive';
 import CellDirective           from '../app/components/cells/cell.directive';
+import HoverDirective          from '../app/components/ui/hover.directive';
+
+import ViewportProvider        from '../app/components/ui/viewport.provider';
 
 // constant
 import apiConstant from '../app/components/api/api.filter';
@@ -39,6 +42,7 @@ angular.module('biboroAngular', [
         'toastr',
         'ui.router',
         'ngTagsInput',
+        'dndLists'  // https://github.com/marceljuenemann/angular-drag-and-drop-lists
     ])
     .constant('Api', apiConstant)
 
@@ -58,7 +62,7 @@ angular.module('biboroAngular', [
     .factory('Dispatcher', () => new Dispatcher())
     .factory('Markdown', () => new MarkdownHelper())
 
-    
+    .provider('Viewport', ViewportProvider)
         
     .directive('comment',   () => new CommentDirective())
     .directive('editor',   () => new EditorDirective())
@@ -68,6 +72,7 @@ angular.module('biboroAngular', [
     .directive('tabs',     () => new TabsDirective())
     .directive('cellsWrapper', () => new CellsDirective())
     .directive('cell', () => new CellDirective())
+    .directive('hover', HoverDirective)
 
 ;
     

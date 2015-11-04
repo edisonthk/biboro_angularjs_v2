@@ -26,7 +26,7 @@ class TabsDirective {
 
             if(!panes) return;
             
-            for (var i = 0; i < panes.length; i++) {
+            for (var i = 0; i < panes.length && i < 3; i++) {
                 var title = panes[i].title;
                 var paneElement = addPane(parent, panes[i].title);
 
@@ -49,7 +49,7 @@ class TabsDirective {
             }
             
             var panes = el.find("pane");
-            for (var i = 0; i < panes.length; i++) {
+            for (var i = 0; i < panes.length && i < 3; i++) {
                 var index = parseInt(panes[i].getAttribute("index"));
                 panes[i].className = panes[i].className.replace(/\s?active/g,"");
                 if(scope.panes[index].id === selectedPane.id) {

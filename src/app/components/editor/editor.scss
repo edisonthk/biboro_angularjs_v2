@@ -62,6 +62,17 @@
             margin-bottom: 0;
         }
 
+        .list {
+            margin: 20px 0 0 0;
+            padding: 0;
+            li {
+                background-color: #EFEFEF;
+                font-size: 25px;
+                margin: 10px 0;
+                padding: 7px;
+            }
+        }
+
         @media(max-width: $desktop-width) {
             width: 720px;
             left: calc(50% - 360px);            

@@ -17,7 +17,18 @@ class FluxController {
             this._scope.CMD_KEY = "Ctrl";
         }
         
+        this.onkeyupEvent = this.onkeyup.bind(this);
+        window.addEventListener("keyup", this.onkeyupEvent, true);
+
+        this.onkeydownEvent = this.onkeydown.bind(this);
+        window.addEventListener("keydown", this.onkeydownEvent, true);
     }
+    
+    onkeyup(e) {
+        // onkeyup action
+    }
+
+    onkeydown(e) {}
 
     registerCallbacks(callbacks) {
         for(var storeType in callbacks) {
@@ -35,6 +46,9 @@ class FluxController {
 
         ShortcutTask.clearTask(this._shortcutTaskToken);
         ShortcutTask.clearParallelTask(this._shortcutParallelTaskToken);
+
+        window.removeEventListener("keyup",this.onkeyupEvent);
+        window.removeEventListener("keydown",this.onkeydownEvent);
 
         this._dispatcher.detach(this.dispatchToken);
     }

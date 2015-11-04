@@ -6,41 +6,50 @@
 
     <div class="tools">
         <button ng-if="snippetCtrl.currentSnippet.editable" ng-click="snippetCtrl.editSnippet()">
-            <i class="fa fa-wrench"></i>
+            <i class="fa fa-wrench"></i><br/>
+            <small>{{CMD_KEY}}+E</small>
         </button>
         <button ng-if="!snippetCtrl.currentSnippet.editable" ng-click="snippetCtrl.forkSnippet()">
             <i class="fa fa-code-fork"></i>
         </button>
-        <button ng-if="snippetCtrl.currentSnippet.editable" ng-click="snippetCtrl.deleteSnippet()"><i class="fa fa-trash-o"></i></button>
+        <button ng-if="snippetCtrl.currentSnippet.editable" ng-click="snippetCtrl.deleteSnippet()">
+            <i class="fa fa-trash-o"></i><br/>
+            <small>{{CMD_KEY}}+DEL</small>
+        </button>
     </div>
 
     <div ng-bind-html="snippetCtrl.markdown.parseMd(snippetCtrl.currentSnippet.content)" class="html-content"></div>
-
-    <comment snippet="snippetCtrl.currentSnippet"></comment>
-
-    <dialog 
-        open 
-        ng-if="snippetCtrl.deleteDialog.show" 
-        outside-clicked-callback="snippetCtrl.deleteDialog.outsideClickedCallback" >
-        <div ng-include="'app/components/snippet/snippet.deleteDialog.html'"></div>
-    </dialog>
-
-    
-
-    <editor
-        ng-if="snippetCtrl.editor.show"
-        headline="スニペットを編集"
-        title="snippetCtrl.editor.title" 
-        content="snippetCtrl.editor.content"
-        tags="snippetCtrl.editor.tags"
-        selected-workbook="snippetCtrl.editor.workbook"
-        workbooks="snippetCtrl.workbook.getAll()"
-        saved-callback="snippetCtrl.editorSavedCallback()"
-        quit-callback="snippetCtrl.editorQuitCallback()"
-        cancel-callback="snippetCtrl.editorCancelCallback()" >
-    </editor> 
-
 </div>
+<div ng-if="!snippetCtrl.notfound" class="gray-section">
+    <div class="snippet-page wrapper">
+        <h3 class="title">コメント</h3>
+        <comment snippet="snippetCtrl.currentSnippet"></comment>
+    </div>
+</div>
+
+<dialog 
+    open 
+    ng-if="snippetCtrl.deleteDialog.show" 
+    outside-clicked-callback="snippetCtrl.deleteDialog.outsideClickedCallback" >
+    <div ng-include="'app/components/snippet/snippet.deleteDialog.html'"></div>
+</dialog>
+
+
+
+<editor
+    ng-if="snippetCtrl.editor.show"
+    type="snippetCtrl.editor.type"
+    headline="スニペットを編集"
+    title="snippetCtrl.editor.title" 
+    content="snippetCtrl.editor.content"
+    tags="snippetCtrl.editor.tags"
+    selected-workbook="snippetCtrl.editor.workbook"
+    workbooks="snippetCtrl.workbook.getAll()"
+    saved-callback="snippetCtrl.editorSavedCallback"
+    quit-callback="snippetCtrl.editorQuitCallback()"
+    cancel-callback="snippetCtrl.editorCancelCallback()" >
+</editor> 
+
 <!-- 
 
 <editor

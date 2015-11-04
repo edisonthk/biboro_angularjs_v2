@@ -45,6 +45,7 @@ var api = {
         news: {
             index   : {method: 'get'    ,url:'api/v1/news'} ,
             show    : {method: 'get'    ,url:'api/v1/news/:id'} ,
+            search  : {method: 'get'    ,url:'api/v1/search?kw=:query'},
         },  
         workbook: {
             index   : {method: 'get'    ,url:'api/v1/workbook'},
@@ -53,6 +54,7 @@ var api = {
             store   : {method: 'post'   ,url:'api/v1/workbook'},
             update  : {method: 'put'    ,url:'api/v1/workbook/:id'},
             destroy : {method: 'delete' ,url:'api/v1/workbook/:id'},
+            order   : {method: 'put'    ,url:'api/v1/workbook/order'},
         },
         account: {
             info:   {method: 'get', url:'api/v1/account/userinfo'},
@@ -64,9 +66,6 @@ var api = {
             store   : {method: 'post'   ,url:'api/v1/snippet/:snippetId/comment'},
             update  : {method: 'put'    ,url:'api/v1/snippet/:snippetId/comment/:commentId'},
             destroy : {method: 'delete' ,url:'api/v1/snippet/:snippetId/comment/:commentId'},
-        },
-        search: {
-            query    : {method: 'get', url:'api/v1/search?kw=:query'},
         },
         feedback: {
             send     : {method: 'post', url:'api/v1/feedback'}

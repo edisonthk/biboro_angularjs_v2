@@ -3,12 +3,12 @@
         
     <div class="cell clearfix"
         ng-repeat="news in newsCtrl.news.getAll()"
-        ng-mouseenter="news.showTools = true"
-        ng-mouseleave="news.showTools = false" >
+        hover="news.showTools">
         <div class="cell-wrapper">
             <div class="line"></div>
             <h3 class="title">
                 <span ng-bind="news.title"></span>
+                <span class="index" ng-bind="news.index"></span>
                 <small>by</small>&nbsp;<small ng-bind="news.creator.name"></small>
             </h3>   
 
@@ -16,8 +16,7 @@
                 <a ng-if="news.reference.method === 2" ng-href="{{news.reference.target}}">Ref
                     &nbsp;<span ng-bind="news.reference.domain"></span>
                 </a>
-                <a ng-if="news.reference.method === 1" ng-href="/snippets/{{news.reference.target}}">Ref 
-                    from snippets
+                <a ng-if="news.reference.method === 1" ui-sref="snippet({snippet: news.reference.target})">Fork snippets
                 </a>
             </div>
             
@@ -57,10 +56,11 @@
 ></comment>
 
 <editor
-    ng-if="newsCtrl.editor.show"
+    ng-if="newsCtrl.editor.show && !newsCtrl.mobile"
+    type="newsCtrl.editor.type"
     headline="フォーク"
     title="newsCtrl.editor.title" 
-    content="newsCtrl.editor.content"
+    ng-model="newsCtrl.editor.content"
     tags="newsCtrl.editor.tags"
     selected-workbook="newsCtrl.editor.workbook"
     workbooks="newsCtrl.workbook.getAll()"

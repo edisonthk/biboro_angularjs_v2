@@ -13,8 +13,7 @@
     <div class="workbook-show wrapper cells-wrapper">
         <div class="cell"
             ng-repeat="snippet in workbookCtrl.snippet.getSnippets()"
-            ng-mouseenter="snippet.showTools = true"
-            ng-mouseleave="snippet.showTools = false" >
+            hover="snippet.showTools">
             <div class="cell-wrapper">
                 <div class="line"></div>
                 <h3 class="title">
@@ -26,8 +25,7 @@
                     <a ng-if="snippet.reference.method === 2" ng-href="{{snippet.reference.target}}">Ref
                         &nbsp;<span ng-bind="workbookCtrl.extractDomain(snippet.reference.target)"></span>
                     </a>
-                    <a ng-if="snippet.reference.method === 1" ng-href="/snippets/{{snippet.reference.target}}">Ref 
-                        from snippets
+                    <a ng-if="snippet.reference.method === 1" ui-sref="snippet({snippet: snippet.reference.target})">Fork snippets
                     </a>
                 </div>
 

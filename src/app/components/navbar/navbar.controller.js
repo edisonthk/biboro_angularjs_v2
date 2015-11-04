@@ -1,5 +1,4 @@
 import KeyCode from "../shortcut/shortcut.config";
-import ShortcutTask from "../shortcut/shortcut.task";
 import FluxController from "../flux/flux.controller";
 import Helper from "../helper/helper";
 
@@ -22,6 +21,13 @@ class NavbarController extends FluxController {
 
         this.command = {};
         this.showWorkbookListFlag = false;
+
+        this.dndDialog = {
+            show : false,
+            list : [],
+            selected : null,
+        };
+
         this.editor         = {
             show     : false,
             title    : "",
@@ -51,6 +57,7 @@ class NavbarController extends FluxController {
             SNIPPET_STORE     : this.storedCallback,
 
             FEEDBACK_SENT     : this.feedbackSentCallback,
+            WORKBOOK_ORDER_UPDATE : this.workbookOrderUpdateCallback,
         });
 
         this.account.fetchLoginedAccount();
@@ -61,12 +68,12 @@ class NavbarController extends FluxController {
 
         this.closeDialog = this.closeDialog.bind(this);
         this.closeNotificationDialog = this.closeNotificationDialog.bind(this);
-        this._shortcutParallelTaskToken = ShortcutTask.setParallelTask(this.keyupTask.bind(this));
         this.initializeFlag = true;
         this.savingFlag = false;
 
         this.notification.fetchAll();
         $interval(this.updateNotificationIntervally.bind(this), 10000);
+
     }
 
     updateNotificationIntervally() {
@@ -82,12 +89,13 @@ class NavbarController extends FluxController {
         this.closeNotificationDialog();
     }
 
-    keyupTask(e) {
+    onkeydown(e) {
         
         var ctrlKey = (e.ctrlKey || e.metaKey);
         if(ctrlKey && e.keyCode === KeyCode.KEY_B) {
             this.newSnippet();
             this._scope.$apply();
+            return;
         }
     }
 
@@ -103,9 +111,7 @@ class NavbarController extends FluxController {
                 this.updateSelectedPane();
             }
             
-            
             this.showWorkbookListFlag = true;
-
         }
     }
 
@@ -119,8 +125,19 @@ class NavbarController extends FluxController {
         //         }
         //     };
         // }
+        this.dndDialog.list = this.workbook.getAll();
 
         this.updateSelectedPane();
+    }
+
+    dndDialogSubmit() {
+
+        var orders = {};
+        for (var i = 0; i < this.dndDialog.list.length; i++) {
+            orders[this.dndDialog.list[i].id] = i + 1;
+        }
+
+        this.workbook.updateOrder(orders);
     }
 
     updateSelectedPane() {
@@ -148,18 +165,21 @@ class NavbarController extends FluxController {
     }
 
     editorSavedCallback() {
+
+
+        console.log(this.editor.title);
+        console.log(this.editor.content);
+        // if(this.savingFlag) {
+        //     return;
+        // }
+        // this.savingFlag = true;
         
-        if(this.savingFlag) {
-            return;
-        }
-        this.savingFlag = true;
-        
-        this.snippet.store({
-            title: this.editor.title,
-            content: this.editor.content,
-            tags: this.editor.tags,
-            workbookId: this.editor.workbook === null ? 0 : this.editor.workbook.id ,
-        });
+        // this.snippet.store({
+        //     title: this.editor.title,
+        //     content: this.editor.content,
+        //     tags: this.editor.tags,
+        //     workbookId: this.editor.workbook === null ? 0 : this.editor.workbook.id ,
+        // });
     }
 
     storedCallback(res) {
@@ -211,6 +231,7 @@ class NavbarController extends FluxController {
 
     closeDialog() {
         this.feedbackShow = false;
+        this.dndDialog.show = false;
     }
 
     /* Feedback */
@@ -221,6 +242,11 @@ class NavbarController extends FluxController {
         }else {
             this.toast.error("フィードバックの項目に空白しないでください");
         }
+    }
+
+    workbookOrderUpdateCallback() {
+        this.dndDialog.show = false;
+        this.toast.success("順番を変更しました");
     }
 
     feedbackSentCallback(res) {

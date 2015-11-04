@@ -1,15 +1,9 @@
-.comment-box.dialog-box {
 
-    .comment-empty {
-        width: 100%;
-        margin-top: 20px;
-        vertical-align: middle;
-        line-height: 60px;
-        font-size: 20px;
-        text-align: center;
-        opacity: 0.7;
-    }
+.comment-empty {
+    margin-bottom: 20px;
+    opacity: 0.7;
 }
+
 
 
 .profile-image {
@@ -45,9 +39,35 @@
     background-color: white;
 }
 
+.comment-list {
+    margin: 0;
+    padding: 0;
+}
+
+.comment-text {
+
+    margin-bottom: 20px;
+
+    textarea {
+        margin-bottom: 8px;
+        height: 120px;
+        width: 400px;
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    button {
+        border: 1px solid #ccc;
+        font-size: 80%;
+        background-color: transparent;
+    }
+}
+
+
 .comment-wrapper {
     width: 100%;
-    
+    padding-left: 40px;
+
     > * {
         float: left;
     }
@@ -78,12 +98,13 @@
 
         > .tools {
             float: right;
+            margin: 0;
 
             .tool-item {
                 text-decoration: underline;
             }
             .tool-item:hover {
-                cursor: hand;
+                cursor: pointer;
             }
         }
     }

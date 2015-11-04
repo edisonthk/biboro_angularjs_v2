@@ -24,16 +24,6 @@ class CellsDirective {
         scope.$watchCollection("cells", function(cells) {
             self.updateCells();
         });
-
-        
-
-        // // if _index key is not set, setup element by set _index key into element
-        // if(!el._index) {
-        //     el._index = self.index;
-        //     self.els.push(el);
-        //     self.index += 1;
-        // }
-
         
         window.onresize = function() {
             self.updateCells();
@@ -43,17 +33,10 @@ class CellsDirective {
             self.updateCells();
         });
 
-        // scope.$on('$destroy', function() {
-        //     // reset everything
-        //     self.scope.cells = [];
-        //     self.index = 0;
-        // });
-
     }
 
     updateCells() 
     {
-        console.log("b");
         var self = this;
         clearTimeout(self.timeoutId);
 
@@ -83,7 +66,6 @@ class CellsDirective {
 
             self.updatedCallback
             self.scope.$apply();
-            console.log("c");
 
         });
     }

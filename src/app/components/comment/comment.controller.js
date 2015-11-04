@@ -14,7 +14,6 @@ class CommentController extends FluxController{
         this.comment = CommentService;
         this.account = AccountService;
 
-
         this.registerCallbacks({
             COMMENT_UPDATE  : this.updateCallback,
             COMMENT_DESTROY : this.destroyCallback,

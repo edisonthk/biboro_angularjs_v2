@@ -16,6 +16,7 @@ class WorkbookService extends FluxService{
                 "WORKBOOK_UPDATE",
                 "WORKBOOK_DESTROY",
                 "WORKBOOK_SHOWMY",
+                "WORKBOOK_ORDER_UPDATE",
             ]);
     }
     
@@ -26,7 +27,7 @@ class WorkbookService extends FluxService{
             url    : this.api.workbook.index.url,
             dispatcher: "WORKBOOK_FETCHALL",
             success: function(res) {
-                this.setWorkbooks(res);
+                this.setWorkbooks(this.updateWorkbookOrder(res));
             }
         });
     }
@@ -49,6 +50,13 @@ class WorkbookService extends FluxService{
     }
 
     show(id){
+
+        // cache, it is no good because, it only store single workbook but not all kinds of workbook
+        // if(this.snippet.getAllData().length > 0) {
+        //     this.dispatch("WORKBOOK_SHOW", {success: true});
+        //     return;
+        // }
+
         this.snippet.clearSnippets();
         
         var cacheWorkbook = this.getWorkbookFromCache(id);
@@ -95,6 +103,25 @@ class WorkbookService extends FluxService{
         });
     }
 
+    updateOrder(orders) {
+        this.request({
+            method : this.api.workbook.order.method,
+            url    : this.api.workbook.order.url,
+            data   : {orders: orders},
+            dispatcher: [
+                "WORKBOOK_ORDER_UPDATE",
+            ],
+            success: function() {
+                var workbooks = this.getAllData();
+                for (var i = 0; i < workbooks.length; i++) {
+                    workbooks[i].order = orders[workbooks[i].id];
+                }
+
+                this.setWorkbooks(this.updateWorkbookOrder(workbooks));
+            },
+        });
+    }
+
     update(id, params){
 
         this.request({
@@ -123,20 +150,27 @@ class WorkbookService extends FluxService{
 
     }
 
+    updateWorkbookOrder(workbooks) {
+
+        for (var i = 0; i < workbooks.length; i++) {
+            if(workbooks[i].order && workbooks[i].order !== i+1) {
+                // swap
+                workbooks[i] = [workbooks[workbooks[i].order - 1], workbooks[workbooks[i].order - 1] = workbooks[i]][0];
+            }
+        }
+        return workbooks;
+    }
 
     getAll(){
-        // console.log("b2");
         return this.getAllData();
     }
 
     getCurrentWorkbook() {
-        // console.log("b2");
         return this.getFocusData();
     }
 
     getCurrentWorkbookSnippets(){
         if(this.getFocusData()){
-            // console.log("b2");
             return this.snippet.getAllData();
         }
     }

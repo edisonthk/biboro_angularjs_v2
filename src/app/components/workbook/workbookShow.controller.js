@@ -44,8 +44,7 @@ class WorkbookShowController extends FluxController {
         // dialog
         this.editDialog.outsideClickedCallback   = this.editDialogOutsideClickedCallback.bind(this);
         this.deleteWorkbookDialog.outsideClickedCallback = this.deleteWorkbookDialogOutsideClickedCallback.bind(this);
-        this.initialize();
-
+        this.initialize();   
     }
 
     initialize() {

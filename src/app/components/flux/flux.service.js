@@ -22,6 +22,10 @@ class FluxService {
         this.requesting = [];
     }
 
+    dispatch(key, params) {
+        this._dispatcher.dispatch(key, params);
+    }
+
     setDispatcherKey(keys) {
         for (var i = 0; i < keys.length; i++) {
             this.key[keys[i]] = keys[i];

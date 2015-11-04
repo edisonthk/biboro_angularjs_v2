@@ -1,4 +1,4 @@
-
+import KeyCode from "../shortcut/shortcut.config";
 import FluxController from "../flux/flux.controller";
 
 class SnippetController extends FluxController {
@@ -8,8 +8,8 @@ class SnippetController extends FluxController {
         
         super.constructor($scope, Dispatcher);
 
-        this.TYPE_FORK    = "TYPE_FORK";
-        this.TYPE_UPDATE  = "TYPE_UPDATE";
+        this.TYPE_FORK    = "fork";
+        this.TYPE_UPDATE  = "edit";
         
         this.toast          = toastr;        
         this.state          = $state;
@@ -20,6 +20,7 @@ class SnippetController extends FluxController {
         this.markdown       = Markdown;
 
         this.editor         = {
+            type     : 'edit',
             show     : false,
             title    : "",
             content  : "",
@@ -54,7 +55,7 @@ class SnippetController extends FluxController {
 
     initialize() {
         this.notfound = false;
-
+        this.editorSavedCallback = this.editorSavedCallback.bind(this);
 
         var snippet = this.stateParams.snippet;
         if(snippet.match(/^\d+$/g)) {
@@ -64,6 +65,22 @@ class SnippetController extends FluxController {
         }
     }
 
+    onkeydown(e) {
+        var ctrlKey = (e.ctrlKey || e.metaKey);
+        if(ctrlKey && e.keyCode === KeyCode.KEY_E) {
+            this.editSnippet();
+            e.preventDefault();
+            this._scope.$apply();
+        }else if(ctrlKey && e.keyCode === KeyCode.KEY_DEL) {
+            this.deleteDialog.show = true;   
+            e.preventDefault();
+            this._scope.$apply();
+        }else if(e.keyCode === KeyCode.KEY_ESC) {
+            this.deleteDialog.show = false;
+            e.preventDefault();
+            this._scope.$apply();
+        }
+    }
     
     showCallback (res) {
         if(!res.success) {
@@ -75,6 +92,12 @@ class SnippetController extends FluxController {
         this.editor.title   = snippet.title;
         this.editor.content = snippet.content;
         this.editor.workbook = snippet.workbooks.length > 0 ? snippet.workbooks[0] :null;
+        if(snippet.editable) {
+            this.editor.type="edit";
+        }else {
+            this.editor.type="fork";
+        }
+
         this.currentSnippet = snippet;
     }
 
@@ -137,7 +160,7 @@ class SnippetController extends FluxController {
         this.savingFlag = false;
     }
 
-    editorSavedCallback() {
+    editorSavedCallback(selectedWorkbook) {
         if(this.savingFlag) {
             return;
         }
@@ -149,7 +172,7 @@ class SnippetController extends FluxController {
                 title:        this.editor.title,
                 content:      this.editor.content,
                 tags:         this.editor.tags,
-                workbookId:   this.editor.workbook === null ? 0 :this.editor.workbook.id,
+                workbookId:   selectedWorkbook === null ? 0 : selectedWorkbook.id,
                 refSnippetId: this.editor.refSnippetId,
             };
 
@@ -161,7 +184,7 @@ class SnippetController extends FluxController {
                 title: this.editor.title,
                 content: this.editor.content,
                 tags: this.editor.tags,
-                workbookId: this.editor.workbook === null ? 0 :this.editor.workbook.id,
+                workbookId: selectedWorkbook === null ? 0 :selectedWorkbook.id,
             };
 
 

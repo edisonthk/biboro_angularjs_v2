@@ -1,21 +1,32 @@
 <div class="editor">
     <div class="editor-background"></div>
 
-    <div class="editor-content">
+    <div class="editor-content" ng-if="type === 'fork' && mobile">
+        <h3 class="headline"><i class="fa fa-code-fork"></i>&nbsp;フォーク先のブックを選択</h3>
+        <ul class="list">
+            <li ng-repeat="wb in workbooks" 
+                ng-click="editor.selectedWorkbook = wb">
+                <i class="fa fa-book"></i>&nbsp;
+                <span ng-bind="wb.title"></span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="editor-content" ng-if="type !== 'fork' || !mobile">
         <h3 class="headline" ng-bind="headline"></h3>
         <div class="cleafix">
             <div class="workbooks">
-                <tabs ng-model="selectedWorkbook" panes="workbooks" empty-pane="{id:0}"></tabs>
+                <tabs ng-model="editor.selectedWorkbook" panes="workbooks" empty-pane="{id:0}"></tabs>
             </div>
         </div>
         <div class="clearfix">
             <div class="col-left text-field">
                 <div class="form-group">
-                    <input class="form-control editor-ready-focus" ng-model="title" placeholder="タイトル">
+                    <input class="form-control editor-ready-focus" ng-model="editor.title" placeholder="タイトル">
                 </div>
 
                 <div class="form-group">
-                    <textarea class="form-control editor-textarea" ng-model="content"></textarea>
+                    <textarea class="form-control editor-textarea" ng-model="editor.content"></textarea>
 
                     <div class="tools clearfix">
                         <div class="tools-group">

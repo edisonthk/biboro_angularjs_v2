@@ -3,15 +3,15 @@
     width: 100%;
     z-index: 3;
     text-align: center;
-
-    
+    background-color: #EAEAEA;
+    box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
 
     &.fix {
         position: fixed;
     }
 
     .terminal-wrapper {
-        top: 20px;
+        padding: 10px 0;
         display: inline-block;
         position: relative;
         z-index: 3;
@@ -22,7 +22,7 @@
             height: 70px;
             position: absolute;
             left: -60px;
-            top: -10px;
+            top: -3px;
         }
 
         .link.hide {
@@ -35,12 +35,14 @@
 
         > .fa {
             position: absolute;
-            top: 12px;
+            top: 22px;
             left: 12px;
         }
 
         > .terminal-input {
             display: inline-block;
+            border: 0;
+            background-color: #fefefe;
             padding: 12px 12px 12px 33px;
             width: 600px;
         }
@@ -57,7 +59,7 @@
     @media(max-width: $phone-width) {
 
         .terminal-wrapper {
-            width: 100%;
+            width: calc(100% - 100px);
             left: 0;
 
             > .terminal-input {
