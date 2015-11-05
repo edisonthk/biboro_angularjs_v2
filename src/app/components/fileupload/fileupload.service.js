@@ -1,10 +1,9 @@
 
 class FileUploaderFactory {
 
-    constructor ($http, $cookies) {
+    constructor ($http) {
         'ngInject';
 
-        this._cookies = $cookies;
         this._http = $http;
         this.maxSize = 1000000;
     }

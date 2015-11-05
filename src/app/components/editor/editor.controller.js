@@ -171,7 +171,7 @@ class EditorController extends FluxController {
     // return true to digest scope and prevent default action
     // if nothing is return, no scope will be digest and action will be default
     onkeydown(e) {
-        console.log("a");
+        
         var ctrlKey = (e.ctrlKey || e.metaKey);
         if(ctrlKey && e.keyCode === KeyCode.KEY_S) {
             this._scope.savedCallback();
