@@ -5,7 +5,7 @@ class TerminalController extends FluxController {
     constructor ($scope,Dispatcher, $state, $stateParams, SnippetService, WorkbookService, NewsService) {
         'ngInject';
         
-        super.constructor($scope, Dispatcher);
+        super($scope, Dispatcher);
 
         this.state = $state;
         this.stateParams = $stateParams;

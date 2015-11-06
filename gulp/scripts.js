@@ -18,7 +18,7 @@ function webpack(watch, callback) {
                 { 
                     test: /\.js$/, 
                     exclude: /node_modules|bower_components/, 
-                    loader: 'traceur?experimental&runtime&source-maps'
+                    loader: 'traceur?experimental&runtime'
                 }
             ]
         },

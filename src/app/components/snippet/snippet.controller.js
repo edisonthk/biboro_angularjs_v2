@@ -6,7 +6,7 @@ class SnippetController extends FluxController {
     constructor($scope, $state,$stateParams,Dispatcher, WorkbookService, AccountService, SnippetService, Markdown, toastr) {
         'ngInject';
         
-        super.constructor($scope, Dispatcher);
+        super($scope, Dispatcher);
 
         this.TYPE_FORK    = "fork";
         this.TYPE_UPDATE  = "edit";

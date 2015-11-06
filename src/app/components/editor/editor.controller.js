@@ -5,7 +5,7 @@ class EditorController extends FluxController {
     constructor ($window, $scope, Markdown, Dispatcher, FileUploader, Api) {
         'ngInject';
         
-        super.constructor($scope,Dispatcher);
+        super($scope,Dispatcher);
         this.api = Api;
         this.markdown = Markdown;
         this.uploader = FileUploader;

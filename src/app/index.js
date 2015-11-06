@@ -39,7 +39,6 @@ angular.module('biboroAngular', [
         'ngSanitize',
         'toastr',
         'ui.router',
-        'ngTagsInput',
         'dndLists'  // https://github.com/marceljuenemann/angular-drag-and-drop-lists
     ])
     .constant('Api', apiConstant)

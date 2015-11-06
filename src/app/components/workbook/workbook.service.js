@@ -4,7 +4,7 @@ class WorkbookService extends FluxService{
     constructor($http, Dispatcher, $cacheFactory, SnippetService, Api) {
         'ngInject';
 
-        super.constructor($http, Dispatcher, $cacheFactory);
+        super($http, Dispatcher, $cacheFactory);
         
         this.snippet = SnippetService;
         this.api = Api;

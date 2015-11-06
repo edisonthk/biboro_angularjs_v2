@@ -5,7 +5,7 @@ class CommentService extends FluxService {
     constructor($http,Dispatcher, Api) {
         'ngInject';
         
-        super.constructor($http, Dispatcher);
+        super($http, Dispatcher);
 
         this.commentSnippets = [];
 

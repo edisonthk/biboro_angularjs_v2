@@ -5,7 +5,7 @@ class CommentController extends FluxController{
     constructor ($scope,Dispatcher, CommentService, AccountService) {
         'ngInject';
         
-        super.constructor($scope, Dispatcher);
+        super($scope, Dispatcher);
 
         this.IN_PROGRESS = "IN_PROGRESS";
         this.ERROR       = "ERROR";

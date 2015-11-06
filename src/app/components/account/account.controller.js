@@ -5,7 +5,7 @@ class AccountController extends FluxController{
     constructor($scope, Dispatcher,$http,$state, $stateParams, AccountService ) {
         'ngInject';
         
-        super.constructor($scope, Dispatcher);
+        super($scope, Dispatcher);
         this._http = $http;
         this.state = $state;
         this.account = AccountService;

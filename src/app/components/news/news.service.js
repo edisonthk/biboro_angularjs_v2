@@ -4,7 +4,7 @@ class NewsService extends FluxService{
     constructor($http,Dispatcher, Api) {
         'ngInject';
         
-        super.constructor($http, Dispatcher);
+        super($http, Dispatcher);
 
         this.api = Api;
 

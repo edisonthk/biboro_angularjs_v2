@@ -7,7 +7,7 @@ class NavbarController extends FluxController {
     constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $interval, $stateParams, $state, toastr, FeedbackService, NotificationService) {
         'ngInject';
         
-        super.constructor($scope, Dispatcher);
+        super($scope, Dispatcher);
 
         this.toast       = toastr;
         this.route       = RouteService;  

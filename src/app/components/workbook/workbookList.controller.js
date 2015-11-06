@@ -7,7 +7,7 @@ class WorkbookListController extends FluxController {
     constructor($state, $scope ,Dispatcher,WorkbookService, AccountService) {
         'ngInject';
         
-        super.constructor($scope, Dispatcher);
+        super($scope, Dispatcher);
         
         this.state        = $state;
         this.workbook     = WorkbookService;

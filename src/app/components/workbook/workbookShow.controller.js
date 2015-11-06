@@ -5,7 +5,7 @@ class WorkbookShowController extends FluxController {
     constructor($scope ,$state ,$stateParams ,Dispatcher,WorkbookService, AccountService, RouteService, SnippetService, Markdown, toastr) {
         'ngInject';
         
-        super.constructor($scope, Dispatcher);
+        super($scope, Dispatcher);
 
         this.toast        = toastr;
         this.state        = $state;

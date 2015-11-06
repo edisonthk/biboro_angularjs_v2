@@ -6,7 +6,7 @@ class NewsController extends FluxController {
     constructor($scope ,$state ,$stateParams ,Dispatcher,AccountService,WorkbookService, SnippetService, NewsService,Markdown, toastr) {
         'ngInject';
 
-        super.constructor($scope, Dispatcher);
+        super($scope, Dispatcher);
 
         this.toast        = toastr;
         this.state        = $state;
