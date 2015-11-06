@@ -31,7 +31,7 @@ export default function ($httpProvider, $stateProvider,$locationProvider, $urlRo
             })
             .state('snippet', {
                 url: '/snippet/:snippet',
-                templateUrl:  '../app/components/snippet/snippet.show.html',
+                templateUrl:  'app/components/snippet/snippet.show.html',
                 controller:   SnippetController,
                 controllerAs: 'snippetCtrl',
             })

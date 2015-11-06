@@ -180,17 +180,18 @@ class NavbarController extends FluxController {
     }
 
     storedCallback(res) {
+        this.savingFlag = false;
         if(res.success) {
             this.editor.show = false;
             this.editor.title = "";
             this.editor.content = "";
             this.editor.tags = [];
             this.toast.success("作成完了！");    
+            this.state.go("snippet",{snippet: this.snippet.getFocusSnippet().id});
         } else {
             var error = res.error.error;
             this.toast.error(Helper.parseErrorMessagesAsHtml(error));
         }
-        this.savingFlag = false;
     }
 
     editorQuitCallback() {

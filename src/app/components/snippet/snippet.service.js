@@ -51,6 +51,7 @@ class SnippetService extends FluxService{
             data   : this.filterParams(params),   
             dispatcher: "SNIPPET_STORE",
             success: function(res) {
+                this.setFocusSnippet(res);
                 this.appendData(res);
             }
         });

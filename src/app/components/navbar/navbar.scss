@@ -47,8 +47,21 @@
                 cursor: hand;
             }
         }
-    }
+    }  
+}
 
+@media(max-width: $phone-width) {
+    .notification {
+        padding: 0;
+
+        li > .profile {
+            width: 80px;
+        }
+
+        li > .description-inner-wrappper {
+            width: calc(100% - 80px);
+        }
+    }
 }
 
 .dnd-dialog {
