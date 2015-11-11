@@ -586,6 +586,11 @@ navbar {
     display: block;
     width: $workbook-list-width;
 
+    .index {
+        color: #999;
+        font-size: 80%;
+    }
+
     .group {
         width: $workbook-list-width/3;
         display: inline-block;

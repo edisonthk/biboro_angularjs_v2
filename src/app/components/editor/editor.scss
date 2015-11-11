@@ -108,19 +108,27 @@
                 margin-bottom: -3px;
             }
 
+            tabs {
+                margin-top: 5px;
+                top: 5px;
+                position: relative;
+            }
+
             tabs > pane {
-                line-height: 24px;
-                width: 90px;
-                padding: 6px 6px;
-                font-size: 14px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                border-bottom: 2px solid transparent;
-                opacity: 0.4;
+                float: left;
+                line-height: 30px;
+                display: inline-block;
+                margin-bottom: -1px;
+                width: 100px;
+                text-align: center;
             }
             tabs >pane.active {
-                opacity: 1;
+                background-color: white;
+                border-bottom: 30px solid #dcdcdc;
+                border-left: 10px solid transparent;
+                border-right: 10px solid transparent;
+                height: 0;
+                width: 80px;
             }
 
         }

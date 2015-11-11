@@ -17,7 +17,8 @@ class TerminalController extends FluxController {
 
         this.workbookLoaded = false;
         this.registerCallbacks({
-            WORKBOOK_SHOW: this.workbookShowCallback.bind(this),
+            WORKBOOK_SHOW: this.workbookShowCallback,
+            WORKBOOK_FETCHALL: this.workbookFetchAllCallback,
         });
     }
 
@@ -55,33 +56,61 @@ class TerminalController extends FluxController {
 
     enterCallback(q, inputElement) {
         var self = this;
-        var snippets = this.state.current.name === 'news' ? this.news.getAll() : self.snippet.getAllData();
-
-        if(snippets.length == 1) {
-            self.state.go("snippet",{snippet: snippets[0].id});
-            inputElement.blur();
-            return;
-        }
-
-        var move = false;
-        this._scope.query = q.replace(/(^[0-9]+$|\s[0-9]+$)/, function(m) {
-            var number = parseInt(m.replace(/\s/g, ""));
-            
-
-            for (var i = 0; i < snippets.length; i++) {
-                if(snippets[i].index === number) {
-                    self.state.go("snippet",{snippet: snippets[i].id});
-                    inputElement.blur();
-                    move = true;
-                    return "";
-                }
+        if(this.state.current.name === 'workbook') {
+            var wbs = self.workbook.getAllData();
+            if(wbs.length === 1) {
+                self.workbook.restoreBackup();
+                self.state.go("workbookShow",{workbook: wbs[0].id}); 
+                inputElement.blur();
+                return;
             }
 
-            return m;
-        });
+            // only workbookList
+            if(q.length < 1) {
+                return;
+            }
 
-        console.log(this._scope.query);
+            this._scope.query = q.replace(/(^[0-9]+$|\s[0-9]+$)/, function(m) {
+                var number = parseInt(m.replace(/\s/g, ""));
+                if(typeof wbs[number - 1] === 'undefined') {
+                    return;
+                }
 
+                self.workbook.restoreBackup();
+                self.state.go("workbookShow",{workbook: wbs[number - 1].id}); 
+                inputElement.blur();
+
+                return "";
+            });
+
+        }else {
+            // news & workbookShow
+            var snippets = this.state.current.name === 'news' ? this.news.getAll() : self.snippet.getAllData();
+
+            if(snippets.length == 1) {
+                self.state.go("snippet",{snippet: snippets[0].id});
+                inputElement.blur();
+                return;
+            }
+
+            var move = false;
+            this._scope.query = q.replace(/(^[0-9]+$|\s[0-9]+$)/, function(m) {
+                var number = parseInt(m.replace(/\s/g, ""));
+                
+
+                for (var i = 0; i < snippets.length; i++) {
+                    if(snippets[i].index === number) {
+                        self.state.go("snippet",{snippet: snippets[i].id});
+                        inputElement.blur();
+                        move = true;
+                        return "";
+                    }
+                }
+
+                return m;
+            });
+
+        }
     }
 
     changeCallback(q) {
@@ -121,7 +150,32 @@ class TerminalController extends FluxController {
                     self._scope.$apply();
                 }
             }, 300);
+        }else if(this.state.current.name === 'workbook') {
+
+            if(!q || q.length <= 0) {
+                this.workbook.restoreBackup();
+                return;
+            }
+
+
+            if(q.match(/(^[0-9]+$|\s[0-9]+$)/)) {
+                return;
+            }
+
+            var wbs = this.workbook.getBackup();
+            var result = [];
+            for (var i = 0; i < wbs.length; i++) {
+                if(wbs[i].title.indexOf(q) >= 0) {
+                    result.push(wbs[i]);
+                }
+            }
+
+            this.workbook.setWorkbooks(result);
         }
+    }
+
+    workbookFetchAllCallback() {
+        this.workbook.updateBackup();
     }
 
     workbookShowCallback() {

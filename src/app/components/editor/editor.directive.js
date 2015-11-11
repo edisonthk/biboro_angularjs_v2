@@ -33,13 +33,16 @@ class EditorDirective {
         if(window.innerWidth < 480) {
             scope.mobile = true;
         }
+        
+        setTimeout(function() {
+            var es = el[0].getElementsByClassName("text-field");
+            var md = el[0].getElementsByClassName("md-parsed");
 
-        var es = el[0].getElementsByClassName("text-field");
-        var md = el[0].getElementsByClassName("md-parsed");
-
-        if(es.length > 0 && md.length > 0) {
-            md[0].style.height = es[0].clientHeight + "px";    
-        }
+            if(es.length > 0 && md.length > 0) {
+                md[0].style.height = es[0].clientHeight + "px";    
+            }
+        });
+        
         
 
         document.querySelector(".editor-background").addEventListener('click',function(e) {

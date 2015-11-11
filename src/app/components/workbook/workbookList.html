@@ -7,11 +7,12 @@
     <div class="group">
         <div class="inner-group">
             <div class="title">WORKBOOKS</div>
+            <div class="item" ng-repeat="wb in workbookCtrl.workbook.getAll()">
+                <span class="index" ng-bind="$index + 1"></span>
+                <a ui-sref="workbookShow({workbook: wb.id})" ng-bind="wb.title"></a>
+            </div>
             <div class="item">
                 <button class="btn-dotted" ng-click="workbookCtrl.testClick()"><i class="fa fa-plus"></i> ワークブック作成</button>
-            </div>
-            <div class="item" ng-repeat="wb in workbookCtrl.workbook.getAll()">
-                <a ui-sref="workbookShow({workbook: wb.id})" ng-bind="wb.title"></a>
             </div>
         </div>
     </div>

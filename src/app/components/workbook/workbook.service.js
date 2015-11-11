@@ -18,6 +18,8 @@ class WorkbookService extends FluxService{
                 "WORKBOOK_SHOWMY",
                 "WORKBOOK_ORDER_UPDATE",
             ]);
+
+        this.backupData = [];
     }
     
     fetchAll() {
@@ -201,6 +203,18 @@ class WorkbookService extends FluxService{
         return null;
     }
 
+    restoreBackup() {
+        this.setWorkbooks(this.backupData);
+    }
+
+    updateBackup() {
+        var wbs = this.getAllData();
+        this.backupData = wbs;
+    }
+
+    getBackup() {
+        return this.backupData;
+    }
 }
 
 export default WorkbookService;
