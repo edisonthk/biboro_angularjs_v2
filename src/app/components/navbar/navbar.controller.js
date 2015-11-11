@@ -4,7 +4,7 @@ import Helper from "../helper/helper";
 
 
 class NavbarController extends FluxController {
-    constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $interval, $stateParams, $state, toastr, FeedbackService, NotificationService) {
+    constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $interval, $stateParams, $state, toastr, FeedbackService, NotificationService, EditorFactory) {
         'ngInject';
         
         super($scope, Dispatcher);
@@ -18,6 +18,7 @@ class NavbarController extends FluxController {
         this.stateParams = $stateParams;
         this.state       = $state;
         this.notification   = NotificationService;
+        this.editor = EditorFactory;
 
         this.command = {};
         this.showWorkbookListFlag = false;
@@ -28,13 +29,7 @@ class NavbarController extends FluxController {
             selected : null,
         };
 
-        this.editor         = {
-            show     : false,
-            title    : "",
-            content  : "",
-            tags     : [],
-            workbook : null,
-        };
+        
 
         this.feedbackContent = "";
         this.feedbackShow = false;
@@ -93,6 +88,10 @@ class NavbarController extends FluxController {
         
         var ctrlKey = (e.ctrlKey || e.metaKey);
         if(ctrlKey && e.keyCode === KeyCode.KEY_B) {
+            if(this.editor.isShow()) {
+                return;
+            }
+            console.log("newSnippet")
             this.newSnippet();
             this._scope.$apply();
             return;
@@ -160,11 +159,20 @@ class NavbarController extends FluxController {
      *
      */
     newSnippet() {
-        this.editor.workbook = this.workbook.getCurrentWorkbook();
-        this.editor.show = true;
+
+        this.editor.show({
+            headline: "新しいスニペットを作成",
+            title: "",
+            content: "",
+            workbooks: this.workbook.getAll(),
+            selectedWorkbook: this.workbook.getCurrentWorkbook(),
+            quitCallback: this.editorQuitCallback.bind(this),
+            cancelCallback: this.editorCancelCallback.bind(this),
+            savedCallback: this.editorSavedCallback.bind(this)
+        });
     }
 
-    editorSavedCallback() {
+    editorSavedCallback(editor) {
 
         if(this.savingFlag) {
             return;
@@ -172,20 +180,18 @@ class NavbarController extends FluxController {
         this.savingFlag = true;
         
         this.snippet.store({
-            title: this.editor.title,
-            content: this.editor.content,
-            tags: this.editor.tags,
-            workbookId: this.editor.workbook === null ? 0 : this.editor.workbook.id ,
+            title:      editor.title,
+            content:    editor.content,
+            workbookId: editor.selectedWorkbook === null ? 0 : editor.selectedWorkbook.id ,
         });
     }
 
     storedCallback(res) {
         this.savingFlag = false;
         if(res.success) {
-            this.editor.show = false;
-            this.editor.title = "";
-            this.editor.content = "";
-            this.editor.tags = [];
+            
+            this.editor.hide();
+
             this.toast.success("作成完了！");    
             this.state.go("snippet",{snippet: this.snippet.getFocusSnippet().id});
         } else {
@@ -195,11 +201,11 @@ class NavbarController extends FluxController {
     }
 
     editorQuitCallback() {
-        this.editor.show = false;
+        this.editor.hide();
     }
 
     editorCancelCallback() {
-        this.editor.show = false;
+        this.editor.hide();
     }
 
     showNotificationBoard() {

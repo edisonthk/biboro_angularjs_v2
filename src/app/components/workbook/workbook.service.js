@@ -82,6 +82,10 @@ class WorkbookService extends FluxService{
 
     search(id, query) {
 
+        if(!id) {
+            return;
+        }
+
         if(query.match(/^[0-9]+$/)) {
             var snippets = this.getAllData();
             for (var i = 0; i < snippets.length; i++) {

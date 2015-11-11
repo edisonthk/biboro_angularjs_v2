@@ -1,4 +1,4 @@
-<div class="editor">
+<div class="editor" ng-if="show">
     <div class="editor-background"></div>
 
     <div class="editor-content" ng-if="type === 'fork' && mobile">
@@ -13,10 +13,10 @@
     </div>
 
     <div class="editor-content" ng-if="type !== 'fork' || !mobile">
-        <h3 class="headline" ng-bind="headline"></h3>
+        <h3 class="headline" ng-bind="editor.headline"></h3>
         <div class="cleafix">
             <div class="workbooks">
-                <tabs ng-model="editor.selectedWorkbook" panes="workbooks" empty-pane="{id:0}"></tabs>
+                <tabs ng-model="editor.selectedWorkbook" panes="editor.workbooks" empty-pane="{id:0}"></tabs>
             </div>
         </div>
         <div class="clearfix">
@@ -51,13 +51,13 @@
 
             </div>
             <div class="col-left md-parsed">
-                <div class="title" ng-bind="title"></div>
+                <div class="title" ng-bind="editor.title"></div>
                 <div class="md-content" ng-bind-html="editor.htmlContent"></div>
             </div>
         </div>
         <div class="inline-group">
-            <button class="btn btn-submit" ng-click="savedCallback()">保存 <small><span ng-bind="CMD_KEY"></span>+S</small></button>
-            <button class="btn btn-submit" ng-click="cancelCallback()">キャンセル　<small>Esc</small></button>
+            <button class="btn btn-submit" ng-click="editor.factory.savedCallback(editor)">保存 <small><span ng-bind="CMD_KEY"></span>+S</small></button>
+            <button class="btn btn-submit" ng-click="editor.factory.cancelCallback()">キャンセル　<small>Esc</small></button>
         </div>
         
     </div>

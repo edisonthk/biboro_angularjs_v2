@@ -2,62 +2,66 @@ import FluxController from "../flux/flux.controller";
 import KeyCode from "../shortcut/shortcut.config";
 
 class EditorController extends FluxController {
-    constructor ($window, $scope, Markdown, Dispatcher, FileUploader, Api) {
+    constructor ($window, $scope, Markdown, Dispatcher, FileUploader, Api, EditorFactory) {
         'ngInject';
         
         super($scope,Dispatcher);
+
         this.api = Api;
         this.markdown = Markdown;
         this.uploader = FileUploader;
+        this.factory = EditorFactory;
 
-        this.title = $scope.title || "";
-        this.content = $scope.content || "";
-        this.selectedWorkbook = $scope.selectedWorkbook || null;
+        this.factory.setController(this);
+
+        this.headline = "";
+        this.workbooks = [];
+        this.title = "";
+        this.content = "";
+        this.selectedWorkbook = null;
         
-        var self = this;
-
         $scope.$watch("editor.content", this.contentChangeCallback.bind(this));  
-        
+        // $scope.$watch('selectedWorkbook', function(newVal) {
+        //     if(!newVal) {
+        //         return;
+        //     }
 
-        this.preventBodyFromScroll();
+        //     if($scope.mobile && $scope.type === 'fork') {
+        //         setTimeout(function() {
+        //             $scope.savedCallback();
+        //         },300);
+        //     }
+        // });
 
-        setTimeout(this.onload.bind(this), 100);
+        $scope.$watch('show', this.onShowAndHide.bind(this));
+    }
 
-        $scope.$watch("mobile", function(newVal) {
-            setTimeout(function(){
-                var el_fo = document.getElementsByClassName("editor-ready-focus");
-                if(el_fo.length > 0) {
-                    el_fo[0].focus();
-                }                
-            },100);
-        });
-
-        $scope.$watch("editor.selectedWorkbook", function(newVal) {
-            $scope.selectedWorkbook = newVal;
-        });
-
-        $scope.$watch("editor.title", function(newVal) {
-            $scope.title = newVal;
-        });
-
-
-        $scope.$watch('selectedWorkbook', function(newVal) {
-            if(!newVal) {
-                return;
-            }
-
-            if($scope.mobile && $scope.type === 'fork') {
-                setTimeout(function() {
-                    $scope.savedCallback();
-                },300);
-            }
-        })
+    initialize() {
 
         this.lastSelectionStart = 0;
         this.lastSelectionEnd = 0;
         this.showCoverFlag = false;
 
-        // this._shortcutTaskToken = ShortcutTask.setTask(this.keyupTask.bind(this));
+        this.preventBodyFromScroll();
+        setTimeout(this.onload.bind(this), 100);
+    }
+
+    onShowAndHide(visible) {
+        if(visible) {
+            // onShow
+            this.initialize();    
+        }else {
+            // onHide
+            this.restoreScrollingBody();
+        }
+        
+    }
+
+    quitCallback() {
+
+        if(typeof this.factory.quitCallback === 'function') {
+            this.factory.quitCallback();
+        }
     }
 
     onload() {
@@ -79,6 +83,24 @@ class EditorController extends FluxController {
         if(textarea) {
             this.textarea = textarea;
             this.textarea.onblur = this.textareaOnBlur.bind(this);    
+        }
+
+        var self = this;
+        document.querySelector(".editor-background").onclick = function() {
+            self.factory.quitCallback();
+            self._scope.$apply();
+        };
+
+        var el_fo = document.getElementsByClassName("editor-ready-focus");
+        if(el_fo.length > 0) {
+            el_fo[0].focus();
+        }                
+        
+        var es = document.querySelector(".editor .text-field");
+        var md = document.querySelector(".editor .md-parsed");
+
+        if(es&& md) {
+            md.style.height = es.clientHeight + "px";    
         }
     }
 
@@ -157,7 +179,7 @@ class EditorController extends FluxController {
             this.uploader.upload(this.api.image.upload.url, this.api.image.upload.method,[files[0]] , cb); 
         }else {
             // text
-            if(typeof FileReader != "undefined"){
+            if(typeof FileReader !== "undefined"){
                 var reader = new FileReader();
                 reader.onload = function(evt) {
                     self.content = self.insertText(self.lastSelectionStart,self.content,"```\n"+evt.target.result+"\n```");
@@ -171,18 +193,27 @@ class EditorController extends FluxController {
     // return true to digest scope and prevent default action
     // if nothing is return, no scope will be digest and action will be default
     onkeydown(e) {
+        if(!this._scope.show) {
+            return;
+        }
         
         var ctrlKey = (e.ctrlKey || e.metaKey);
         if(ctrlKey && e.keyCode === KeyCode.KEY_S) {
-            this._scope.savedCallback();
+            if(typeof this.factory.savedCallback === 'function') {
+                this.factory.savedCallback(this);
+                this._scope.$apply();
+            }
+
             e.preventDefault();
-            this._scope.$apply();
-            return true;
+            return false;
         }else if(e.keyCode === KeyCode.KEY_ESC) {
-            this._scope.cancelCallback();
+            if(typeof this.factory.cancelCallback === 'function') {
+                this.factory.cancelCallback();    
+                this._scope.$apply();
+            }
+            
             e.preventDefault();
-            this._scope.$apply();
-            return true;
+            return false;
         }
 
         if(ctrlKey && e.target.className.indexOf("editor-textarea") >= 0) {
@@ -209,7 +240,6 @@ class EditorController extends FluxController {
     }
 
     contentChangeCallback() {
-        this._scope.content = this.content;
         if(this.markdownCompiling) {
            return; 
         }
@@ -220,7 +250,7 @@ class EditorController extends FluxController {
             self.htmlContent = self.markdown.parseMd(self.content || "");
             self.markdownCompiling = false;
             self._scope.$apply();
-        }, 1000);
+        }, 700);
         
     }
 

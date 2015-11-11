@@ -54,17 +54,3 @@
     snippet="newsCtrl.commentBox.snippet"
     outside-clicked-callback="newsCtrl.commentBox.outsideClickedCallback" >
 ></comment>
-
-<editor
-    ng-if="newsCtrl.editor.show && !newsCtrl.mobile"
-    type="newsCtrl.editor.type"
-    headline="フォーク"
-    title="newsCtrl.editor.title" 
-    content="newsCtrl.editor.content"
-    tags="newsCtrl.editor.tags"
-    selected-workbook="newsCtrl.editor.workbook"
-    workbooks="newsCtrl.workbook.getAll()"
-    saved-callback="newsCtrl.editorSavedCallback()"
-    quit-callback="newsCtrl.editorQuitCallback()"
-    cancel-callback="newsCtrl.editorCancelCallback()" >
-</editor> 

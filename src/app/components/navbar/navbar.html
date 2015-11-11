@@ -98,19 +98,6 @@
 
 <div ng-if="navbar.collapseMenuShow" ng-click="navbar.collapseMenuShow = false" class="menu-collapse-background"></div>
 
-<editor
-    ng-if="navbar.editor.show"
-    headline="新しいスニペットを作成"
-    title="navbar.editor.title" 
-    content="navbar.editor.content"
-    tags="navbar.editor.tags"
-    selected-workbook="navbar.editor.workbook"
-    workbooks="navbar.workbook.getAll()"
-    saved-callback="navbar.editorSavedCallback()"
-    quit-callback="navbar.editorQuitCallback()"
-    cancel-callback="navbar.editorCancelCallback()" >
-</editor> 
-
 <dialog
     open
     ng-if="navbar.dndDialog.show"

@@ -3,7 +3,7 @@ import FluxController from "../flux/flux.controller";
 
 class NewsController extends FluxController {    
 
-    constructor($scope ,$state ,$stateParams ,Dispatcher,AccountService,WorkbookService, SnippetService, NewsService,Markdown, toastr) {
+    constructor($scope ,$state ,$stateParams ,Dispatcher,AccountService,WorkbookService, SnippetService, NewsService,Markdown, EditorFactory ,toastr) {
         'ngInject';
 
         super($scope, Dispatcher);
@@ -16,16 +16,17 @@ class NewsController extends FluxController {
         this.news         = NewsService;
         this.account      = AccountService;
         this.markdown     = Markdown;
+        this.editor       = EditorFactory;
 
-        this.editor       = {
-            type     : "fork",
-            show     : false,
-            title    : "",
-            content  : "",
-            tags     : [],
-            refSnippetId: null,
-            workbook : null,
-        };
+        // this.editor       = {
+        //     type     : "fork",
+        //     show     : false,
+        //     title    : "",
+        //     content  : "",
+        //     tags     : [],
+        //     refSnippetId: null,
+        //     workbook : null,
+        // };
         
         this.commentBox = {
             show: false,
@@ -51,8 +52,6 @@ class NewsController extends FluxController {
     }
 
     initialize() {
-
-        this.editorSavedCallback = this.editorSavedCallback.bind(this);
 
         this.news.fetchAll();
         this.workbook.fetchAll();
@@ -125,31 +124,42 @@ class NewsController extends FluxController {
      *  editor box
      *
      */
-    editorSavedCallback() {
+    editorSavedCallback(editor) {
 
         var params = {
-            title:        this.editor.title,
-            content:      this.editor.content,
-            tags:         this.editor.tags,
-            workbookId:   this.editor.workbook === null ? 0 : this.editor.workbook.id,
-            refSnippetId: this.editor.refSnippetId,
+            title:        editor.title,
+            content:      editor.content,
+            workbookId:   editor.selectedWorkbook === null ? 0 : editor.selectedWorkbook.id,
+            refSnippetId: editor.refSnippetId,
         }
         
         this.snippet.fork(params);
     }
 
     forkSnippet(news) {
-        this.editor.title        = news.title;
-        this.editor.content      = news.content;
-        this.editor.tags         = news.tags;
-        this.editor.refSnippetId = news.id
-        this.editor.show         = true;
+
+        var workbooks = this.workbook.getAll();
+
+        this.editor.show({
+            type: 'fork',
+            headline: "フォーク",
+            title: news.title,
+            content: news.content,
+            refSnippetId: news.id,
+
+
+            workbooks: this.workbook.getAll(),
+            selectedWorkbook: workbooks.length === 1 ? workbooks[0] : null,
+            quitCallback: this.editorQuitCallback.bind(this),
+            cancelCallback: this.editorCancelCallback.bind(this),
+            savedCallback: this.editorSavedCallback.bind(this)
+        });
     }
 
     newsForkCallback(res) {
         if(res.success) {
             this.toast.success("フォークしました！");
-            this.editor.show = false;
+            this.editor.hide();
         }else {
             var error = res.error.error;
             this.toast.error(Helper.parseErrorMessagesAsHtml(error));
@@ -157,11 +167,11 @@ class NewsController extends FluxController {
     }
 
     editorQuitCallback() {
-        this.editor.show = false;
+        this.editor.hide();
     }
 
     editorCancelCallback() {
-        this.editor.show = false;
+        this.editor.hide();
     }
 }
 

@@ -105,6 +105,10 @@ class SnippetService extends FluxService{
 
     filterParams(params) {
 
+        if(!params.tags) {
+            return params;
+        }
+
         // tags
         var tags = [];
         for (var i = 0; i < params.tags.length; i++) {

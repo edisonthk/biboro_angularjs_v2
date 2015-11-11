@@ -1,7 +1,7 @@
 import apiConstant from './api.constant';
 
 apiConstant.__tmp = apiConstant['api_'+apiConstant.env];
-var _host = apiConstant.host[apiConstant.env]
+var _host = apiConstant.host[apiConstant.env];
 
 for(var path in apiConstant.__tmp) {
     if(path === 'method') {

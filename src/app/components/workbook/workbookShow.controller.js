@@ -1,4 +1,3 @@
-import Helper from "../helper/helper";
 import FluxController from "../flux/flux.controller";
 
 class WorkbookShowController extends FluxController {

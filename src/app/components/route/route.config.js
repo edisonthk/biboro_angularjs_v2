@@ -65,7 +65,8 @@ export default function ($httpProvider, $stateProvider,$locationProvider, $urlRo
             //     controller:   PlaygroundController,
             //     controllerAs: 'p',
             //     template:     '<acme-navbar /><div ng-bind="p.hello"></div><div ng-bind="myscope"></div>',
-            // });
+            // });  
+        ;
         
         $locationProvider.html5Mode(true);
 

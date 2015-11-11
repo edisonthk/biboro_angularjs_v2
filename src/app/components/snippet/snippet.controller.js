@@ -1,9 +1,10 @@
+import Helper from "../helper/helper";
 import KeyCode from "../shortcut/shortcut.config";
 import FluxController from "../flux/flux.controller";
 
 class SnippetController extends FluxController {
     
-    constructor($scope, $state,$stateParams,Dispatcher, WorkbookService, AccountService, SnippetService, Markdown, toastr) {
+    constructor($scope, $state,$stateParams,Dispatcher, WorkbookService, AccountService, SnippetService, Markdown, toastr, EditorFactory) {
         'ngInject';
         
         super($scope, Dispatcher);
@@ -19,16 +20,17 @@ class SnippetController extends FluxController {
         this.snippet        = SnippetService;
         this.markdown       = Markdown;
 
-        this.editor         = {
-            type     : 'edit',
-            show     : false,
-            title    : "",
-            content  : "",
-            tags     : [],
-            workbook : null,
-            snippetId    : null,
-            refSnippetId : null,
-        };
+        this.editor = EditorFactory;
+        // this.editor         = {
+        //     type     : 'edit',
+        //     show     : false,
+        //     title    : "",
+        //     content  : "",
+        //     tags     : [],
+        //     workbook : null,
+        //     snippetId    : null,
+        //     refSnippetId : null,
+        // };
 
         this.currentSnippet = {
             title: "",
@@ -140,19 +142,28 @@ class SnippetController extends FluxController {
 
         var snippet = this.currentSnippet;
 
-        this.editor.type      = this.TYPE_UPDATE;
-        this.editor.show      = true;
-        this.editor.title     = snippet.title;
-        this.editor.content   = snippet.content;
-        this.editor.tags      = snippet.tags;
-        this.editor.snippetId = snippet.id;
-        this.editor.refSnippetId = null;
+        this.editor.show({
+            type: this.TYPE_UPDATE,
+            headline: "新しいスニペットを作成",
+            title: snippet.title,
+            content: snippet.content,
+
+            snippetId: snippet.id,
+            refSnippetId: null,
+
+
+            workbooks: this.workbook.getAll(),
+            selectedWorkbook: snippet.workbooks[0],
+            quitCallback: this.editorQuitCallback.bind(this),
+            cancelCallback: this.editorCancelCallback.bind(this),
+            savedCallback: this.editorSavedCallback.bind(this)
+        });
     }
 
     updatedCallback(res) {
         if(res.success) {
             this.toast.success("編集しました");
-            this.editor.show = false;
+            this.editor.hide();
         }else {
             var error = res.error.error;
             this.toast.error(Helper.parseErrorMessagesAsHtml(error));
@@ -160,35 +171,34 @@ class SnippetController extends FluxController {
         this.savingFlag = false;
     }
 
-    editorSavedCallback() {
+    editorSavedCallback(editor) {
+        
         if(this.savingFlag) {
             return;
         }
-
-        if(this.editor.type === this.TYPE_FORK) {
+        
+        if(editor.type === this.TYPE_FORK) {
             this.savingFlag = true;
 
             var params = {
-                title:        this.editor.title,
-                content:      this.editor.content,
-                tags:         this.editor.tags,
-                workbookId:   this.editor.workbook === null ? 0 : this.editor.workbook.id,
-                refSnippetId: this.editor.refSnippetId,
+                title:        editor.title,
+                content:      editor.content,
+                workbookId:   editor.selectedWorkbook === null ? 0 : editor.selectedWorkbook.id,
+                refSnippetId: editor.refSnippetId,
             };
 
             this.snippet.fork(params);
-        }else if(this.editor.type === this.TYPE_UPDATE) {
+        }else if(editor.type === this.TYPE_UPDATE) {
             this.savingFlag = true;
 
             var formData = {
-                title: this.editor.title,
-                content: this.editor.content,
-                tags: this.editor.tags,
-                workbookId:   this.editor.workbook === null ? 0 : this.editor.workbook.id,
+                title:      editor.title,
+                content:    editor.content,
+                workbookId: editor.selectedWorkbook === null ? 0 : editor.selectedWorkbook.id,
             };
 
 
-            this.snippet.update(this.editor.snippetId, formData);
+            this.snippet.update(editor.snippetId, formData);
         }else {
             console.error("unknown editor type");
         }
@@ -196,11 +206,14 @@ class SnippetController extends FluxController {
     }
 
     editorQuitCallback() {
-        this.editor.show = false;
+        // this.editor.show = false;
+
+        this.editor.hide();
     }
 
     editorCancelCallback() {
-        this.editor.show = false;
+        // this.editor.show = false;
+        this.editor.hide();
     }
 
     deleteSnippet(){
@@ -213,19 +226,28 @@ class SnippetController extends FluxController {
     forkSnippet() {
         var snippet = this.currentSnippet;
 
-        this.editor.type         = this.TYPE_FORK;
-        this.editor.title        = snippet.title;
-        this.editor.content      = snippet.content;
-        this.editor.tags         = snippet.tags;
-        this.editor.snippetId    = null;
-        this.editor.refSnippetId = snippet.id;
-        this.editor.show         = true;
+        this.editor.show({
+            type: this.TYPE_FORK,
+            headline: "フォーク",
+            title: snippet.title,
+            content: snippet.content,
+
+            snippetId: null,
+            refSnippetId: snippet.id,
+
+
+            workbooks: this.workbook.getAll(),
+            selectedWorkbook: snippet.workbooks[0],
+            quitCallback: this.editorQuitCallback.bind(this),
+            cancelCallback: this.editorCancelCallback.bind(this),
+            savedCallback: this.editorSavedCallback.bind(this)
+        });
     }
 
     forkedCallback(res) {
         if(res.success) {
             this.toast.success("フォークしました！");
-            this.editor.show = false;
+            this.editor.hide();
         }else {
             var error = res.error.error;
             this.toast.error(Helper.parseErrorMessagesAsHtml(error));

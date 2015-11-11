@@ -24,11 +24,11 @@ class FluxController {
         window.addEventListener("keydown", this.onkeydownEvent, true);
     }
     
-    onkeyup(e) {
+    onkeyup() {
         // onkeyup action
     }
 
-    onkeydown(e) {}
+    onkeydown() {}
 
     registerCallbacks(callbacks) {
         for(var storeType in callbacks) {

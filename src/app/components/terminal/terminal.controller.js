@@ -37,7 +37,7 @@ class TerminalController extends FluxController {
         }else if(ctrlKey) {
             if(e.keyCode === KeyCode.KEY_A) {
                 e.preventDefault();
-                self.highlightText(self.getNextElement());
+                this.highlightText(this.getNextElement());
             }else if(e.keyCode === KeyCode.KEY_S) {
                 e.preventDefault();
             }
@@ -60,6 +60,7 @@ class TerminalController extends FluxController {
             var wbs = self.workbook.getAllData();
             if(wbs.length === 1) {
                 self.workbook.restoreBackup();
+                self._scope.query = "";
                 self.state.go("workbookShow",{workbook: wbs[0].id}); 
                 inputElement.blur();
                 return;
@@ -80,6 +81,8 @@ class TerminalController extends FluxController {
                 self.state.go("workbookShow",{workbook: wbs[number - 1].id}); 
                 inputElement.blur();
 
+                console.log("bbb");
+
                 return "";
             });
 
@@ -87,7 +90,7 @@ class TerminalController extends FluxController {
             // news & workbookShow
             var snippets = this.state.current.name === 'news' ? this.news.getAll() : self.snippet.getAllData();
 
-            if(snippets.length == 1) {
+            if(snippets.length === 1) {
                 self.state.go("snippet",{snippet: snippets[0].id});
                 inputElement.blur();
                 return;
@@ -114,9 +117,9 @@ class TerminalController extends FluxController {
     }
 
     changeCallback(q) {
+        var self = this;
 
         if(this.stateParams.workbook) {
-            var self = this;
 
             if(!q || q.length <= 0) {
                 if(this.workbookLoaded) {
@@ -142,7 +145,6 @@ class TerminalController extends FluxController {
                 return;
             }
 
-            var self = this;
             clearTimeout(self.changeTimeoutId);
             self.changeTimeoutId = setTimeout(function() {
                 if(q.length > 1 && !q.match(/(^[0-9]+$|\s[0-9]+$)/)) {
@@ -181,6 +183,87 @@ class TerminalController extends FluxController {
     workbookShowCallback() {
         this.workbookLoaded = true;
     }   
+
+    getNextElement() {
+        var self = this;
+
+        var els = document.getElementsByClassName("prettyprint");
+        if(els.length <= 0) {
+            return null;
+        }
+
+        if( self.lastLength != els.length || (els.length > 0 && els[0].innerHTML != self.lastFirstContent)) {
+            self.lastFirstContent = els[0].innerHTML;
+            self.lastLength = els.length;
+            self.lastTop = 0;
+        }
+
+        var resetFlag = true,
+            tempOffsetTop = 0,
+            tempMinIndex = 0,
+            tempMinDiff = 3000000  // infinity big 
+        ;
+        
+        for (var i = 0; i < els.length; i++) {
+            var offsetTop = self.getOffsetTop(els[i]);
+            var diff = offsetTop - self.lastTop;
+            if(diff < tempMinDiff && diff > 0) {
+                tempMinDiff = diff;
+                tempMinIndex = i;
+                tempOffsetTop = offsetTop;
+                resetFlag = false;
+            }
+        }
+
+        if(resetFlag) {
+            self.lastTop = 0;
+            return self.getNextElement();
+        }
+        
+        self.lastTop = tempOffsetTop;
+
+        return els[tempMinIndex];
+    }
+
+    highlightText(element) {     
+        if(!element) {
+            return;
+        }
+
+        var selection = window.getSelection();
+        var range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        // scrollTo
+        var cell = element;
+        
+        if(this.isVisible(cell)) {
+            return;
+        }
+        
+        var top = this.getOffsetTop(cell);
+        
+        window.scrollTo( 0, top );
+    }
+
+    getOffsetTop(cell) {
+        var top = 0; // navbar height
+        for(var i = 0 ; i < 4; i ++) {
+            top += cell.offsetTop;
+            cell = cell.parentElement;
+        }
+        return top;
+    }
+
+    isVisible(el) {   
+        var elRect = el.getBoundingClientRect();
+        
+        return (elRect.top > 50 && elRect.top < window.innerHeight) &&
+            (elRect.bottom > 50 && elRect.bottom < window.innerHeight)
+        ;
+    }
 
 }
 
