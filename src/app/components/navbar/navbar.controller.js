@@ -4,7 +4,7 @@ import Helper from "../helper/helper";
 
 
 class NavbarController extends FluxController {
-    constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $interval, $stateParams, $state, toastr, FeedbackService, NotificationService, EditorFactory) {
+    constructor ($scope,Dispatcher, AccountService, RouteService,WorkbookService, SnippetService, $interval, $stateParams, $state, toastr, FeedbackService, NotificationService, EditorFactory, ChromeExtension) {
         'ngInject';
         
         super($scope, Dispatcher);
@@ -19,6 +19,7 @@ class NavbarController extends FluxController {
         this.state       = $state;
         this.notification   = NotificationService;
         this.editor = EditorFactory;
+        this.extension   = ChromeExtension;
 
         this.command = {};
         this.showWorkbookListFlag = false;

@@ -27,6 +27,7 @@ import HoverDirective          from '../app/components/ui/hover.directive';
 
 import ViewportProvider        from '../app/components/ui/viewport.provider';
 import EditorFactory           from '../app/components/editor/editor.factory';
+import ChromeExtensionFactory  from '../app/components/chrome_extension/chrome.factory';
 
 // constant
 import apiConstant from '../app/components/api/api.filter';
@@ -60,6 +61,7 @@ angular.module('biboroAngular', [
     .factory('Dispatcher', () => new Dispatcher())
     .factory('Markdown', () => new MarkdownHelper())
     .factory('EditorFactory', () => new EditorFactory())
+    .factory('ChromeExtension' ,() => new ChromeExtensionFactory())
 
     .provider('Viewport', ViewportProvider)
         
