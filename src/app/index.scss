@@ -196,8 +196,12 @@ navbar {
                     padding: 10px 14px;
                 }
 
-                li:hover {
+                li:not(.disable):hover {
                     background-color: #f0f0f0;
+                }
+
+                li.disable {
+                    opacity: 0.4;
                 }
             }
         }
@@ -674,6 +678,16 @@ button:focus {
         border-radius: 50%;
         overflow: hidden;      
     }
+}
+
+.btn-download {
+    display: block;
+    width: 300px;
+    padding: 10px;
+    text-align: center;
+    background-color: green;
+    color: white;
+
 }
 
 /**

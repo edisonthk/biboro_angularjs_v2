@@ -3,6 +3,7 @@ import WorkbookShowController   from '../workbook/workbookShow.controller';
 import SnippetController        from '../snippet/snippet.controller';
 import NewsController           from '../news/news.controller';
 import AccountController        from '../account/account.controller';
+import ExtensionController      from '../extension/extension.controller';
 
 export default function ($httpProvider, $stateProvider,$locationProvider, $urlRouterProvider) {
         'ngInject';
@@ -34,6 +35,12 @@ export default function ($httpProvider, $stateProvider,$locationProvider, $urlRo
                 templateUrl:  'app/components/snippet/snippet.show.html',
                 controller:   SnippetController,
                 controllerAs: 'snippetCtrl',
+            })
+            .state('extension', {
+                url: '/extension',
+                templateUrl:  'app/components/extension/extension.html',
+                controller:   ExtensionController,
+                controllerAs: 'ext',
             })
             // .state('workbook.news', {
             //     url: '/news',

@@ -11,7 +11,6 @@ class ChromeExtensionFactory {
     }
 
     getVersion() {
-        console.log(document.body.getAttribute("biboro-plugin-version"));
         return document.body.getAttribute("biboro-plugin-version");
     }
 

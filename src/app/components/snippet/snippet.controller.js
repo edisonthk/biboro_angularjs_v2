@@ -65,6 +65,9 @@ class SnippetController extends FluxController {
         }else{
             this.notfound = true;
         }
+
+        // scroll to below navbar
+        window.scrollTo(0,document.querySelector("navbar").clientHeight);
     }
 
     onkeydown(e) {

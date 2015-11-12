@@ -46,7 +46,8 @@
                         <span class="underline">プロフィール</span>
                     </a>
                 </li> -->
-                <li><a href="javascript:void(0);">Chrome拡張子をダウンロード</a></li>
+                <li ng-if="!navbar.extension.isInstalled()" ng-click="navbar.collapseMenuShow = false; navbar.state.go('extension')"><span>Chrome拡張子をダウンロード</span></li>
+                <li ng-if="navbar.extension.isInstalled()" class="disable"><span>Chrome拡張子がインストール済み</span></li>
                 <li ng-click="navbar.dndDialog.show = true"><span>タブ管理</span></li>
                 <li ng-click="navbar.feedbackShow = true">
                     <span>フィードバック</span>
