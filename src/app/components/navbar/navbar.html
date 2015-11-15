@@ -1,15 +1,15 @@
 <nav class="navbar clearfix">
-      
+
     <a ui-sref="workbook" class="logo">
         <img src="assets/images/logo_white.png" alt="BIBORO logo">
     </a>
 
-    
-    <tabs 
-        ng-if="navbar.showWorkbookListFlag" 
+
+    <tabs
+        ng-if="navbar.showWorkbookListFlag"
         class="workbook-tabs"
-        ng-model="navbar.selectedWorkbook" 
-        panes="navbar.workbook.getAll()" 
+        ng-model="navbar.selectedWorkbook"
+        panes="navbar.workbook.getAll()"
         selected-callback="navbar.selectedPaneCallback"
         >
         <!-- <li ng-repeat="wb in navbar.workbooks">
@@ -46,7 +46,7 @@
                         <span class="underline">プロフィール</span>
                     </a>
                 </li> -->
-                <li ng-if="!navbar.extension.isInstalled()" ng-click="navbar.collapseMenuShow = false; navbar.state.go('extension')"><span>Chrome拡張子をダウンロード</span></li>
+                <li ng-if="!navbar.extension.isInstalled()"><a href="https://chrome.google.com/webstore/detail/lanknlbnpppemclniodgpipofjjklijo/publish-delayed?hl=ja&authuser=1" target="_blank">Chrome拡張子をダウンロード</a></li>
                 <li ng-if="navbar.extension.isInstalled()" class="disable"><span>Chrome拡張子がインストール済み</span></li>
                 <li ng-click="navbar.dndDialog.show = true"><span>タブ管理</span></li>
                 <li ng-click="navbar.feedbackShow = true">
@@ -60,15 +60,15 @@
     </div>
 </nav>
 
-<dialog 
+<dialog
     open
     ng-if="navbar.notificationBoardShow"
     outside-clicked-callback="navbar.closeNotificationDialog">
     <h3 style="text-align: center;">通知</h3>
     <ul class="notification">
-        <li ng-repeat="n in navbar.notification.getAll()" 
-            ng-class="{read: n.read}" 
-            class="clearfix" 
+        <li ng-repeat="n in navbar.notification.getAll()"
+            ng-class="{read: n.read}"
+            class="clearfix"
             ng-click="navbar.moveToTarget(n)" >
             <div class="profile">
                 <div ng-if="n.by_user.profile_image.length > 0" class="profile-image">
