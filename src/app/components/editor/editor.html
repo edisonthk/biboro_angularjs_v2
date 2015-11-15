@@ -1,18 +1,18 @@
 <div class="editor" ng-if="show">
     <div class="editor-background"></div>
 
-    <div class="editor-content" ng-if="type === 'fork' && mobile">
+    <div class="editor-content" ng-if="editor.type === 'fork' && mobile">
         <h3 class="headline"><i class="fa fa-code-fork"></i>&nbsp;フォーク先のブックを選択</h3>
         <ul class="list">
-            <li ng-repeat="wb in workbooks" 
-                ng-click="editor.selectedWorkbook = wb">
+            <li ng-repeat="wb in editor.workbooks"
+                ng-click="editor.selectedWorkbook = wb; editor.factory.savedCallback(editor);">
                 <i class="fa fa-book"></i>&nbsp;
                 <span ng-bind="wb.title"></span>
             </li>
         </ul>
     </div>
 
-    <div class="editor-content" ng-if="type !== 'fork' || !mobile">
+    <div class="editor-content" ng-if="editor.type !== 'fork' || !mobile">
         <h3 class="headline" ng-bind="editor.headline"></h3>
         <div class="cleafix">
             <div class="workbooks">
@@ -40,8 +40,8 @@
                             <button title="画像 " ng-click="editor.fileEvent()"><i class="fa fa-picture-o"></i></button>
                             <button title="コード ({{CMD_KEY}}+K)" ng-mouseup="editor.codeEvent()"><i class="fa fa-code"></i></button>
                         </div>
-                    </div>   
-                    <input type="file" class="editor-fileupload"> 
+                    </div>
+                    <input type="file" class="editor-fileupload">
                 </div>
 
                 <div class="dragdrop-cover" ng-if="editor.showCoverFlag">
@@ -59,6 +59,6 @@
             <button class="btn btn-submit" ng-click="editor.factory.savedCallback(editor)">保存 <small><span ng-bind="CMD_KEY"></span>+S</small></button>
             <button class="btn btn-submit" ng-click="editor.factory.cancelCallback()">キャンセル　<small>Esc</small></button>
         </div>
-        
+
     </div>
 </div>

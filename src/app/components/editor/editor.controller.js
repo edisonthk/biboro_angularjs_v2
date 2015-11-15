@@ -4,7 +4,7 @@ import KeyCode from "../shortcut/shortcut.config";
 class EditorController extends FluxController {
     constructor ($window, $scope, Markdown, Dispatcher, FileUploader, Api, EditorFactory) {
         'ngInject';
-        
+
         super($scope,Dispatcher);
 
         this.api = Api;
@@ -19,8 +19,8 @@ class EditorController extends FluxController {
         this.title = "";
         this.content = "";
         this.selectedWorkbook = null;
-        
-        $scope.$watch("editor.content", this.contentChangeCallback.bind(this));  
+
+        $scope.$watch("editor.content", this.contentChangeCallback.bind(this));
         // $scope.$watch('selectedWorkbook', function(newVal) {
         //     if(!newVal) {
         //         return;
@@ -49,12 +49,12 @@ class EditorController extends FluxController {
     onShowAndHide(visible) {
         if(visible) {
             // onShow
-            this.initialize();    
+            this.initialize();
         }else {
             // onHide
             this.restoreScrollingBody();
         }
-        
+
     }
 
     quitCallback() {
@@ -70,19 +70,19 @@ class EditorController extends FluxController {
             this.dragDrop = dragDrop[0];
             this.dragDrop.ondragleave = this.textareaOnDragLeave.bind(this);
             this.dragDrop.ondragover = this.textareaOnDragOver.bind(this);
-            this.dragDrop.ondrop = this.droppingCallback.bind(this);    
+            this.dragDrop.ondrop = this.droppingCallback.bind(this);
         }
-        
+
         var fileupload = document.querySelector(".editor-fileupload");
         if(fileupload) {
             this.fileupload = fileupload;
             this.fileupload.onchange = this.fileUploadOnSelected.bind(this);
         }
-        
-        var textarea = document.querySelector("editor .editor-textarea");   
+
+        var textarea = document.querySelector("editor .editor-textarea");
         if(textarea) {
             this.textarea = textarea;
-            this.textarea.onblur = this.textareaOnBlur.bind(this);    
+            this.textarea.onblur = this.textareaOnBlur.bind(this);
         }
 
         var self = this;
@@ -94,13 +94,13 @@ class EditorController extends FluxController {
         var el_fo = document.getElementsByClassName("editor-ready-focus");
         if(el_fo.length > 0) {
             el_fo[0].focus();
-        }                
-        
+        }
+
         var es = document.querySelector(".editor .text-field");
         var md = document.querySelector(".editor .md-parsed");
 
         if(es&& md) {
-            md.style.height = es.clientHeight + "px";    
+            md.style.height = es.clientHeight + "px";
         }
     }
 
@@ -139,7 +139,7 @@ class EditorController extends FluxController {
         clearTimeout(self.dragIntervalId);
         self.dragIntervalId = setTimeout(function() {
             self.showCoverFlag = false;
-            self._scope.$apply();    
+            self._scope.$apply();
         }, 500);
         self.showCoverFlag = true;
         self._scope.$apply();
@@ -162,21 +162,21 @@ class EditorController extends FluxController {
             if(success) {
                 var msg = "";
                 for (var i = 0; i < data.length; i++) {
-                    
+
                     msg += "![alt]("+self.api.host[self.api.env] + data[i].message.destination_path.substring(1) + data[i].message.filename+")\n";
                 }
-                
+
                 self.content = self.insertText(self.lastSelectionStart, self.content, msg);
-                
+
             }else {
-                // failed to 
+                // failed to
             }
         };
 
         var splitted = files[0].type.split("/");
         if(splitted.length > 0 && splitted[0] === 'image') {
             // image
-            this.uploader.upload(this.api.image.upload.url, this.api.image.upload.method,[files[0]] , cb); 
+            this.uploader.upload(this.api.image.upload.url, this.api.image.upload.method,[files[0]] , cb);
         }else {
             // text
             if(typeof FileReader !== "undefined"){
@@ -196,7 +196,7 @@ class EditorController extends FluxController {
         if(!this._scope.show) {
             return;
         }
-        
+
         var ctrlKey = (e.ctrlKey || e.metaKey);
         if(ctrlKey && e.keyCode === KeyCode.KEY_S) {
             if(typeof this.factory.savedCallback === 'function') {
@@ -208,10 +208,10 @@ class EditorController extends FluxController {
             return false;
         }else if(e.keyCode === KeyCode.KEY_ESC) {
             if(typeof this.factory.cancelCallback === 'function') {
-                this.factory.cancelCallback();    
+                this.factory.cancelCallback();
                 this._scope.$apply();
             }
-            
+
             e.preventDefault();
             return false;
         }
@@ -236,12 +236,12 @@ class EditorController extends FluxController {
                 this._scope.$apply();
             }
         }
-        
+
     }
 
     contentChangeCallback() {
         if(this.markdownCompiling) {
-           return; 
+           return;
         }
 
         var self = this;
@@ -251,7 +251,7 @@ class EditorController extends FluxController {
             self.markdownCompiling = false;
             self._scope.$apply();
         }, 700);
-        
+
     }
 
     boldEvent() {
@@ -261,7 +261,7 @@ class EditorController extends FluxController {
         this.content = this.replaceSelectedText(this.textarea, function(selectedText) {
             return "**" + selectedText + "**";
         });
-        
+
         this.restoreCursorPositionAndScrollTop(lastTop,end + 4);
     }
 
@@ -283,14 +283,14 @@ class EditorController extends FluxController {
         this.content = this.replaceSelectedText(this.textarea, function(selectedText) {
             return "~~" + selectedText + "~~";
         });
-        
+
         this.restoreCursorPositionAndScrollTop(lastTop, end + 4);
     }
 
     fileEvent() {
         if(this.fileupload) {
             this.fileupload.click();
-        }   
+        }
     }
 
     anchorEvent() {
@@ -309,13 +309,13 @@ class EditorController extends FluxController {
 
             return "[" + selectedText + "](LINK_HERE)";
         });
-        
+
         if(linkFlag) {
-            this.restoreCursorPositionAndScrollTop(lastTop, begin + 1, begin + 6);       
+            this.restoreCursorPositionAndScrollTop(lastTop, begin + 1, begin + 6);
         }else {
             this.restoreCursorPositionAndScrollTop(lastTop, end + 3, end + 12);
         }
-        
+
     }
 
     headingEvent() {
@@ -346,10 +346,10 @@ class EditorController extends FluxController {
         var lines = self.textarea.value.split("\n");
         var lastTop = self.textarea.scrollTop;
         this.content = this.replaceSelectedText(this.textarea, function(selectedText, start, end) {
-            
+
             var beginPosition = 0;
             for(var i = 0; i < lines.length; i ++) {
-                
+
                 if(beginPosition <= start && start <= beginPosition + lines[i].length) {
                     lines[i] = "```\n" + lines[i];
 
@@ -372,7 +372,7 @@ class EditorController extends FluxController {
         var self = this;
         setTimeout(function() {
             if(typeof endPosition === 'undefined') {
-                self.setSelectionRange(self.textarea, beginPosition, beginPosition);    
+                self.setSelectionRange(self.textarea, beginPosition, beginPosition);
             } else {
                 self.setSelectionRange(self.textarea, beginPosition, endPosition);
             }
@@ -422,6 +422,6 @@ class EditorController extends FluxController {
     }
 
 
-}   
+}
 
 export default EditorController;
