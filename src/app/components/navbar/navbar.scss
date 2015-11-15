@@ -1,7 +1,7 @@
 .notification li {
     width: 100%;
     background-color: #FBFBEA;
-    
+
     &.read {
         background-color: white;
     }
@@ -47,7 +47,7 @@
                 cursor: hand;
             }
         }
-    }  
+    }
 }
 
 @media(max-width: $phone-width) {
@@ -62,6 +62,12 @@
             width: calc(100% - 80px);
         }
     }
+}
+
+navbar .workbook-tabs {
+  > pane.active {
+    background-color: #424242;
+  }
 }
 
 .dnd-dialog {

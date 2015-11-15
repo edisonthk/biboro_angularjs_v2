@@ -3,16 +3,16 @@ import KeyCode from "../shortcut/shortcut.config";
 import FluxController from "../flux/flux.controller";
 
 class SnippetController extends FluxController {
-    
+
     constructor($scope, $state,$stateParams,Dispatcher, WorkbookService, AccountService, SnippetService, Markdown, toastr, EditorFactory) {
         'ngInject';
-        
+
         super($scope, Dispatcher);
 
         this.TYPE_FORK    = "fork";
         this.TYPE_UPDATE  = "edit";
-        
-        this.toast          = toastr;        
+
+        this.toast          = toastr;
         this.state          = $state;
         this.stateParams    = $stateParams;
         this.workbook       = WorkbookService;
@@ -35,13 +35,14 @@ class SnippetController extends FluxController {
         this.currentSnippet = {
             title: "",
             content: "",
+            referenceDomain: null,
         };
 
-        this.deleteDialog = { 
+        this.deleteDialog = {
             show: false,
             outsideClickedCallback: this.deleteDialogOutsideClickedCallback.bind(this),
         };
-        
+
         this.registerCallbacks({
             SNIPPET_SHOW      : this.showCallback,
 
@@ -77,7 +78,7 @@ class SnippetController extends FluxController {
             e.preventDefault();
             this._scope.$apply();
         }else if(ctrlKey && e.keyCode === KeyCode.KEY_DEL) {
-            this.deleteDialog.show = true;   
+            this.deleteDialog.show = true;
             e.preventDefault();
             this._scope.$apply();
         }else if(e.keyCode === KeyCode.KEY_ESC) {
@@ -86,7 +87,7 @@ class SnippetController extends FluxController {
             this._scope.$apply();
         }
     }
-    
+
     showCallback (res) {
         if(!res.success) {
             this.notfound = true;
@@ -104,6 +105,11 @@ class SnippetController extends FluxController {
         }
 
         this.currentSnippet = snippet;
+        if(snippet.reference && snippet.reference.method === 2) {
+          this.currentSnippet.referenceDomain = this.extractDomain(snippet.reference.target);
+        }else {
+          this.currentSnippet.referenceDomain = null;
+        }
     }
 
 
@@ -175,11 +181,11 @@ class SnippetController extends FluxController {
     }
 
     editorSavedCallback(editor) {
-        
+
         if(this.savingFlag) {
             return;
         }
-        
+
         if(editor.type === this.TYPE_FORK) {
             this.savingFlag = true;
 
@@ -205,7 +211,7 @@ class SnippetController extends FluxController {
         }else {
             console.error("unknown editor type");
         }
-        
+
     }
 
     editorQuitCallback() {
@@ -256,7 +262,7 @@ class SnippetController extends FluxController {
             this.toast.error(Helper.parseErrorMessagesAsHtml(error));
         }
         this.savingFlag = false;
-    }    
+    }
 
 }
 

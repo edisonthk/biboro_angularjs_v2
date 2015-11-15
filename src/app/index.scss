@@ -25,15 +25,15 @@ $black: #515151;
 // endbower
 
 .clearfix:after {
-  content: "."; 
-  display: block; 
-  height: 0; 
-  font-size:0;    
-  clear: both; 
+  content: ".";
+  display: block;
+  height: 0;
+  font-size:0;
+  clear: both;
   visibility:hidden;
 }
 
-.clearfix { display: inline-block; } 
+.clearfix { display: inline-block; }
 
 * {
 
@@ -73,6 +73,13 @@ small {
 
 .btn:hover {
     cursor: pointer;
+}
+
+@media(max-width: $phone-width) {
+  .no-mb {
+    display:none;
+  }
+
 }
 
 /* Large desktop */
@@ -147,7 +154,7 @@ navbar {
             height: 50px;
             padding: 9px;
             i {
-                font-size: 26px;    
+                font-size: 26px;
             }
 
             small {
@@ -312,14 +319,14 @@ navbar {
     .list {
         padding-left: 10px;
         li {
-            font-size: 150%;    
+            font-size: 150%;
         }
     }
 }
 
 .cells-wrapper {
     $workbook-show-width: $wrapper-width;
-    
+
     .cell {
         display: block;
         width: $workbook-show-width/3;
@@ -376,7 +383,7 @@ navbar {
                     -webkit-transform:  translateY(10px);
                 }
 
-            } 
+            }
 
             img {
                 display: block;
@@ -403,7 +410,6 @@ navbar {
         > .cell-wrapper {
             position: relative;
             height: 100%;
-
             > .title > .index {color: #999; font-size: 80%;}
             > * { margin: 5px 12px; }
             > .line { border: 1px dashed $black; z-index: 0;}
@@ -433,7 +439,7 @@ navbar {
                 opacity: 0.7;
                 font-style: italic;
                 font-size: 12px;
-            } 
+            }
 
             small {
                 font-size: 50%;
@@ -459,13 +465,17 @@ navbar {
                 border: 0;
                 padding: 10px;
             }
+
+            @media(max-width: $phone-width) {
+                > .title { max-width: calc(100% - 88px); }
+            }
         }
     }
 
     .title-cell h1{
         font-size: 30px;
         text-align: center;
-        margin-top: 80px; 
+        margin-top: 80px;
     }
     .title-cell h1 > small {
         font-size: 13px;
@@ -487,7 +497,7 @@ navbar {
     @media(min-width: $large-desktop-width) {
         $workbook-show-width: 1200px;
         width: $workbook-show-width;
-        
+
         .cell {
             width: $workbook-show-width / 4;
         }
@@ -496,7 +506,7 @@ navbar {
     @media(max-width: $desktop-width) {
         $workbook-show-width: 700px;
         width: $workbook-show-width;
-        
+
         .cell {
             width: $workbook-show-width / 2;
         }
@@ -505,7 +515,7 @@ navbar {
     @media(max-width: $tablet-width) {
         $workbook-show-width: 460px;
         width: $workbook-show-width;
-        
+
         .cell {
             width: $workbook-show-width/2;
         }
@@ -530,24 +540,23 @@ navbar {
 
     max-width: 670px;
 
-    .title {
-
+    .page-title {
+      width: auto;
+      height: auto;
+        margin: 85px 125px 0;
+        line-height: normal;
+        word-wrap: break-word;
     }
 
     .html-content {
         min-height: 300px;
     }
 
-    @media(max-width: $phone-width) {
-        .html-content {
-            margin: 12px;
-        }
-    }
-
     .tools {
         display: block;
-        float: right;
-        margin-top: -60px;
+        position: absolute;
+        top: 0 ;
+        right: 0;
 
         > button {
             display: inline-block;
@@ -567,6 +576,25 @@ navbar {
         > button:hover {
             cursor: pointer;
             background-color: #f0f0f0;
+        }
+    }
+
+    .reference {
+      margin-bottom: 30px;
+      opacity: 0.5;
+    }
+
+    @media(max-width: $phone-width) {
+      .page-title {
+        margin: 85px 85px 0;
+      }
+
+      .tools > button {
+        width: 40px;
+      }
+
+        .html-content {
+            margin: 12px;
         }
     }
 }
@@ -624,7 +652,7 @@ navbar {
     @media(max-width: $tablet-width) {
         $workbook-show-width: 100%;
         width: $workbook-show-width;
-        
+
         .group {
             width: calc(50% - 30px);
         }
@@ -660,9 +688,9 @@ button:focus {
         margin: 0 5px;
         li {
             color: white;
-            list-style-type: disc;     
+            list-style-type: disc;
         }
-        
+
     }
 }
 
@@ -670,13 +698,13 @@ button:focus {
 .profile-image {
     width: 67px;
     height: 67px;
-    
+
     > img {
         width: 100%;
         height: 100%;
         display: inline-block;
         border-radius: 50%;
-        overflow: hidden;      
+        overflow: hidden;
     }
 }
 

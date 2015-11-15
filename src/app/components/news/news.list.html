@@ -1,32 +1,32 @@
 <h1 class="page-title"><i class="fa fa-newspaper-o"></i> NEWS</h1>
 <div class="news cells-wrapper wrapper clearfix">
-        
+
     <div class="cell clearfix"
         ng-repeat="news in newsCtrl.news.getAll()"
         hover="news.showTools">
         <div class="cell-wrapper">
             <div class="line"></div>
             <h3 class="title">
-                <span ng-bind="news.title"></span>
                 <span class="index" ng-bind="news.index"></span>
+                <span ng-bind="news.title"></span>
                 <small>by</small>&nbsp;<small ng-bind="news.creator.name"></small>
-            </h3>   
+            </h3>
 
             <div class="follow" ng-if="news.reference != null">
-                <a ng-if="news.reference.method === 2" ng-href="{{news.reference.target}}">Ref
+                <a ng-if="news.reference.method === 2" ng-href="{{news.reference.target}}" target="_blank">Ref
                     &nbsp;<span ng-bind="news.reference.domain"></span>
                 </a>
                 <a ng-if="news.reference.method === 1" ui-sref="snippet({snippet: news.reference.target})">Fork snippets
                 </a>
             </div>
-            
+
 
             <div class="tools" ng-if="news.showTools">
                 <button ng-if="!news.editable" ng-click="newsCtrl.forkSnippet(news)">
                     <i class="fa fa-code-fork"></i>
                 </button>
                 <a class="btn" ui-sref="snippet({snippet: news.id})"><i class="fa fa-sign-out"></i></a>
-                
+
 
                 <!-- <button ng-if="news.editable" ng-click="newsCtrl.editSnippet(news)">
                     <i class="fa fa-wrench"></i>
@@ -34,7 +34,7 @@
                 <button ng-if="!news.editable" ng-click="newsCtrl.forkSnippet(news)">
                     <i class="fa fa-code-fork"></i>
                 </button>
-                
+
                 <button ng-click="newsCtrl.deleteSnippet(news)"><i class="fa fa-trash-o"></i></button> -->
             </div>
 
@@ -50,7 +50,7 @@
 </div>
 
 <comment
-    ng-if="newsCtrl.commentBox.show" 
+    ng-if="newsCtrl.commentBox.show"
     snippet="newsCtrl.commentBox.snippet"
     outside-clicked-callback="newsCtrl.commentBox.outsideClickedCallback" >
 ></comment>

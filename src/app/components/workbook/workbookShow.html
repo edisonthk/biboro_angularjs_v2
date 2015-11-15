@@ -3,7 +3,7 @@
 </div>
 <div ng-if="!workbookCtrl.notfound">
     <h1 class="page-title">
-        <i class="fa fa-book"></i> 
+        <i class="fa fa-book"></i>
         <span ng-bind="workbookCtrl.workbook.getCurrentWorkbook().title"></span>&nbsp;
         <small ng-if="workbookCtrl.workbook.getCurrentWorkbook().account_id == workbookCtrl.account.getUserId()">
             <i class="btn fa fa-pencil" ng-click="workbookCtrl.showEditDialog()"></i>
@@ -17,8 +17,8 @@
             <div class="cell-wrapper">
                 <div class="line"></div>
                 <h3 class="title">
+                  <span class="index" ng-bind="snippet.index"></span>
                     <span ng-bind="snippet.title"></span>&nbsp;
-                    <span class="index" ng-bind="snippet.index"></span>
                 </h3>
 
                 <div class="follow" ng-if="snippet.reference != null">
@@ -31,7 +31,7 @@
 
                 <div class="tools" ng-if="snippet.showTools">
                     <a class="btn" ui-sref="snippet({snippet: snippet.id})">
-                        <i class="fa fa-sign-out"></i>                    
+                        <i class="fa fa-sign-out"></i>
                     </a>
                 </div>
 
@@ -46,16 +46,16 @@
         </div>
     </div>
 
-    <dialog 
-        open 
-        ng-if="workbookCtrl.editDialog.show" 
+    <dialog
+        open
+        ng-if="workbookCtrl.editDialog.show"
         outside-clicked-callback="workbookCtrl.editDialog.outsideClickedCallback" >
         <div ng-include="'app/components/workbook/workbook.editDialog.html'"></div>
     </dialog>
 
-    <dialog 
-        open 
-        ng-if="workbookCtrl.deleteWorkbookDialog.show" 
+    <dialog
+        open
+        ng-if="workbookCtrl.deleteWorkbookDialog.show"
         outside-clicked-callback="workbookCtrl.deleteWorkbookDialog.outsideClickedCallback" >
         <div ng-include="'app/components/workbook/workbook.deleteDialog.html'"></div>
     </dialog>

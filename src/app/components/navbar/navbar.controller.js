@@ -6,11 +6,11 @@ import Helper from "../helper/helper";
 class NavbarController extends FluxController {
     constructor ($scope,Dispatcher,Api, AccountService, RouteService,WorkbookService, SnippetService, $interval, $stateParams, $state, toastr, FeedbackService, NotificationService, EditorFactory, ChromeExtension) {
         'ngInject';
-        
+
         super($scope, Dispatcher);
 
         this.toast       = toastr;
-        this.route       = RouteService;  
+        this.route       = RouteService;
         this.feedback    = FeedbackService;
         this.account     = AccountService;
         this.workbook    = WorkbookService;
@@ -31,21 +31,21 @@ class NavbarController extends FluxController {
             selected : null,
         };
 
-        
+
 
         this.feedbackContent = "";
         this.feedbackShow = false;
-        
+
         this.tags = [
                 { value: 'foo', text: 'Foo' },
                 { value: 'bar', text: 'Bar' },
                 { value: 'beep', text: 'Beep' },
             ];
-        
+
         // "this.creation" is avaible by directive option "bindToController: true"
         // this.relativeDate = moment(this.creationDate).fromNow();
 
-        
+
         this.registerCallbacks({
             WORKBOOK_FETCHALL : this.fetchAllCallback,
             ACCOUNT_FETCH     : this.fetchLoginAccount,
@@ -87,13 +87,13 @@ class NavbarController extends FluxController {
     }
 
     onkeydown(e) {
-        
+
         var ctrlKey = (e.ctrlKey || e.metaKey);
         if(ctrlKey && e.keyCode === KeyCode.KEY_B) {
             if(this.editor.isShow()) {
                 return;
             }
-            console.log("newSnippet")
+            
             this.newSnippet();
             this._scope.$apply();
             return;
@@ -111,7 +111,7 @@ class NavbarController extends FluxController {
             }else{
                 this.updateSelectedPane();
             }
-            
+
             this.showWorkbookListFlag = true;
         }
     }
@@ -161,13 +161,18 @@ class NavbarController extends FluxController {
      *
      */
     newSnippet() {
+      var workbooks = this.workbook.getAll();
+      var workbook = this.workbook.getCurrentWorkbook();
+      if(!workbook || !workbook.editable) {
+        workbook = workbooks.length > 0 ? workbooks[0] : null;
+      }
 
         this.editor.show({
             headline: "新しいスニペットを作成",
             title: "",
             content: "",
-            workbooks: this.workbook.getAll(),
-            selectedWorkbook: this.workbook.getCurrentWorkbook(),
+            workbooks: workbooks,
+            selectedWorkbook: workbook,
             quitCallback: this.editorQuitCallback.bind(this),
             cancelCallback: this.editorCancelCallback.bind(this),
             savedCallback: this.editorSavedCallback.bind(this)
@@ -180,7 +185,7 @@ class NavbarController extends FluxController {
             return;
         }
         this.savingFlag = true;
-        
+
         this.snippet.store({
             title:      editor.title,
             content:    editor.content,
@@ -191,10 +196,10 @@ class NavbarController extends FluxController {
     storedCallback(res) {
         this.savingFlag = false;
         if(res.success) {
-            
+
             this.editor.hide();
 
-            this.toast.success("作成完了！");    
+            this.toast.success("作成完了！");
             this.state.go("snippet",{snippet: this.snippet.getFocusSnippet().id});
         } else {
             var error = res.error.error;
@@ -222,7 +227,7 @@ class NavbarController extends FluxController {
         }
 
         if(noticeIds.length > 0) {
-            this.notification.markAsRead(noticeIds);    
+            this.notification.markAsRead(noticeIds);
         }
     }
 

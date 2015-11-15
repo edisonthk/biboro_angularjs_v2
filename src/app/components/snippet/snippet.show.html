@@ -7,18 +7,26 @@
     <div class="tools">
         <button ng-if="snippetCtrl.currentSnippet.editable" ng-click="snippetCtrl.editSnippet()">
             <i class="fa fa-wrench"></i><br/>
-            <small>{{CMD_KEY}}+E</small>
+            <small class="no-mb">{{CMD_KEY}}+E</small>
         </button>
         <button ng-if="!snippetCtrl.currentSnippet.editable" ng-click="snippetCtrl.forkSnippet()">
             <i class="fa fa-code-fork"></i>
         </button>
         <button ng-if="snippetCtrl.currentSnippet.editable" ng-click="snippetCtrl.deleteSnippet()">
             <i class="fa fa-trash-o"></i><br/>
-            <small>{{CMD_KEY}}+DEL</small>
+            <small class="no-mb">{{CMD_KEY}}+DEL</small>
         </button>
     </div>
 
     <div ng-bind-html="snippetCtrl.markdown.parseMd(snippetCtrl.currentSnippet.content)" class="html-content"></div>
+
+    <div class="reference" ng-if="snippetCtrl.currentSnippet.reference != null">
+        <a target="_blank" ng-if="snippetCtrl.currentSnippet.reference.method === 2" ng-href="{{snippetCtrl.currentSnippet.reference.target}}">参照サイト
+            &nbsp;<span ng-bind="snippetCtrl.currentSnippet.referenceDomain"></span>
+        </a>
+        <a ng-if="snippetCtrl.currentSnippet.reference.method === 1" ui-sref="snippet({snippet: snippetCtrl.currentSnippet.reference.target})"><i class="fa fa-code-fork"></i> フォーク記事の元
+        </a>
+    </div>
 </div>
 <div ng-if="!snippetCtrl.notfound" class="gray-section">
     <div class="snippet-page wrapper">
@@ -27,20 +35,20 @@
     </div>
 </div>
 
-<dialog 
-    open 
-    ng-if="snippetCtrl.deleteDialog.show" 
+<dialog
+    open
+    ng-if="snippetCtrl.deleteDialog.show"
     outside-clicked-callback="snippetCtrl.deleteDialog.outsideClickedCallback" >
     <div ng-include="'app/components/snippet/snippet.deleteDialog.html'"></div>
 </dialog>
 
-<!-- 
+<!--
 
 <editor
     ng-if="snippetCtrl.editor.show"
     type="snippetCtrl.editor.type"
     headline="スニペットを編集"
-    title="snippetCtrl.editor.title" 
+    title="snippetCtrl.editor.title"
     content="snippetCtrl.editor.content"
     tags="snippetCtrl.editor.tags"
     selected-workbook="snippetCtrl.editor.workbook"
@@ -48,6 +56,6 @@
     saved-callback="snippetCtrl.editorSavedCallback()"
     quit-callback="snippetCtrl.editorQuitCallback()"
     cancel-callback="snippetCtrl.editorCancelCallback()" >
-</editor> 
+</editor>
 
  -->
