@@ -9,15 +9,15 @@ class SnippetService extends FluxService{
 
         this.api = Api;
 
-        this.setDispatcherKey([    
+        this.setDispatcherKey([
                 "SNIPPET_STORE",
                 "SNIPPET_SHOW",
                 "SNIPPET_UPDATE",
                 "SNIPPET_DESTROY",
                 "SNIPPET_FORK",
-            ]); 
+            ]);
 
-        
+
     }
 
     show(snippetId) {
@@ -36,7 +36,7 @@ class SnippetService extends FluxService{
         this.request({
             method : this.api.snippet.fork.method,
             url    : this.api.snippet.fork.url,
-            data   : this.filterParams(params),   
+            data   : this.filterParams(params),
             dispatcher: "SNIPPET_FORK",
             success: function(res) {
                 this.setSingleSnippet(res);
@@ -48,7 +48,7 @@ class SnippetService extends FluxService{
         this.request({
             method : this.api.snippet.store.method,
             url    : this.api.snippet.store.url,
-            data   : this.filterParams(params),   
+            data   : this.filterParams(params),
             dispatcher: "SNIPPET_STORE",
             success: function(res) {
                 this.setFocusSnippet(res);
@@ -62,7 +62,7 @@ class SnippetService extends FluxService{
         this.request({
             method : this.api.snippet.update.method,
             url    : this.api.snippet.update.url.replace(":id",id),
-            data   : params,   
+            data   : params,
             dispatcher: "SNIPPET_UPDATE",
             success: function(res) {
                 this.setSingleSnippet(res);
@@ -82,15 +82,15 @@ class SnippetService extends FluxService{
     }
 
     setSingleSnippet(snippet) {
-        this.setDataInsideGroup(snippet);
+        this.setDataInsideGroup(this.transformSingleSnippet(snippet));
     }
 
     setFocusSnippet(snippet) {
-        this.setFocusData(snippet);
+        this.setFocusData(this.transformSingleSnippet(snippet));
     }
 
     setSnippets(snippets) {
-        this.setGroup(snippets);
+        this.setGroup(this.transformSnippets(snippets));
     }
 
     getFocusSnippet() {
@@ -101,6 +101,27 @@ class SnippetService extends FluxService{
     getSnippets(){
         // console.log("b1");
         return this.getAllData();
+    }
+
+    transformSnippets(snippets) {
+        for(var i = 0; i < snippets.length; i ++) {
+            snippets[i] = this.transformSingleSnippet(snippets[i]);
+        }
+        return snippets;
+    }
+
+    transformSingleSnippet(snippet) {
+
+        snippet.id = parseInt(snippet.id);
+        snippet.account_id = parseInt(snippet.account_id);
+        snippet.creator.id = parseInt(snippet.creator.id);
+
+        if(snippet.reference) {
+            snippet.reference.id = parseInt(snippet.reference.id);
+            snippet.reference.method = parseInt(snippet.reference.method);
+            snippet.reference.target = snippet.reference.target.match(/^[0-9]+$/) ? parseInt(snippet.reference.target) : snippet.reference.target ;
+        }
+        return snippet;
     }
 
     filterParams(params) {
