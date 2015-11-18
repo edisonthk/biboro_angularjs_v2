@@ -81,7 +81,6 @@ class TerminalController extends FluxController {
                 self.state.go("workbookShow",{workbook: wbs[number - 1].id}); 
                 inputElement.blur();
 
-                console.log("bbb");
 
                 return "";
             });
@@ -245,7 +244,7 @@ class TerminalController extends FluxController {
         
         var top = this.getOffsetTop(cell);
         
-        window.scrollTo( 0, top );
+        window.scrollTo( 0, top + 100 );
     }
 
     getOffsetTop(cell) {
