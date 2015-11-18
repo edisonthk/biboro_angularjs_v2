@@ -111,10 +111,7 @@ class WorkbookListController extends FluxController {
         this.workbook.update(this.stateParams.workbook ,formData);
     }
 
-    updateCallback(parameters) {
-        if(parameters.success) {
-            var workbook = parameters.response;
-        }
+    updateCallback() {
     }
 }
 

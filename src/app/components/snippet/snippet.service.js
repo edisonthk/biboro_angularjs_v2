@@ -119,7 +119,7 @@ class SnippetService extends FluxService{
         if(snippet.reference) {
             snippet.reference.id = parseInt(snippet.reference.id);
             snippet.reference.method = parseInt(snippet.reference.method);
-            snippet.reference.target = snippet.reference.target.match(/^[0-9]+$/) ? parseInt(snippet.reference.target) : snippet.reference.target ;
+            snippet.reference.target = (typeof snippet.reference.target === 'string') && snippet.reference.target.match(/^[0-9]+$/) ? parseInt(snippet.reference.target) : snippet.reference.target ;
         }
         return snippet;
     }

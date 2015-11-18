@@ -47,7 +47,7 @@ class ViewportProvider {
                     self.els[i].handler(el);
                 }
             }
-        };
+        }
     }
 
     isElementInViewport(el) {
@@ -62,7 +62,7 @@ class ViewportProvider {
         );
     }
 
-    onReady(e) {
+    onReady() {
         var self = this;
         self.readyFlag = true;
     }
