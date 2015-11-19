@@ -18,4 +18,6 @@ tabs > pane {
     margin-bottom: -1px;
     width: 80px;
     text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }    

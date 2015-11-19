@@ -123,12 +123,8 @@
                 text-align: center;
             }
             tabs >pane.active {
-                background-color: white;
-                border-bottom: 30px solid #dcdcdc;
-                border-left: 10px solid transparent;
-                border-right: 10px solid transparent;
-                height: 0;
-                width: 80px;
+                background-color: #dcdcdc;
+                padding: 0 10px;
             }
 
         }

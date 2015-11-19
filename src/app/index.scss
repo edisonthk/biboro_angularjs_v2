@@ -233,8 +233,6 @@ navbar {
         padding: 6px 12px;
         font-size: 14px;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
         border-bottom: 2px solid transparent;
         opacity: 0.4;
     }
@@ -536,69 +534,6 @@ navbar {
     padding: 0 13px 20px 13px;
 }
 
-.snippet-page.wrapper {
-
-    max-width: 670px;
-
-    .page-title {
-      width: auto;
-      height: auto;
-        margin: 85px 125px 50px;
-        line-height: normal;
-        word-wrap: break-word;
-    }
-
-    .html-content {
-        min-height: 300px;
-    }
-
-    .tools {
-        display: block;
-        position: absolute;
-        top: 0 ;
-        right: 0;
-
-        > button {
-            display: inline-block;
-            width: 60px;
-            color: #686868;
-            background-color: white;
-            border: 1px solid #eee;
-            font-size: 18px;
-            text-align: center;
-            padding: 6px 0;
-        }
-
-        small {
-            font-size: 70%;
-        }
-
-        > button:hover {
-            cursor: pointer;
-            background-color: #f0f0f0;
-        }
-    }
-
-    .reference {
-      margin-bottom: 30px;
-      opacity: 0.5;
-    }
-
-    @media(max-width: $phone-width) {
-      .page-title {
-        margin: 85px 85px 0;
-      }
-
-      .tools > button {
-        width: 40px;
-      }
-
-        .html-content {
-            margin: 12px;
-        }
-    }
-}
-
 .html-content {
     img {
         max-width: 100%;
@@ -637,6 +572,9 @@ navbar {
         .item {
             font-size: 16px;
             margin-bottom: 11px;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 

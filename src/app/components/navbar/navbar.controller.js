@@ -94,9 +94,10 @@ class NavbarController extends FluxController {
                 return;
             }
             
+            e.preventDefault();
             this.newSnippet();
             this._scope.$apply();
-            return;
+            return false;
         }
     }
 

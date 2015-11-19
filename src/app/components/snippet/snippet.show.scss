@@ -1,0 +1,74 @@
+
+.snippet-page.wrapper {
+
+    max-width: 670px;
+
+    .page-meta {
+      width: auto;
+      height: auto;
+        margin: 85px 125px 50px;
+        line-height: normal;
+        word-wrap: break-word;
+        > .page-title {
+            line-height: 1;
+            height: auto;
+        }
+
+        > .page-author {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 85%;
+            opacity: 0.5;
+        }
+    }
+
+    .html-content {
+        min-height: 300px;
+    }
+
+    .tools {
+        display: block;
+        position: absolute;
+        top: 0 ;
+        right: 0;
+
+        > button {
+            display: inline-block;
+            width: 60px;
+            color: #686868;
+            background-color: white;
+            border: 1px solid #eee;
+            font-size: 18px;
+            text-align: center;
+            padding: 6px 0;
+        }
+
+        small {
+            font-size: 70%;
+        }
+
+        > button:hover {
+            cursor: pointer;
+            background-color: #f0f0f0;
+        }
+    }
+
+    .reference {
+      margin-bottom: 30px;
+      opacity: 0.5;
+    }
+
+    @media(max-width: $phone-width) {
+      .page-title {
+        margin: 85px 85px 0;
+      }
+
+      .tools > button {
+        width: 40px;
+      }
+
+        .html-content {
+            margin: 12px;
+        }
+    }
+}
