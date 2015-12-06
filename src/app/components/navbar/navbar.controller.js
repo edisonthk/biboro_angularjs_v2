@@ -35,17 +35,7 @@ class NavbarController extends FluxController {
 
         this.feedbackContent = "";
         this.feedbackShow = false;
-
-        this.tags = [
-                { value: 'foo', text: 'Foo' },
-                { value: 'bar', text: 'Bar' },
-                { value: 'beep', text: 'Beep' },
-            ];
-
-        // "this.creation" is avaible by directive option "bindToController: true"
-        // this.relativeDate = moment(this.creationDate).fromNow();
-
-
+        
         this.registerCallbacks({
             WORKBOOK_FETCHALL : this.fetchAllCallback,
             ACCOUNT_FETCH     : this.fetchLoginAccount,

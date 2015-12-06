@@ -114,8 +114,11 @@ class SnippetService extends FluxService{
 
         snippet.id = parseInt(snippet.id);
         snippet.account_id = parseInt(snippet.account_id);
-        snippet.creator.id = parseInt(snippet.creator.id);
 
+        if(snippet.creator) {
+            snippet.creator.id = parseInt(snippet.creator.id);    
+        }
+        
         if(snippet.reference) {
             snippet.reference.id = parseInt(snippet.reference.id);
             snippet.reference.method = parseInt(snippet.reference.method);

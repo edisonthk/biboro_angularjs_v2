@@ -37,7 +37,7 @@ class TerminalController extends FluxController {
         }else if(ctrlKey) {
             if(e.keyCode === KeyCode.KEY_A) {
                 e.preventDefault();
-                this.highlightText(this.getNextElement());
+                this.highlightText(this.getNextCodeElement());
             }else if(e.keyCode === KeyCode.KEY_S) {
                 e.preventDefault();
             }
@@ -183,7 +183,7 @@ class TerminalController extends FluxController {
         this.workbookLoaded = true;
     }   
 
-    getNextElement() {
+    getNextCodeElement() {
         var self = this;
 
         var els = document.getElementsByClassName("prettyprint");
@@ -191,38 +191,136 @@ class TerminalController extends FluxController {
             return null;
         }
 
-        if( self.lastLength != els.length || (els.length > 0 && els[0].innerHTML != self.lastFirstContent)) {
-            self.lastFirstContent = els[0].innerHTML;
-            self.lastLength = els.length;
-            self.lastTop = 0;
+        var cellsWrapper = document.getElementsByClassName("cells-wrapper");
+        
+        
+        if(window.getSelection().toString().length <= 0) {
+        
+            // element is focused
+            this.highlightedCodeCurrentIndex = 0;
+            this.highlightedCodeCurrentHeight = 1;
         }
 
-        var resetFlag = true,
-            tempOffsetTop = 0,
-            tempMinIndex = 0,
-            tempMinDiff = 3000000  // infinity big 
-        ;
+        // have cells 
+        // no cells, exp) snippet.show page
+        var nextElement = null;
+        if(cellsWrapper.length <= 0) {
+            nextElement = this.getHigherCodeElement();   
+            if(nextElement) {
+
+            }else {
+                // reset current height value to initial
+                this.highlightedCodeCurrentHeight = 1;
+                nextElement = this.getHigherCodeElement();   
+            }
+
+        }else {
+            var cells = angular.element(cellsWrapper[0]).scope().cells;
+            
+            nextElement = this.getHigherCodeElement(cells[this.highlightedCodeCurrentIndex].el[0]); 
+            if(!nextElement) {
+                // reset current height value to initial
+                this.highlightedCodeCurrentHeight = 1;
+
+                for (var i = this.highlightedCodeCurrentIndex + 1; i < cells.length; i++) {
+                    
+                    nextElement = this.getHigherCodeElement(cells[i].el[0]);
+                    if(nextElement) {
+                        this.highlightedCodeCurrentIndex = i;
+                        break;
+                    }
+                }
+
+
+
+                if(!nextElement) {
+                    for (var i = 0; i < this.highlightedCodeCurrentIndex + 1; i++) {
+
+                        nextElement = this.getHigherCodeElement(cells[i].el[0]);
+                        if(nextElement) {
+                            this.highlightedCodeCurrentIndex = i;
+                            break;
+                        }
+                    }
+                }
+            } 
+
+        }
+
+        return nextElement;
         
+    }
+
+    getLowerCodeElement(parentElement) {
+        // var els = [];
+        // if(!parentElement) {
+        //     els = document.getElementsByClassName("prettyprint");
+        // }else {
+        //     els = parentElement.;
+        // }
+        this.getOffsetTop()
+    }
+
+    getHigherCodeElement(parentElement) {
+        var els = [];
+        if(!parentElement) {
+            els = document.getElementsByClassName("prettyprint");
+        }else {
+            els = parentElement.getElementsByClassName("prettyprint");
+        }
+
         for (var i = 0; i < els.length; i++) {
-            var offsetTop = self.getOffsetTop(els[i]);
-            var diff = offsetTop - self.lastTop;
-            if(diff < tempMinDiff && diff > 0) {
-                tempMinDiff = diff;
-                tempMinIndex = i;
-                tempOffsetTop = offsetTop;
-                resetFlag = false;
+            var _top = this.getOffsetTop(els[i]);
+            
+            if(this.highlightedCodeCurrentHeight < _top) {
+                this.highlightedCodeCurrentHeight = _top;
+                return els[i];
             }
         }
 
-        if(resetFlag) {
-            self.lastTop = 0;
-            return self.getNextElement();
-        }
-        
-        self.lastTop = tempOffsetTop;
-
-        return els[tempMinIndex];
+        return null;
     }
+
+    // getNextCodeElement() {
+    //     var self = this;
+
+    //     var els = document.getElementsByClassName("prettyprint");
+    //     if(els.length <= 0) {
+    //         return null;
+    //     }
+
+    //     if( self.lastLength != els.length || (els.length > 0 && els[0].innerHTML != self.lastFirstContent)) {
+    //         self.lastFirstContent = els[0].innerHTML;
+    //         self.lastLength = els.length;
+    //         self.lastTop = 0;
+    //     }
+
+    //     var resetFlag = true,
+    //         tempOffsetTop = 0,
+    //         tempMinIndex = 0,
+    //         tempMinDiff = 3000000  // infinity big 
+    //     ;
+        
+    //     for (var i = 0; i < els.length; i++) {
+    //         var offsetTop = self.getOffsetTop(els[i]);
+    //         var diff = offsetTop - self.lastTop;
+    //         if(diff < tempMinDiff && diff > 0) {
+    //             tempMinDiff = diff;
+    //             tempMinIndex = i;
+    //             tempOffsetTop = offsetTop;
+    //             resetFlag = false;
+    //         }
+    //     }
+
+    //     if(resetFlag) {
+    //         self.lastTop = 0;
+    //         return self.getNextCodeElement();
+    //     }
+        
+    //     self.lastTop = tempOffsetTop;
+
+    //     return els[tempMinIndex];
+    // }
 
     highlightText(element) {     
         if(!element) {

@@ -78,9 +78,13 @@ class SnippetController extends FluxController {
             e.preventDefault();
             this._scope.$apply();
         }else if(ctrlKey && e.keyCode === KeyCode.KEY_DEL) {
-            this.deleteDialog.show = true;
             e.preventDefault();
-            this._scope.$apply();
+            if(this.currentSnippet.editable) {
+                this.deleteDialog.show = true;    
+                this._scope.$apply();
+            }
+            
+            
         }else if(e.keyCode === KeyCode.KEY_ESC) {
             this.deleteDialog.show = false;
             e.preventDefault();

@@ -64,7 +64,6 @@ class CellsDirective {
                 
             });
 
-            self.updatedCallback
             self.scope.$apply();
 
         });
