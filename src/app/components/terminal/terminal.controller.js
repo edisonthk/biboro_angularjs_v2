@@ -37,7 +37,12 @@ class TerminalController extends FluxController {
         }else if(ctrlKey) {
             if(e.keyCode === KeyCode.KEY_A) {
                 e.preventDefault();
-                this.highlightText(this.getNextCodeElement());
+                if(e.shiftKey) {
+                    this.highlightText(this.getPrevCodeElement());
+                }else {
+                    this.highlightText(this.getNextCodeElement());    
+                }
+                
             }else if(e.keyCode === KeyCode.KEY_S) {
                 e.preventDefault();
             }
@@ -184,7 +189,17 @@ class TerminalController extends FluxController {
     }   
 
     getNextCodeElement() {
-        var self = this;
+        return this.getNextOrPrevCodeElement(true);
+    }
+
+    getPrevCodeElement() {
+        return this.getNextOrPrevCodeElement(false);
+    }
+
+    getNextOrPrevCodeElement(next) {
+        var self = this,
+            INFINITY = 3000  // pretend 3000 is infinity big number
+        ;
 
         var els = document.getElementsByClassName("prettyprint");
         if(els.length <= 0) {
@@ -201,46 +216,51 @@ class TerminalController extends FluxController {
             this.highlightedCodeCurrentHeight = 1;
         }
 
+        var getCodeElementByPosition = next ? this.getHigherCodeElement.bind(this) : this.getLowerCodeElement.bind(this);
+
         // have cells 
         // no cells, exp) snippet.show page
         var nextElement = null;
         if(cellsWrapper.length <= 0) {
-            nextElement = this.getHigherCodeElement();   
+            nextElement = getCodeElementByPosition();   
             if(nextElement) {
 
             }else {
                 // reset current height value to initial
-                this.highlightedCodeCurrentHeight = 1;
-                nextElement = this.getHigherCodeElement();   
+                this.highlightedCodeCurrentHeight = next ? 1 : INFINITY; 
+                nextElement = getCodeElementByPosition();   
             }
 
         }else {
             var cells = angular.element(cellsWrapper[0]).scope().cells;
             
-            nextElement = this.getHigherCodeElement(cells[this.highlightedCodeCurrentIndex].el[0]); 
+            nextElement = getCodeElementByPosition(cells[this.highlightedCodeCurrentIndex].el[0]);
             if(!nextElement) {
                 // reset current height value to initial
-                this.highlightedCodeCurrentHeight = 1;
+                this.highlightedCodeCurrentHeight = next ? 1 : INFINITY; 
 
-                for (var i = this.highlightedCodeCurrentIndex + 1; i < cells.length; i++) {
+                var i = this.highlightedCodeCurrentIndex;
+                for (var cnt = 0; cnt < cells.length; cnt++) {
                     
-                    nextElement = this.getHigherCodeElement(cells[i].el[0]);
+                    if(next) {
+                        // increment
+                        i += 1;
+                        if(i >= cells.length) {
+                            i = 0;
+                        }    
+
+                    }else {
+                        // decrement
+                        i -= 1;
+                        if(i < 0) {
+                            i = 0;
+                        }
+                    }
+
+                    nextElement = getCodeElementByPosition(cells[i].el[0]);
                     if(nextElement) {
                         this.highlightedCodeCurrentIndex = i;
                         break;
-                    }
-                }
-
-
-
-                if(!nextElement) {
-                    for (var i = 0; i < this.highlightedCodeCurrentIndex + 1; i++) {
-
-                        nextElement = this.getHigherCodeElement(cells[i].el[0]);
-                        if(nextElement) {
-                            this.highlightedCodeCurrentIndex = i;
-                            break;
-                        }
                     }
                 }
             } 
@@ -248,17 +268,26 @@ class TerminalController extends FluxController {
         }
 
         return nextElement;
-        
     }
 
     getLowerCodeElement(parentElement) {
-        // var els = [];
-        // if(!parentElement) {
-        //     els = document.getElementsByClassName("prettyprint");
-        // }else {
-        //     els = parentElement.;
-        // }
-        this.getOffsetTop()
+        var els = [];
+        if(!parentElement) {
+            els = document.getElementsByClassName("prettyprint");
+        }else {
+            els = parentElement.getElementsByClassName("prettyprint");
+        }
+
+        for (var i = els.length - 1; i >= 0; i--) {
+            var _top = this.getOffsetTop(els[i]);
+            
+            if(this.highlightedCodeCurrentHeight > _top) {
+                this.highlightedCodeCurrentHeight = _top;
+                return els[i];
+            }
+        }
+
+        return null;
     }
 
     getHigherCodeElement(parentElement) {
