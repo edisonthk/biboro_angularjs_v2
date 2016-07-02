@@ -7,7 +7,7 @@ var api = {
     // url or path to api
     host: {
         local: '/',
-        stagging : domain === 'undefined' ? 'http://api.biboro.org/' : domain,
+        stagging : domain === 'undefined' ? 'http://api.biboro.edisonthk.com/' : domain,
         // stagging : 'http://localhost:8000/'
     },
 
