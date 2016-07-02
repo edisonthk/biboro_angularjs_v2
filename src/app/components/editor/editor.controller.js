@@ -132,19 +132,6 @@ class EditorController extends FluxController {
         document.body.style.overflow = "hidden";
     }
 
-    textareaOnDragOver(e) {
-        e.preventDefault();
-
-        var self = this;
-        clearTimeout(self.dragIntervalId);
-        self.dragIntervalId = setTimeout(function() {
-            self.showCoverFlag = false;
-            self._scope.$apply();
-        }, 500);
-        self.showCoverFlag = true;
-        self._scope.$apply();
-    }
-
     textareaOnBlur(e) {
         this.lastSelectionEnd = e.target.selectionEnd;
         this.lastSelectionStart = e.target.selectionStart;
@@ -406,6 +393,19 @@ class EditorController extends FluxController {
         var selectedText = readyBoldText.substring(el.selectionStart, el.selectionEnd) ;
         var handlerText = handler(selectedText, el.selectionStart, el.selectionEnd) || selectedText;
         return readyBoldText.substring(0,el.selectionStart) + handlerText + readyBoldText.substring(el.selectionEnd, readyBoldText.length);
+    }
+
+    textareaOnDragOver(e) {
+        e.preventDefault();
+
+        var self = this;
+        clearTimeout(self.dragIntervalId);
+        self.dragIntervalId = setTimeout(function() {
+            self.showCoverFlag = false;
+            self._scope.$apply();
+        }, 500);
+        self.showCoverFlag = true;
+        self._scope.$apply();
     }
 
     textareaOnDragLeave(e){
